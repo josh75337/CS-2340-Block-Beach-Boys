@@ -41,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
+        android:theme="@style/AppTheme"
         app:menu="@menu/navigation" />
+
 
 </LinearLayout>

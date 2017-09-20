@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     * @TODO: remove after connecting to a real authentication system.
      * Credentials are added in the form "username:password"
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{"user:pass"};
