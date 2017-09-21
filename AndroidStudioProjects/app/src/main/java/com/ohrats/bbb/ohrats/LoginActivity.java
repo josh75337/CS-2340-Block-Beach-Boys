@@ -136,6 +136,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Disable back button
+     */
+    @Override
+    public void onBackPressed(){
+        //
+    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
