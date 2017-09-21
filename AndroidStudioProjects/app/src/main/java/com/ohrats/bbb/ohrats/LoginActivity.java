@@ -89,6 +89,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        // Matthew k edit
+        Button mLoginCancelButton = (Button) findViewById(R.id.login_cancel_button);
+        mLoginCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //clear login attempt method call here
+                clearLoginAttempt();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -167,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -195,6 +205,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
         }
     }
+
+    /**
+     * Clears the UserName (email) and password fields
+     *
+     */
+    private void clearLoginAttempt() {
+       mEmailView.setText("");
+       mPasswordView.setText("");
+    }
+
 
     /**
      * Validating the username/email
