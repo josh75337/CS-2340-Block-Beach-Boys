@@ -1,6 +1,7 @@
 package com.ohrats.bbb.ohrats;
 
 import android.content.Intent;
+import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // @TODO: Logout the user
+                LoginActivity temp = new LoginActivity();
+                temp.signOut();
 
                 Intent in = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(in);

@@ -202,6 +202,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void attemptRegistration() {
         //this should navigate to the new registration screen
         //and have more firebase
+        Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(in);
 
     }
 
@@ -298,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    private void signOut() {
+    protected void signOut() {
         mAuth.signOut();
         updateUI(null);
     }
