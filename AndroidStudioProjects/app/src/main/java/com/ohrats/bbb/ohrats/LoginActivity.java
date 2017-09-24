@@ -300,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    protected void signOut() {
+    private void signOut() {
         mAuth.signOut();
         updateUI(null);
     }

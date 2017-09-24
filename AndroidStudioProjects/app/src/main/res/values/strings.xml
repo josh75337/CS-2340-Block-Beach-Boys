@@ -23,4 +23,8 @@
     <string name="title_notifications">Notifications</string>
     <string name="action_settings">Logout</string>
     <string name="title_activity_registration">RegistrationActivity</string>
+    <string-array name="level_array">
+        <item>User</item>
+        <item>Admin</item>
+    </string-array>
 </resources>
