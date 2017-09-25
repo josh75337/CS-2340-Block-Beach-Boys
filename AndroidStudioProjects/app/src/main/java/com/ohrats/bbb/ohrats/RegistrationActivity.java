@@ -42,7 +42,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     private static final String TAG = "RegistrationActivity";
 
     //User information
-    private String _level = "NA";
+    private String _level = "User";
 
     // UI references.
     private EditText rEmailView;
@@ -79,6 +79,19 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
         //Firebase initialization
         mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
@@ -101,6 +114,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         User user = new User(email, password, level);
         //Add the POJO to the database
         mDatabase.child("users").child(userId).setValue(user);
+        Log.d(TAG, "writeNewUser:success");
     }
 
 
@@ -118,14 +132,26 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         String password = rPasswordView.getText().toString();
         String level = (String) levelSpinner.getSelectedItem();
 
-        createAccount(email, password, level);
+        createAccount(email, password);
+
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        //getUid may throw a NullPointerException
+        try {
+            String uid = user.getUid();
+            Log.d(TAG, "attempting to access Uid");
+            writeNewUser(email, password, level, uid);
+        } catch (NullPointerException npe) {
+            npe.getMessage();
+            npe.getCause();
+        }
 
         //Navigate Back to the sign-in page
         Intent in = new Intent(RegistrationActivity.this, LoginActivity.class);
         startActivity(in);
     }
 
-    private void createAccount(final String email, final String password, final String level) {
+    private void createAccount(final String email, final String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -139,8 +165,6 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            writeNewUser(email, password, level, user.getUid());
 
                         } else {
                             // If sign in fails, display a message to the user.
