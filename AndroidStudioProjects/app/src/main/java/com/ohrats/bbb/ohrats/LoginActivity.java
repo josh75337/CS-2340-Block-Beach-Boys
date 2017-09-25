@@ -190,14 +190,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+        //Check to ensure the user has input valid information
+        if (!validateForm()) {
+            return;
+        }
 
+        //attempt to sign in the users
         signIn(email, password);
     }
 
     /**
-     * This method
+     * This method sends users to the registration activity
      */
     private void attemptRegistration() {
         //this should navigate to the new registration screen
@@ -208,8 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * Clears the UserName (email) and password fields
-     *
+     * Clears the email and password fields
      */
     private void clearLoginAttempt() {
        mEmailView.setText("");
@@ -218,58 +220,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     /**
-     * Shows the progress UI and hides the login form.
+     * Needed because of the interface View.onClickListener
+     * @param v a view views are responsible for drawing and event handling. basically the building
+     *          of ui components
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.register_button) {
+            attemptRegistration();
+        } else if (i == R.id.email_sign_in_button) {
+            signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        } else if (i == R.id.login_cancel_button) {
+            signOut();
         }
     }
 
-        @Override
-        public void onClick(View v) {
-            int i = v.getId();
-            if (i == R.id.register_button) {
-                attemptRegistration();
-            } else if (i == R.id.email_sign_in_button) {
-                signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-            } else if (i == R.id.login_cancel_button) {
-                signOut();
-            }
-        }
-
+    /**
+     * Takes in an email and password and authenticates them with Firebase authentication
+     * If valid, the user is logged-in and taken to the main application screen
+     * @param email The users email
+     * @param password The users password
+     */
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
-            return;
-        }
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
@@ -280,7 +254,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
                             //Navigate to the main application
                             Intent in = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(in);
@@ -289,7 +262,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
 
 
@@ -300,20 +272,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    /**
+     * Signs a user out
+     */
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            //user is logged-in
-
-        } else {
-            //user didn't login
-
-            findViewById(R.id.email_sign_in_button).setVisibility(View.VISIBLE);
-        }
     }
 
     /**

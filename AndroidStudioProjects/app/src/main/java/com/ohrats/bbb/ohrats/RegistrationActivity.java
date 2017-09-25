@@ -22,12 +22,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    //FireBase
+    //FireBase Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    //Firebase Realtime DataBase
+    private DatabaseReference mDatabase;
+
 
     //Keep track of the FireBase attempts
     private static final String TAG = "RegistrationActivity";
@@ -40,38 +49,37 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     private EditText rPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Spinner levelSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        //Grab the elements from the UI
         rEmailView = (EditText) findViewById(R.id.remail);
         rPasswordView = (EditText) findViewById(R.id.rpassword);
+        levelSpinner = (Spinner) findViewById(R.id.level_spinner);
 
-        //Grab the user or admin dropdown
-        Spinner spinner = (Spinner) findViewById(R.id.level_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.level_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+        //Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.level_array, android.R.layout.simple_spinner_item);
+        //Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        //Apply the adapter to the spinner
+        levelSpinner.setAdapter(adapter);
 
         //Registration Button
-        // Cancels the login attempt Matthew K.
         Button rRegisterButton = (Button) findViewById(R.id.register_button);
         rRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //clear login attempt method call here
                 register();
             }
         });
 
         //Firebase initialization
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
 
@@ -86,6 +94,20 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         _level = "NA";
     }
 
+    /*
+    Firebase RealTime Database
+     */
+    private void writeNewUser(String email, String password, String level, String userId) {
+        User user = new User(email, password, level);
+        //Add the POJO to the database
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+
+
+    /*
+    Firebase Authentication
+     */
     private void register() {
         // Reset errors.
         rEmailView.setError(null);
@@ -94,18 +116,22 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         // Store values at the time of the login attempt.
         String email = rEmailView.getText().toString();
         String password = rPasswordView.getText().toString();
+        String level = (String) levelSpinner.getSelectedItem();
 
-        createAccount(email, password);
+        createAccount(email, password, level);
+
+        //Navigate Back to the sign-in page
+        Intent in = new Intent(RegistrationActivity.this, LoginActivity.class);
+        startActivity(in);
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, final String password, final String level) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
         }
 
 
-        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -114,10 +140,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-
-                            //Navigate Back to the sign-in page
-                            Intent in = new Intent(RegistrationActivity.this, LoginActivity.class);
-                            startActivity(in);
+                            writeNewUser(email, password, level, user.getUid());
 
                         } else {
                             // If sign in fails, display a message to the user.
