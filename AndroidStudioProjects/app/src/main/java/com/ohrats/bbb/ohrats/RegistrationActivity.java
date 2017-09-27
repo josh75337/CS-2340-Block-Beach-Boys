@@ -92,8 +92,28 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                 }
             }
         };
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //persistence enabled offline
+       FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        //initialize database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // database event listener
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                User user = dataSnapshot.getValue(User.class);
+                Log.d(TAG, "User is: " + user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     // User or Admin spinner
