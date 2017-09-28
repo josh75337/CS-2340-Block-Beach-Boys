@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ohrats.bbb.ohrats.LoginActivity">
 
-    <!-- Login progress -->
+    <!-- Registration progress -->
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/email"
+                    android:id="@+id/remail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/rpassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -61,41 +61,23 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/buttonFieldsLayout"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/level_spinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/divider"
-                android:showDividers="middle"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/register_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_register"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in_short"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="32dp"
+                />
 
             <Button
-                android:id="@+id/login_cancel_button"
-                android:layout_width="match_parent"
+                android:id="@+id/register_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/action_cancel_sign_in" />
+                android:layout_marginTop="16dp"
+                android:text="@string/action_register"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
     </ScrollView>
