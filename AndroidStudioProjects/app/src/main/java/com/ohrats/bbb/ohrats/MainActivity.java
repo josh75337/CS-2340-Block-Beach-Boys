@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Signs a user out with firebase
+     */
     private void signOut() {
         mAuth.signOut();
     }
