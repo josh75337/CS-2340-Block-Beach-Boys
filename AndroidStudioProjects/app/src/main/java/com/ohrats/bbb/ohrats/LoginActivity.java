@@ -152,7 +152,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+    /**
+     * Ensures that the email and password are not empty and are formatted correctly
+     * @return boolean true if formatted correctly
+     */
     private boolean validateForm() {
         boolean valid = true;
 
