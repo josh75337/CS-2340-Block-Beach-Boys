@@ -4,7 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * A class to store user information in the Firebase realtime database
- * POJOs can easily be added!
+ * POJOs can easily be added to the database
  * Created by Elijah on 9/25/2017.
  */
 @IgnoreExtraProperties
@@ -50,6 +50,12 @@ public class User {
         this(email, password, "User");
     }
 
+    /**
+     * Creates a user with an email, password, and level.
+     * @param email
+     * @param password
+     * @param level
+     */
     public User(String email, String password, String level) {
         this.email = email;
         this.password = password;

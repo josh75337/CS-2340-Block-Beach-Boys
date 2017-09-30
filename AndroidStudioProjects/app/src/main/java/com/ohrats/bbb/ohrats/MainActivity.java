@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 signOut();
 
+                //navigates back to the logn screen
                 Intent in = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(in);
                 return true;
