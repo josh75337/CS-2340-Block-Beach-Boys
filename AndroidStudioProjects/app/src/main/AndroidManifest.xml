@@ -32,6 +32,10 @@
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".ratListView"
+            android:label="ratListView" />
+
     </application>
 
 </manifest>
