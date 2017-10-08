@@ -16,7 +16,7 @@ public class ViewRatReportListActivity extends Activity{
 
     @Override   protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rat_listview);
+        setContentView(R.layout.view_rat_report_list);
         simpleList = (ListView)findViewById(R.id.rat_reports);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_rat_listview, R.id.textView, countryList);
         simpleList.setAdapter(arrayAdapter);

@@ -10,5 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
-        android:textColor="@color/common_google_signin_btn_text_dark"/>
+        android:textAllCaps="false"
+        android:textColor="#9933FF" />
 </LinearLayout>
