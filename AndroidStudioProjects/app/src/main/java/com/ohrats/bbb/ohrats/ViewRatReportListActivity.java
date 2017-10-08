@@ -9,7 +9,7 @@ import android.widget.ListView;
  * Created by Justin on 10/4/2017.
  */
 
-public class ratListView extends Activity{
+public class ViewRatReportListActivity extends Activity{
     // Array of strings...
     ListView simpleList;
     String countryList[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
