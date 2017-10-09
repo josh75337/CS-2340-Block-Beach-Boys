@@ -35,6 +35,9 @@
         <activity
             android:name=".ViewRatReportListActivity"
             android:label="ViewRatReportListActivity" />
+        <activity
+            android:name=".RatReport"
+            android:label="RatReport" />
 
     </application>
 

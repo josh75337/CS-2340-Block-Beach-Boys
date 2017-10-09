@@ -1,8 +1,10 @@
 package com.ohrats.bbb.ohrats;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -33,6 +35,35 @@ public class ViewRatReportListActivity extends Activity{
         simpleList = (ListView)findViewById(R.id.rat_reports);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_rat_listview, R.id.textView, countryList);
         simpleList.setAdapter(arrayAdapter);
+        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //find someway to get position. All examples had static arrays with no change in indices
+//                Intent intent = new Intent(view.getContext(), RatReport.class);
+//                startActivityForResult(intent, position);
+
+                if (position == 0) {
+                    Intent myIntent = new Intent(view.getContext(), RatReport.class);
+                    startActivityForResult(myIntent, 0);
+                }
+//
+//                if (position == 1) {
+//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity2.class);
+//                    startActivityForResult(myIntent, 0);
+//                }
+//
+//                if (position == 2) {
+//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity1.class);
+//                    startActivityForResult(myIntent, 0);
+//                }
+//
+//                if (position == 3) {
+//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity2.class);
+//                    startActivityForResult(myIntent, 0);
+//                }
+            }
+        });
+
 //        mRef = new Firebase("https://androidstudioprojects-b4132.firebaseio.com/");
 //        mListView = (ListView) findViewById(R.id.ListView);
 //        mAdapter = new FirebaseListAdapter<RatSighting>(this, RatSighting.class, R.layout.activity_rat_listview, mRef) {
@@ -46,6 +77,7 @@ public class ViewRatReportListActivity extends Activity{
 //        };
 //        simpleList.setAdapter(mAdapter);
     }
+
 
 //
 //    @Override
