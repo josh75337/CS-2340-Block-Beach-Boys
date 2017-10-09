@@ -4,23 +4,15 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 
 import com.google.firebase.database.DatabaseReference;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * a screen for adding rat sightings using singularly or through using a csv
  * Created by Matt on 10/3/2017.
  */
 
-public class SightingActivity extends AppCompatActivity{
+public class AddSightingActivity extends AppCompatActivity{
 
 
     //FireBase
@@ -29,7 +21,7 @@ public class SightingActivity extends AppCompatActivity{
     private DatabaseReference mDatabase;
 
     //Keep a log for debugging
-    private static final String TAG = "SightingActivity";
+    private static final String TAG = "AddSightingActivity";
 
     private SectionsPageAdapter mSectionPageAdapter;
     private ViewPager mViewPager;
@@ -37,7 +29,7 @@ public class SightingActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sighting);
+        setContentView(R.layout.activity_addsighting);
 
         mSectionPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
