@@ -1,6 +1,7 @@
 package com.ohrats.bbb.ohrats;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,7 +13,9 @@ import android.widget.Button;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,13 +57,14 @@ public class CSVFragment extends Fragment {
     }
 
     private void writeSightingCSV() {
-        String csvFile = "Rat_Sightings.csv";
+        String csvFile = Environment.getExternalStorageDirectory().getPath().concat("/Download/Rat_Sightings.csv");
         BufferedReader br = null;
         String line = "";
         String splitBy = ",";
 
         try {
-            br = new BufferedReader(new FileReader(csvFile));
+            FileInputStream fis = new FileInputStream(csvFile);
+            br = new BufferedReader(new InputStreamReader(fis));
             line = br.readLine();
             String[] sighting = line.split(splitBy);
             int[] fieldIndex = new int[9];
