@@ -12,5 +12,12 @@
         android:listSelector="#0f0">
 
     </ListView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:id="@+id/add_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 </LinearLayout>
