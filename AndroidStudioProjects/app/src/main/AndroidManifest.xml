@@ -36,8 +36,11 @@
             android:name=".ViewRatReportListActivity"
             android:label="ViewRatReportListActivity" />
         <activity
-            android:name=".RatReport"
-            android:label="RatReport" />
+            android:name=".AddSightingActivity"
+            android:label="AddSightingActivity" />
+        <activity
+            android:name=".ViewSightingActivity"
+            android:label="ViewSightingActivity" />
 
     </application>
 

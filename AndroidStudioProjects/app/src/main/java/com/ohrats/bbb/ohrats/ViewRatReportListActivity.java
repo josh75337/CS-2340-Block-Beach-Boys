@@ -25,11 +25,15 @@ public class ViewRatReportListActivity extends Activity{
     // Array of strings...
     ListView simpleList;
     String countryList[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
+
+    Button mAddSightingButton;
+
 //
 //    Firebase mRef;
 //    FirebaseListAdapter<String> mAdapter;
 
-    @Override   protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_rat_report_list);
         simpleList = (ListView)findViewById(R.id.rat_reports);
@@ -41,9 +45,8 @@ public class ViewRatReportListActivity extends Activity{
                 //find someway to get position. All examples had static arrays with no change in indices
 //                Intent intent = new Intent(view.getContext(), RatReport.class);
 //                startActivityForResult(intent, position);
-
                 if (position == 0) {
-                    Intent myIntent = new Intent(view.getContext(), RatReport.class);
+                    Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
                     startActivityForResult(myIntent, 0);
                 }
 //
@@ -64,6 +67,17 @@ public class ViewRatReportListActivity extends Activity{
             }
         });
 
+
+        mAddSightingButton = (Button) findViewById(R.id.raddsighting);
+        mAddSightingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewAddRatSightingPage();
+            }
+        });
+
+
+
 //        mRef = new Firebase("https://androidstudioprojects-b4132.firebaseio.com/");
 //        mListView = (ListView) findViewById(R.id.ListView);
 //        mAdapter = new FirebaseListAdapter<RatSighting>(this, RatSighting.class, R.layout.activity_rat_listview, mRef) {
@@ -78,6 +92,10 @@ public class ViewRatReportListActivity extends Activity{
 //        simpleList.setAdapter(mAdapter);
     }
 
+    private void viewAddRatSightingPage() {
+        Intent inView = new Intent(ViewRatReportListActivity.this, AddSightingActivity.class);
+        startActivity(inView);
+    }
 
 //
 //    @Override
