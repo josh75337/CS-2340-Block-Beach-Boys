@@ -109,7 +109,7 @@ public class ViewRatReportListActivity extends Activity{
         Log.v(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
 
-        Query query = sightingsRef.orderByKey().limitToLast(10);
+        Query query = sightingsRef.orderByKey().limitToLast(50);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
