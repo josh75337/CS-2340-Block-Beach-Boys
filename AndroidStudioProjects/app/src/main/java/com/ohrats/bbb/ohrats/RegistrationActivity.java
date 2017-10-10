@@ -126,7 +126,15 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     }
 
     /*
-    Firebase RealTime Database
+    Firebase RealTime Database Setup Below
+     */
+
+    /**
+     * Creates a new user and adds that user to the database
+     * @param email The user's email
+     * @param password The user's password
+     * @param level Whether user is "User" or "Admin"
+     * @param userId Their firebase id
      */
     private void writeNewUser(String email, String password, String level, String userId) {
         User user = new User(email, password, level);
@@ -135,10 +143,10 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         Log.d(TAG, "writeNewUser:success");
     }
 
-
-
-    /*
-    Firebase Authentication
+    /**
+     * This method validates the users entries on the register screen then calls create account
+     * Upon creating an account, the users Uid is procured and that info is used to writeNewUser
+     * This user object is added to the database. This object stores whether users is User or Admin
      */
     private void register() {
         // Reset errors.
@@ -150,10 +158,15 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         String password = rPasswordView.getText().toString();
         String level = (String) levelSpinner.getSelectedItem();
 
+        if (!validateForm()) {
+            return;
+        }
+
         createAccount(email, password);
 
 
         FirebaseUser user = mAuth.getCurrentUser();
+
         //getUid may throw a NullPointerException
         try {
             String uid = user.getUid();
@@ -169,19 +182,20 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         startActivity(in);
     }
 
+    /**
+     * Creates an account with firebase authentication
+     * @param email The email from the input line
+     * @param password The password from the input line
+     */
     private void createAccount(final String email, final String password) {
         Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success
                             Log.d(TAG, "createUserWithEmail:success");
 
                         } else {
@@ -195,6 +209,10 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                 });
     }
 
+    /**
+     * Ensures that the email and password are not empty and are formatted correctly
+     * @return boolean true if formatted correctly
+     */
     private boolean validateForm() {
         boolean valid = true;
 
@@ -213,8 +231,6 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         } else {
             rPasswordView.setError(null);
         }
-
         return valid;
     }
-
 }

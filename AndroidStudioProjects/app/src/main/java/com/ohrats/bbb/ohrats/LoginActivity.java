@@ -47,13 +47,13 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
 
     //FireBase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    //Keep track of the FireBase attempts
+    //Keep a log for debugging
     private static final String TAG = "LoginActivity";
 
 
@@ -152,7 +152,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+    /**
+     * Ensures that the email and password are not empty and are formatted correctly
+     * @return boolean true if formatted correctly
+     */
     private boolean validateForm() {
         boolean valid = true;
 
@@ -218,24 +221,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        mPasswordView.setText("");
     }
 
-
-    /**
-     * Needed because of the interface View.onClickListener
-     * @param v a view views are responsible for drawing and event handling. basically the building
-     *          of ui components
-     */
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.register_button) {
-            attemptRegistration();
-        } else if (i == R.id.email_sign_in_button) {
-            signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-        } else if (i == R.id.login_cancel_button) {
-            signOut();
-        }
-    }
-
     /**
      * Takes in an email and password and authenticates them with Firebase authentication
      * If valid, the user is logged-in and taken to the main application screen
@@ -245,7 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
 
-        // [START sign_in_with_email]
+        // Calls upon the Firebase Gods to login
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -264,7 +249,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.LENGTH_SHORT).show();
                         }
 
-
                         if (!task.isSuccessful()) {
                             mPasswordView.setError(getString(R.string.error_invalid_login));
                         }
@@ -273,14 +257,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * Signs a user out
+     * Signs a user out from Firebase
      */
     private void signOut() {
         mAuth.signOut();
     }
 
     /**
-     * Disable back button
+     * Disables back button
      */
     @Override
     public void onBackPressed(){
