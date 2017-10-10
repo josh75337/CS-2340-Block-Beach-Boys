@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,6 +40,8 @@ public class CSVFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_csv, container, false);
         addCSV = (Button) view.findViewById(R.id.raddcsv);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         addCSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +52,7 @@ public class CSVFragment extends Fragment {
         return view;
     }
 
-    private void writeNewSighting(String key, Date date, String locationType, String zip, String address,
+    private void writeNewSighting(String key, String date, String locationType, String zip, String address,
                                   String city, String borough, double latitude, double longitude) {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
@@ -87,7 +90,7 @@ public class CSVFragment extends Fragment {
             String[] sighting = line.split(splitBy);
             int[] fieldIndex = new int[9];
             for (int count = 0; count < sighting.length; count++) {
-                switch (sighting[0]) {
+                switch (sighting[count]) {
                     case "Unique Key":
                         fieldIndex[0] = count;
                         break;
@@ -119,11 +122,11 @@ public class CSVFragment extends Fragment {
                         break;
                 }
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+            // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
             while ((line = br.readLine()) != null) {
                 sighting = line.split(splitBy);
                 String key = sighting[fieldIndex[0]];
-                Date date = sdf.parse(sighting[fieldIndex[1]]);
+                String date = sighting[fieldIndex[1]];
                 String locationType = sighting[fieldIndex[2]];
                 String zip = sighting[fieldIndex[3]];
                 String address = sighting[fieldIndex[4]];
