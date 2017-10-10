@@ -69,21 +69,10 @@ public class ViewRatReportListActivity extends Activity{
 //        sightingList.add(r2);
 //        sightingList.add(r3);
         updateSightingList();
+        Log.d(TAG, "sightingList.size is: " + sightingList.size());
         for(int i = 0; i < sightingList.size(); i++){
             Log.d(TAG, "Element no " + i + " of sightingList is: " + sightingList.get(i).toString());
         }
-        simpleList = (ListView) findViewById(R.id.rat_reports);
-        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
-        simpleList.setAdapter(arrayAdapter);
-        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
-                myIntent.putExtra("RAT_SIGHTING", sightingList.get(position));
-                startActivity(myIntent);
-            }
-        });
-
 
         mAddSightingButton = (Button) findViewById(R.id.raddsighting);
         mAddSightingButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +88,22 @@ public class ViewRatReportListActivity extends Activity{
         startActivity(inView);
     }
 
+    private void updateListView() {
+        Log.d(TAG, "updateListView called while size of sightingList is" + sightingList.size());
+        simpleList = (ListView) findViewById(R.id.rat_reports);
+        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
+        simpleList.setAdapter(arrayAdapter);
+        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
+                myIntent.putExtra("RAT_SIGHTING", sightingList.get(position));
+                startActivity(myIntent);
+            }
+        });
+
+    }
+
     private void updateSightingList() {
         Log.d(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
@@ -109,7 +114,10 @@ public class ViewRatReportListActivity extends Activity{
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "onChildAdded event" );
                 Log.d(TAG, "UID of child sighting: " + dataSnapshot.getValue(RatSighting.class).getKey());
+                Log.d(TAG, "Date of child sighting: " + dataSnapshot.getValue(RatSighting.class).getDate());
                 sightingList.add(dataSnapshot.getValue(RatSighting.class));
+                Log.d(TAG, "size of sightingList after adding: " + sightingList.size());
+                updateListView();
             }
 
             @Override
@@ -132,7 +140,7 @@ public class ViewRatReportListActivity extends Activity{
 
             }
         });
-
+        updateListView();
         count += 10;
     }
 }
