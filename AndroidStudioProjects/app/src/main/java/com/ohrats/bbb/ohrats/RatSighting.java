@@ -99,7 +99,11 @@ public class RatSighting implements Serializable {
 
     @Override
     public String toString() {
-        return key;
+        String sighting = String.format("%s | %s | %s | %s", (getKey() != null) ? getKey() : "N/A",
+                                        (getDate() != null) ? getDate() : "N/A",
+                                        (getLocationType() != null) ? getLocationType() : "N/A",
+                                        (getAddress() != null) ? getAddress() : "N/A");
+        return String.format("%.50s", sighting);
     }
 
     public RatSighting() {
