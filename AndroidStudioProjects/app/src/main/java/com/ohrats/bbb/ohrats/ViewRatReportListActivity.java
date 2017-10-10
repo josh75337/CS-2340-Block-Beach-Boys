@@ -10,6 +10,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 //import com.firebase.client.Firebase;
@@ -30,6 +38,10 @@ public class ViewRatReportListActivity extends Activity{
 
     Button mAddSightingButton;
 
+    private DatabaseReference mDatabase;
+
+    int count;
+
 //
 //    Firebase mRef;
 //    FirebaseListAdapter<String> mAdapter;
@@ -39,47 +51,26 @@ public class ViewRatReportListActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_rat_report_list);
 
-        RatSighting r0 = new RatSighting("0", null, "Georgia Tech Dorm", "30332", "NO", "Definitely not Atlanta", "Maybe Georgia", 8.1, 10.1);
-        RatSighting r1 = new RatSighting("1");
-        RatSighting r2 = new RatSighting("2");
-        RatSighting r3 = new RatSighting("3");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        sightingList.add(r0);
-        sightingList.add(r1);
-        sightingList.add(r2);
-        sightingList.add(r3);
+        count = 10;
 
-        simpleList = (ListView)findViewById(R.id.rat_reports);
-        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
-        simpleList.setAdapter(arrayAdapter);
+//        RatSighting r0 = new RatSighting("0", null, "Georgia Tech Dorm", "30332", "NO", "Definitely not Atlanta", "Maybe Georgia", 8.1, 10.1);
+//        RatSighting r1 = new RatSighting("1");
+//        RatSighting r2 = new RatSighting("2");
+//        RatSighting r3 = new RatSighting("3");
+//
+//        sightingList.add(r0);
+//        sightingList.add(r1);
+//        sightingList.add(r2);
+//        sightingList.add(r3);
+        updateSightingList();
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
                 myIntent.putExtra("RAT_SIGHTING", sightingList.get(position));
                 startActivity(myIntent);
-                //find someway to get position. All examples had static arrays with no change in indices
-//                Intent intent = new Intent(view.getContext(), RatReport.class);
-//                startActivityForResult(intent, position);
-//                if (position == 0) {
-//                    Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
-//                    startActivityForResult(myIntent, 0);
-//                }
-//
-//                if (position == 1) {
-//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity2.class);
-//                    startActivityForResult(myIntent, 0);
-//                }
-//
-//                if (position == 2) {
-//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity1.class);
-//                    startActivityForResult(myIntent, 0);
-//                }
-//
-//                if (position == 3) {
-//                    Intent myIntent = new Intent(view.getContext(), ListItemActivity2.class);
-//                    startActivityForResult(myIntent, 0);
-//                }
             }
         });
 
@@ -91,21 +82,6 @@ public class ViewRatReportListActivity extends Activity{
                 viewAddRatSightingPage();
             }
         });
-
-
-
-//        mRef = new Firebase("https://androidstudioprojects-b4132.firebaseio.com/");
-//        mListView = (ListView) findViewById(R.id.ListView);
-//        mAdapter = new FirebaseListAdapter<RatSighting>(this, RatSighting.class, R.layout.activity_rat_listview, mRef) {
-//            @Override
-//            protected void populateView(View view, RatSighting ratSighting, int position) {
-//                //Set the value for the views
-//                ((TextView)view.findViewById(R.id.xxx)).setText(ratSighting.getName());
-//                //text.set(s);
-//                //...
-//            }
-//        };
-//        simpleList.setAdapter(mAdapter);
     }
 
     private void viewAddRatSightingPage() {
@@ -113,28 +89,38 @@ public class ViewRatReportListActivity extends Activity{
         startActivity(inView);
     }
 
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        mRef = new Firebase("https://<myURL>..");
-//
-//        myAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,mRef) {
-//            @Override
-//            protected void populateView(View view, String s, int i) {
-//                TextView text = (TextView) view.findViewById(android.R.id.text1);
-//                text.setText(s);
-//            }
-//        };
-//        final ListView lv = (ListView) findViewById(R.id.listView);
-//        lv.setAdapter(myAdapter);
-//
-//        Button addBtn = (Button) findViewById(R.id.add_button);
-//        addBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mRef.push().setValue("test123");
-//            }
-//        });
+    private void updateSightingList() {
+        DatabaseReference sightingsRef = mDatabase.child("sightings");
+        Query query = sightingsRef.orderByKey().limitToLast(10);
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                sightingList.add(dataSnapshot.getValue(RatSighting.class));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        simpleList = (ListView) findViewById(R.id.rat_reports);
+        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
+        simpleList.setAdapter(arrayAdapter);
+        count += 10;
+    }
 }

@@ -57,7 +57,7 @@ public class CSVFragment extends Fragment {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
         mDatabase.child("sightings").child(key).setValue(sighting);
-        Log.d(TAG, "writeNewSighting:success");
+        mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
     }
 
     private void writeSightingCSV() {
@@ -125,15 +125,16 @@ public class CSVFragment extends Fragment {
             // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
             while ((line = br.readLine()) != null) {
                 sighting = line.split(splitBy);
-                String key = sighting[fieldIndex[0]];
-                String date = sighting[fieldIndex[1]];
-                String locationType = sighting[fieldIndex[2]];
-                String zip = sighting[fieldIndex[3]];
-                String address = sighting[fieldIndex[4]];
-                String city = sighting[fieldIndex[5]];
-                String borough = sighting[fieldIndex[6]];
-                double latitude = Double.parseDouble(sighting[fieldIndex[7]]);
-                double longitude = Double.parseDouble(sighting[fieldIndex[8]]);
+                int sightingLength = sighting.length;
+                String key = (fieldIndex[0] < sightingLength) ? sighting[fieldIndex[0]] : null;
+                String date = (fieldIndex[1] < sightingLength) ? sighting[fieldIndex[1]] : null;
+                String locationType = (fieldIndex[2] < sightingLength) ? sighting[fieldIndex[2]] : null;
+                String zip = (fieldIndex[3] < sightingLength) ? sighting[fieldIndex[3]] : null;
+                String address = (fieldIndex[4] < sightingLength) ? sighting[fieldIndex[4]] : null;
+                String city = (fieldIndex[5] < sightingLength) ? sighting[fieldIndex[5]] : null;
+                String borough = (fieldIndex[6] < sightingLength) ? sighting[fieldIndex[6]] : null;
+                double latitude = (fieldIndex[7] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[7]]) : 0;
+                double longitude = (fieldIndex[8] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[8]]) : 0;
                 writeNewSighting(key, date, locationType, zip, address, city, borough, latitude, longitude);
             }
         } catch (Exception e) {
