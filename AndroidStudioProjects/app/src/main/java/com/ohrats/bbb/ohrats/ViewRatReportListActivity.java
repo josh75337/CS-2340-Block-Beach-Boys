@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -38,7 +39,7 @@ public class ViewRatReportListActivity extends Activity{
     private static final String TAG = "RatReportListActivity";
     // Array of strings...
     ListView simpleList;
-    ArrayList<RatSighting> sightingList = new ArrayList<>();
+    LinkedList<RatSighting> sightingList = new LinkedList<>();
 
     Button mAddSightingButton;
 
@@ -69,7 +70,7 @@ public class ViewRatReportListActivity extends Activity{
 //        sightingList.add(r2);
 //        sightingList.add(r3);
         updateSightingList();
-        Log.d(TAG, "sightingList.size is: " + sightingList.size());
+        Log.v(TAG, "sightingList.size is: " + sightingList.size());
         for(int i = 0; i < sightingList.size(); i++){
             Log.d(TAG, "Element no " + i + " of sightingList is: " + sightingList.get(i).toString());
         }
@@ -89,7 +90,7 @@ public class ViewRatReportListActivity extends Activity{
     }
 
     private void updateListView() {
-        Log.d(TAG, "updateListView called while size of sightingList is" + sightingList.size());
+        Log.v(TAG, "updateListView called while size of sightingList is" + sightingList.size());
         simpleList = (ListView) findViewById(R.id.rat_reports);
         ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
         simpleList.setAdapter(arrayAdapter);
@@ -105,18 +106,18 @@ public class ViewRatReportListActivity extends Activity{
     }
 
     private void updateSightingList() {
-        Log.d(TAG, "updateSightingList called" );
+        Log.v(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
 
         Query query = sightingsRef.orderByKey().limitToLast(10);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(TAG, "onChildAdded event" );
-                Log.d(TAG, "UID of child sighting: " + dataSnapshot.getValue(RatSighting.class).getKey());
-                Log.d(TAG, "Date of child sighting: " + dataSnapshot.getValue(RatSighting.class).getDate());
-                sightingList.add(dataSnapshot.getValue(RatSighting.class));
-                Log.d(TAG, "size of sightingList after adding: " + sightingList.size());
+                Log.v(TAG, "onChildAdded event" );
+                Log.v(TAG, "UID of child sighting: " + dataSnapshot.getValue(RatSighting.class).getKey());
+                Log.v(TAG, "Date of child sighting: " + dataSnapshot.getValue(RatSighting.class).getDate());
+                sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
+                Log.v(TAG, "size of sightingList after adding: " + sightingList.size());
                 updateListView();
             }
 
