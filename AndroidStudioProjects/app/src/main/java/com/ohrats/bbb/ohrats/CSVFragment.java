@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
@@ -57,14 +58,31 @@ public class CSVFragment extends Fragment {
     }
 
     private void writeSightingCSV() {
-        String csvFile = Environment.getExternalStorageDirectory().getPath().concat("/Download/Rat_Sightings.csv");
+        // Still need to manually give app permission to read and edit files:
+        // https://stackoverflow.com/a/38578137
+        Log.d(TAG, "writeSightingCSV called");
+        String csvFileName = "Rat_Sightings.csv";
+        File dataFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), csvFileName);
+        Log.d(TAG, "dataFolder path: " + dataFolder.getPath());
+//        for (String aFileName : dataFolder.list()) {
+//            Log.d(TAG, "dataFolder Contents: " + aFileName);
+//        }
+        File csvFile = new File(dataFolder, csvFileName);
+        //String csvFile = Environmentat.getExternalStorageDirectory().getPath().concat("/Android/data/org.krupczak.matthew/Rat_Sightings.csv");
+        Log.d(TAG, "does Rat_Sightings.csv exist?: " + csvFile.exists());
+        Log.d(TAG, ".canRead() Rat_Sightings.csv ?: " + csvFile.canRead());
+        Log.d(TAG, ".canWrite() Rat_Sightings.csv ?: " + csvFile.canWrite());
+        Log.d(TAG, "writeSightingCSV with path: " + csvFile.getPath());
         BufferedReader br = null;
         String line = "";
         String splitBy = ",";
 
         try {
             FileInputStream fis = new FileInputStream(csvFile);
+            Log.d(TAG, "writeSightingCSV FileInputStream instantiated");
             br = new BufferedReader(new InputStreamReader(fis));
+            Log.d(TAG, "writeSightingCSV BufferedReader instantiated");
             line = br.readLine();
             String[] sighting = line.split(splitBy);
             int[] fieldIndex = new int[9];
