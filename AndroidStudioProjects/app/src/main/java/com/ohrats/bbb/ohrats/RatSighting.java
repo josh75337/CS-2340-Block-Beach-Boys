@@ -15,7 +15,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class RatSighting implements Serializable {
 
     private String key;                // unique key
-    private Date date;              // created date
+    private String date;              // created date
     private String locationType;    // location type
     private String zip;                // incident zip
     private String address;         // incident address
@@ -33,11 +33,11 @@ public class RatSighting implements Serializable {
         this.key = key;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -128,7 +128,7 @@ public class RatSighting implements Serializable {
      * @param latitude
      * @param longitude
      */
-    public RatSighting(String key, Date date, String locationType, String zip, String address,
+    public RatSighting(String key, String date, String locationType, String zip, String address,
                        String city, String borough, double latitude, double longitude) {
         this.key = key;
         this.date = date;
