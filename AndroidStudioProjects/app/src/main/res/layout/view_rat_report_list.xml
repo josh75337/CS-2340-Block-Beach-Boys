@@ -11,7 +11,7 @@
 
     <ListView
         android:id="@+id/rat_reports"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="#f00"
         android:dividerHeight="1dp"
