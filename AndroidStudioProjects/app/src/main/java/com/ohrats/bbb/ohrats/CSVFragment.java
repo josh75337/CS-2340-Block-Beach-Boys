@@ -49,7 +49,7 @@ public class CSVFragment extends Fragment {
         return view;
     }
 
-    private void writeNewSighting(String key, Date date, String locationType, int zip, String address,
+    private void writeNewSighting(String key, Date date, String locationType, String zip, String address,
                                   String city, String borough, double latitude, double longitude) {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
@@ -125,7 +125,7 @@ public class CSVFragment extends Fragment {
                 String key = sighting[fieldIndex[0]];
                 Date date = sdf.parse(sighting[fieldIndex[1]]);
                 String locationType = sighting[fieldIndex[2]];
-                int zip = Integer.parseInt(sighting[fieldIndex[3]]);
+                String zip = sighting[fieldIndex[3]];
                 String address = sighting[fieldIndex[4]];
                 String city = sighting[fieldIndex[5]];
                 String borough = sighting[fieldIndex[6]];

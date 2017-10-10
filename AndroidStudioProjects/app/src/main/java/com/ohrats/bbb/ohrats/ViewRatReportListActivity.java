@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 //import com.firebase.client.Firebase;
 //import com.firebase.ui.database.FirebaseListAdapter;
 //import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +26,7 @@ import android.widget.TextView;
 public class ViewRatReportListActivity extends Activity{
     // Array of strings...
     ListView simpleList;
-    String countryList[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
+    ArrayList<RatSighting> sightingList = new ArrayList<>();
 
     Button mAddSightingButton;
 
@@ -36,19 +38,33 @@ public class ViewRatReportListActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_rat_report_list);
+
+        RatSighting r0 = new RatSighting("0", null, "Georgia Tech Dorm", "30332", "NO", "Definitely not Atlanta", "Maybe Georgia", 8.1, 10.1);
+        RatSighting r1 = new RatSighting("1");
+        RatSighting r2 = new RatSighting("2");
+        RatSighting r3 = new RatSighting("3");
+
+        sightingList.add(r0);
+        sightingList.add(r1);
+        sightingList.add(r2);
+        sightingList.add(r3);
+
         simpleList = (ListView)findViewById(R.id.rat_reports);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_rat_listview, R.id.textView, countryList);
+        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
         simpleList.setAdapter(arrayAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
+                myIntent.putExtra("RAT_SIGHTING", sightingList.get(position));
+                startActivity(myIntent);
                 //find someway to get position. All examples had static arrays with no change in indices
 //                Intent intent = new Intent(view.getContext(), RatReport.class);
 //                startActivityForResult(intent, position);
-                if (position == 0) {
-                    Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
-                    startActivityForResult(myIntent, 0);
-                }
+//                if (position == 0) {
+//                    Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
+//                    startActivityForResult(myIntent, 0);
+//                }
 //
 //                if (position == 1) {
 //                    Intent myIntent = new Intent(view.getContext(), ListItemActivity2.class);

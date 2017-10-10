@@ -1,5 +1,6 @@
 package com.ohrats.bbb.ohrats;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -11,12 +12,12 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 
 @IgnoreExtraProperties
-public class RatSighting {
+public class RatSighting implements Serializable {
 
     private String key;                // unique key
     private Date date;              // created date
     private String locationType;    // location type
-    private int zip;                // incident zip
+    private String zip;                // incident zip
     private String address;         // incident address
     private String city;            // city
     private String borough;         // borough
@@ -48,11 +49,11 @@ public class RatSighting {
         this.locationType = locationType;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 
@@ -96,9 +97,22 @@ public class RatSighting {
         this.longitude = longitude;
     }
 
+    @Override
+    public String toString() {
+        String sighting = String.format("%s | %s | %s | %s", (getKey() != null) ? getKey() : "N/A",
+                                        (getDate() != null) ? getDate() : "N/A",
+                                        (getLocationType() != null) ? getLocationType() : "N/A",
+                                        (getAddress() != null) ? getAddress() : "N/A");
+        return String.format("%.50s", sighting);
+    }
+
     public RatSighting() {
         // From Google People @ Firebase
         // "Default constructor required for calls to DataSnapshot.getValue(User.class)"
+    }
+
+    public RatSighting(String key) {
+        this.key = key;
     }
 
     /**
@@ -114,7 +128,7 @@ public class RatSighting {
      * @param latitude
      * @param longitude
      */
-    public RatSighting(String key, Date date, String locationType, int zip, String address,
+    public RatSighting(String key, Date date, String locationType, String zip, String address,
                        String city, String borough, double latitude, double longitude) {
         this.key = key;
         this.date = date;
