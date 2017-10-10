@@ -3,6 +3,7 @@ package com.ohrats.bbb.ohrats;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 //import com.firebase.client.Firebase;
 //import com.firebase.ui.database.FirebaseListAdapter;
 //import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
  */
 
 public class ViewRatReportListActivity extends Activity{
+    private static final String TAG = "RatReportListActivity";
     // Array of strings...
     ListView simpleList;
     ArrayList<RatSighting> sightingList = new ArrayList<>();
@@ -65,6 +69,12 @@ public class ViewRatReportListActivity extends Activity{
 //        sightingList.add(r2);
 //        sightingList.add(r3);
         updateSightingList();
+        for(int i = 0; i < sightingList.size(); i++){
+            Log.d(TAG, "Element no " + i + " of sightingList is: " + sightingList.get(i).toString());
+        }
+        simpleList = (ListView) findViewById(R.id.rat_reports);
+        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
+        simpleList.setAdapter(arrayAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -90,11 +100,15 @@ public class ViewRatReportListActivity extends Activity{
     }
 
     private void updateSightingList() {
+        Log.d(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
+
         Query query = sightingsRef.orderByKey().limitToLast(10);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildAdded event" );
+                Log.d(TAG, "UID of child sighting: " + dataSnapshot.getValue(RatSighting.class).getKey());
                 sightingList.add(dataSnapshot.getValue(RatSighting.class));
             }
 
@@ -118,9 +132,7 @@ public class ViewRatReportListActivity extends Activity{
 
             }
         });
-        simpleList = (ListView) findViewById(R.id.rat_reports);
-        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
-        simpleList.setAdapter(arrayAdapter);
+
         count += 10;
     }
 }
