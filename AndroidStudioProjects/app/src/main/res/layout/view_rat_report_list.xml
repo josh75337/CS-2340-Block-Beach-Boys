@@ -17,7 +17,7 @@
         android:id="@+id/rat_reports"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EEE600"
+        android:background="#FFCC00"
         android:divider="#f00"
         android:dividerHeight="2dp"
         android:listSelector="#0f0">
