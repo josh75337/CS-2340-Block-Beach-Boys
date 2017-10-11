@@ -27,25 +27,25 @@ public class ViewSightingActivity extends AppCompatActivity{
         TextView mLatitude = (TextView) findViewById(R.id.rlatitude);
         TextView mLongitude = (TextView) findViewById(R.id.rlongitude);
 
-        if (sighting.getKey() != null) {
+        if (!sighting.getKey().equals("")) {
             mUniqueKey.setText(sighting.getKey());
         }
-        if (sighting.getDate() != null) {
-            mCreatedDate.setText(sighting.getDate().toString());
+        if (!sighting.getDate().equals("")) {
+            mCreatedDate.setText(sighting.getDate());
         }
-        if (sighting.getLocationType() != null) {
+        if (!sighting.getLocationType().equals("")) {
             mLocationType.setText(sighting.getLocationType());
         }
-        if (sighting.getZip() != null) {
+        if (!sighting.getZip().equals("")) {
             mIncidentZip.setText(sighting.getZip());
         }
-        if (sighting.getAddress() != null) {
+        if (!sighting.getAddress().equals("")) {
             mIncidentAddress.setText(sighting.getAddress());
         }
-        if (sighting.getCity() != null) {
+        if (!sighting.getCity().equals("")) {
             mCity.setText(sighting.getCity());
         }
-        if (sighting.getBorough() != null) {
+        if (!sighting.getBorough().equals("")) {
             mBorough.setText(sighting.getBorough());
         }
         if (sighting.getLatitude() != 0) {

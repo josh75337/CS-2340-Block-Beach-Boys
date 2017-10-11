@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
@@ -42,9 +43,16 @@ public class ViewRatReportListActivity extends Activity{
     LinkedList<RatSighting> sightingList = new LinkedList<>();
 
     Button mAddSightingButton;
+    Button mNextButton;
+    Button mPrevButton;
+
+    TextView mPageNumView;
 
     private DatabaseReference mDatabase;
 
+    String lastKey;
+
+    int pageNum;
     int count;
 
 //
@@ -58,7 +66,9 @@ public class ViewRatReportListActivity extends Activity{
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        count = 10;
+        pageNum = 1;
+        count = 1;
+        lastKey = "";
 
 //        RatSighting r0 = new RatSighting("0", null, "Georgia Tech Dorm", "30332", "NO", "Definitely not Atlanta", "Maybe Georgia", 8.1, 10.1);
 //        RatSighting r1 = new RatSighting("1");
@@ -82,6 +92,25 @@ public class ViewRatReportListActivity extends Activity{
                 viewAddRatSightingPage();
             }
         });
+
+        mNextButton = (Button) findViewById(R.id.rnext);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextPage();
+            }
+        });
+
+        mPrevButton = (Button) findViewById(R.id.rprevious);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previousPage();
+            }
+        });
+        mPrevButton.setClickable(false);
+
+        mPageNumView = (TextView) findViewById(R.id.rpagenumber);
     }
 
     private void viewAddRatSightingPage() {
@@ -92,7 +121,8 @@ public class ViewRatReportListActivity extends Activity{
     private void updateListView() {
         Log.v(TAG, "updateListView called while size of sightingList is" + sightingList.size());
         simpleList = (ListView) findViewById(R.id.rat_reports);
-        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingList);
+        RatSighting[] sightingPage = (RatSighting[]) Arrays.copyOfRange(sightingList.toArray(), (pageNum - 1) * 10, (pageNum - 1) * 10 + 9);
+        ArrayAdapter<RatSighting> arrayAdapter = new ArrayAdapter<>(this, R.layout.activity_rat_listview, R.id.textView, sightingPage);
         simpleList.setAdapter(arrayAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,16 +138,30 @@ public class ViewRatReportListActivity extends Activity{
     private void updateSightingList() {
         Log.v(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
+        Query query;
+        if (lastKey.equals("")) { //check this
+            query = sightingsRef.limitToLast(10);
+        } else {
+            query = sightingsRef.limitToLast(11).endAt(lastKey);
+        }
 
-        Query query = sightingsRef.orderByKey().limitToLast(10);
+        final LinkedList<RatSighting> tempList = new LinkedList<>();
+
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.v(TAG, "onChildAdded event" );
                 Log.v(TAG, "UID of child sighting: " + dataSnapshot.getValue(RatSighting.class).getKey());
                 Log.v(TAG, "Date of child sighting: " + dataSnapshot.getValue(RatSighting.class).getDate());
-                sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
+                RatSighting rs = dataSnapshot.getValue(RatSighting.class);
+                tempList.addFirst(rs);
+                if (tempList.size() == 10) {
+                    sightingList.addAll(tempList);
+                }
                 Log.v(TAG, "size of sightingList after adding: " + sightingList.size());
+                if (tempList.size() == 1) {
+                    lastKey = rs.getKey();
+                }
                 updateListView();
             }
 
@@ -142,6 +186,24 @@ public class ViewRatReportListActivity extends Activity{
             }
         });
         updateListView();
-        count += 10;
+        count++;
+    }
+
+    public void nextPage() {
+        pageNum++;
+        if (pageNum > 1) {
+            mPrevButton.setClickable(true);
+        }
+        mPageNumView.setText(String.format("Page %d", pageNum));
+        updateSightingList();
+    }
+
+    public void previousPage() {
+        pageNum--;
+        if (pageNum <= 1) {
+            mPrevButton.setClickable(false);
+        }
+        mPageNumView.setText(String.format("Page %d", pageNum));
+        updateListView();
     }
 }

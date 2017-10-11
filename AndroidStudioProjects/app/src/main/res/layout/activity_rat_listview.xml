@@ -11,5 +11,5 @@
         android:layout_gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
         android:textAllCaps="false"
-        android:textColor="#6441a5" />
+        android:textColor="@color/bodyTextColor" />
 </LinearLayout>

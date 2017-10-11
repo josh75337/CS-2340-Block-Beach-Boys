@@ -56,8 +56,16 @@ public class CSVFragment extends Fragment {
                                   String city, String borough, double latitude, double longitude) {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+        Long priority = 0l;
+        try {
+            priority = sdf.parse(date).getTime();
+        } catch (Exception e) {
+            e.getMessage();
+            e.getCause();
+        }
         mDatabase.child("sightings").child(key).setValue(sighting);
-        mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
+        mDatabase.child("sightings").child(key).setPriority(priority);
     }
 
     private void writeSightingCSV() {
