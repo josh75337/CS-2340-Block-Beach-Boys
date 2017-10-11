@@ -88,7 +88,7 @@ public class CSVFragment extends Fragment {
 
     /**
      * Writes the data from the CSV file at the specified path and filename to the database
-     * 
+     *
      * User still needs to manually give app permission to read and edit files:
      * https://stackoverflow.com/a/38578137
      */
@@ -96,7 +96,7 @@ public class CSVFragment extends Fragment {
 
         Log.v(TAG, "writeSightingCSV called");
 
-        String csvFileName = CSV_FILE_NAME;
+        String csvFileName = new String(CSV_FILE_NAME);
         File dataFolder = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //--------------------------------------------------------------------------

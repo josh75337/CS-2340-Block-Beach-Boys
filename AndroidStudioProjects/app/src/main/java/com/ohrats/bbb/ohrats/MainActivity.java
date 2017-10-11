@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 //        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 //        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //Firebase initialization and lister creation
+        //Firebase initialization and listener creation
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

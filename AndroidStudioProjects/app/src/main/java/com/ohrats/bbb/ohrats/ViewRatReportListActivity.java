@@ -28,6 +28,7 @@ import java.util.LinkedList;
 
 /**
  * Activity which displays rat sightings and allows for navigation to CSV loader
+ *
  * Created by Justin on 10/4/2017.
  */
 
@@ -105,7 +106,7 @@ public class ViewRatReportListActivity extends Activity{
      * fetches RatSighting(s) from database and adds them to sightingList
      *
      * also calls updateListView() every time a RatSighting is fetched in order to populate
-     *     the list view
+     * the list view
      */
     private void updateSightingList() {
         Log.v(TAG, "updateSightingList called" );

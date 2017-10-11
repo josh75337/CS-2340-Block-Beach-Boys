@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 
 /**
  * a screen for adding rat sightings using singularly or through using a csv
+ * 
  * Created by Matt on 10/3/2017.
  */
 
