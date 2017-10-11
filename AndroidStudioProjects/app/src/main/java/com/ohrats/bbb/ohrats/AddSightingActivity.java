@@ -41,6 +41,10 @@ public class AddSightingActivity extends AppCompatActivity{
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    /**
+     * takes view pager and adds fragments that will be the different tabs
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new SingleFragment(), "Single");

@@ -18,7 +18,10 @@ public class ViewSightingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewsighting);
 
+        // grabs rat sighting object passed with intent
         RatSighting sighting = (RatSighting) getIntent().getSerializableExtra("RAT_SIGHTING");
+
+        // grab textview elements from ui
         TextView mUniqueKey = (TextView) findViewById(R.id.runiquekey);
         TextView mCreatedDate = (TextView) findViewById(R.id.rdate);
         TextView mLocationType = (TextView) findViewById(R.id.rlocationtype);
@@ -33,7 +36,7 @@ public class ViewSightingActivity extends AppCompatActivity{
             mUniqueKey.setText(sighting.getKey());
         }
         if (sighting.getDate() != null) {
-            mCreatedDate.setText(sighting.getDate().toString());
+            mCreatedDate.setText(sighting.getDate());
         }
         if (sighting.getLocationType() != null) {
             mLocationType.setText(sighting.getLocationType());

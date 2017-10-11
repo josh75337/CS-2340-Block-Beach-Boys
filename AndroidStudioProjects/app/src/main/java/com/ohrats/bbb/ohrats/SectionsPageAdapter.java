@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * controls adding fragments to an adapter for the tabbed view
  * Created by Matt on 10/6/2017.
  */
 

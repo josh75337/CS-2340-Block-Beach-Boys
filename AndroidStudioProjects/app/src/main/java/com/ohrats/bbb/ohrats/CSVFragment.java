@@ -104,8 +104,8 @@ public class CSVFragment extends Fragment {
 
         Log.v(TAG, "dataFolder path: " + dataFolder.getPath());
 
-        // Depricated filepath
-        //String csvFile = Environmentat.getExternalStorageDirectory().getPath().concat("/Android/data/org.krupczak.matthew/Rat_Sightings.csv");
+        // Deprecated filepath
+        //String csvFile = Environment.getExternalStorageDirectory().getPath().concat("/Android/data/org.krupczak.matthew/Rat_Sightings.csv");
 
         Log.v(TAG, "does " + csvFileName + " exist?: " + csvFile.exists());
         Log.v(TAG, ".canRead() " + csvFileName + "?: " + csvFile.canRead());
@@ -159,7 +159,7 @@ public class CSVFragment extends Fragment {
                         break;
                 }
             }
-            // Depricated date format conversion, could be useful later
+            // Deprecated date format conversion, could be useful later
             // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
 
             // This second loop grabs an individual row and uses the data at relevant indices
