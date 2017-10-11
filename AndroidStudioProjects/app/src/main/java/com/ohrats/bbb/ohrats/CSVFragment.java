@@ -34,6 +34,8 @@ public class CSVFragment extends Fragment {
 
     private Button addCSV;
 
+    final String CSV_FILE_NAME = "Rat_Sightings.csv";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,43 +54,78 @@ public class CSVFragment extends Fragment {
         return view;
     }
 
-    private void writeNewSighting(String key, String date, String locationType, String zip, String address,
-                                  String city, String borough, double latitude, double longitude) {
+    /**
+     * Creates a RatSighting with the given data and uploads it to the database
+     *
+     * @param key
+     * @param date
+     * @param locationType
+     * @param zip
+     * @param address
+     * @param city
+     * @param borough
+     * @param latitude
+     * @param longitude
+     */
+    private void writeNewSighting(String key,
+                                  String date,
+                                  String locationType,
+                                  String zip,
+                                  String address,
+                                  String city,
+                                  String borough,
+                                  double latitude,
+                                  double longitude) {
+        //-------------------------------------------
+
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
         mDatabase.child("sightings").child(key).setValue(sighting);
+        // setPriority not entirely necessary with later versions of Firebase, but it may
+        //     be useful in some scenarios
         mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
     }
 
+    /**
+     * Writes the data from the CSV file at the specified path and filename to the database
+     * 
+     * User still needs to manually give app permission to read and edit files:
+     * https://stackoverflow.com/a/38578137
+     */
     private void writeSightingCSV() {
-        // Still need to manually give app permission to read and edit files:
-        // https://stackoverflow.com/a/38578137
-        Log.d(TAG, "writeSightingCSV called");
-        String csvFileName = "Rat_Sightings.csv";
-        File dataFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), csvFileName);
-        Log.d(TAG, "dataFolder path: " + dataFolder.getPath());
-//        for (String aFileName : dataFolder.list()) {
-//            Log.d(TAG, "dataFolder Contents: " + aFileName);
-//        }
+
+        Log.v(TAG, "writeSightingCSV called");
+
+        String csvFileName = CSV_FILE_NAME;
+        File dataFolder = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        //--------------------------------------------------------------------------
         File csvFile = new File(dataFolder, csvFileName);
+
+        Log.v(TAG, "dataFolder path: " + dataFolder.getPath());
+
+        // Depricated filepath
         //String csvFile = Environmentat.getExternalStorageDirectory().getPath().concat("/Android/data/org.krupczak.matthew/Rat_Sightings.csv");
-        Log.d(TAG, "does Rat_Sightings.csv exist?: " + csvFile.exists());
-        Log.d(TAG, ".canRead() Rat_Sightings.csv ?: " + csvFile.canRead());
-        Log.d(TAG, ".canWrite() Rat_Sightings.csv ?: " + csvFile.canWrite());
-        Log.d(TAG, "writeSightingCSV with path: " + csvFile.getPath());
+
+        Log.v(TAG, "does " + csvFileName + " exist?: " + csvFile.exists());
+        Log.v(TAG, ".canRead() " + csvFileName + "?: " + csvFile.canRead());
+        Log.v(TAG, ".canWrite() " + csvFileName + "?: " + csvFile.canWrite());
+        Log.v(TAG, "writeSightingCSV with path: " + csvFile.getPath());
+
         BufferedReader br = null;
         String line = "";
         String splitBy = ",";
 
         try {
             FileInputStream fis = new FileInputStream(csvFile);
-            Log.d(TAG, "writeSightingCSV FileInputStream instantiated");
+            Log.v(TAG, "writeSightingCSV FileInputStream instantiated");
             br = new BufferedReader(new InputStreamReader(fis));
-            Log.d(TAG, "writeSightingCSV BufferedReader instantiated");
+            Log.v(TAG, "writeSightingCSV BufferedReader instantiated");
             line = br.readLine();
             String[] sighting = line.split(splitBy);
             int[] fieldIndex = new int[9];
+            // This first loop finds the column position of each type of data
+            //     present in a rat sighting row
             for (int count = 0; count < sighting.length; count++) {
                 switch (sighting[count]) {
                     case "Unique Key":
@@ -122,7 +159,11 @@ public class CSVFragment extends Fragment {
                         break;
                 }
             }
+            // Depricated date format conversion, could be useful later
             // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+
+            // This second loop grabs an individual row and uses the data at relevant indices
+            //     to make a call to writeNewSighting to write a RatSighting to the database
             while ((line = br.readLine()) != null) {
                 sighting = line.split(splitBy);
                 int sightingLength = sighting.length;
