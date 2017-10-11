@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 /**
+ * Activity which allows the user to view details of an individual RatSighting
  * Created by Matt on 10/9/2017.
  */
 

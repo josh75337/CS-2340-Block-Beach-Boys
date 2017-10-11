@@ -27,6 +27,7 @@ import java.util.LinkedList;
 
 
 /**
+ * Activity which displays rat sightings and allows for navigation to CSV loader
  * Created by Justin on 10/4/2017.
  */
 

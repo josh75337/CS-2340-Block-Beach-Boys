@@ -6,7 +6,7 @@ import java.util.Date;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
- * Class storing rat sighting info in Firebase
+ * Class which stores rat sighting info and is used with Firebase
  * POJOs can be easily added to the database
  * Created by Matt on 10/3/2017.
  */
