@@ -34,6 +34,8 @@ public class CSVFragment extends Fragment {
 
     private Button addCSV;
 
+    int count;
+
     final String CSV_FILE_NAME = "Rat_Sightings.csv";
 
     @Nullable
@@ -47,6 +49,7 @@ public class CSVFragment extends Fragment {
         addCSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                count = 0;
                 writeSightingCSV();
             }
         });
@@ -81,9 +84,12 @@ public class CSVFragment extends Fragment {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
         mDatabase.child("sightings").child(key).setValue(sighting);
+        count++;
+        Log.d(TAG, "Count is " + count);
         // setPriority not entirely necessary with later versions of Firebase, but it may
         //     be useful in some scenarios
-        mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
+        // removed currently; causes lagging when uploading csv
+        //mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
     }
 
     /**
