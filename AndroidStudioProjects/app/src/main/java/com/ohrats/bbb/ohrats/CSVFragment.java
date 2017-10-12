@@ -33,7 +33,7 @@ public class CSVFragment extends Fragment {
      * CSV fragment is currently uploading data
      */
     public static class UploadStateNestedClass {
-        private static boolean isUploading = true;
+        private static boolean isUploading = false;
 
         /**
          * Fetches the upload state of CSVFragment
