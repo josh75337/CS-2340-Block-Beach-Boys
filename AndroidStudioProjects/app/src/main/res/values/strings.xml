@@ -22,6 +22,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_settings">Logout</string>
+    <string name="view_rat_reports_button">View Rat Reports</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string-array name="level_array">
         <item>User</item>

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        mTextMessage = (TextView) findViewById(R.id.message);
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //Firebase initialization and lister creation
+        //Firebase initialization and listener creation
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -53,6 +55,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        Button mViewReportListButton = (Button) findViewById(R.id.view_report_list);
+        mViewReportListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewReportListPage();
+            }
+        });
+    }
+    private void viewReportListPage() {
+        Intent inView = new Intent(MainActivity.this, ViewRatReportListActivity.class);
+        startActivity(inView);
     }
 
 
@@ -90,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 signOut();
 
+                //navigates back to the logn screen
                 Intent in = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(in);
                 return true;
