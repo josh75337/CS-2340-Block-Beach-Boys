@@ -33,6 +33,7 @@ public class CSVFragment extends Fragment {
     private static final String TAG = "CSVFragment";
 
     private Button addCSV;
+    int count;
 
     @Nullable
     @Override
@@ -45,6 +46,7 @@ public class CSVFragment extends Fragment {
         addCSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                count = 0;
                 writeSightingCSV();
             }
         });
@@ -56,16 +58,18 @@ public class CSVFragment extends Fragment {
                                   String city, String borough, double latitude, double longitude) {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+        /*SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
         Long priority = 0l;
         try {
             priority = sdf.parse(date).getTime();
         } catch (Exception e) {
             e.getMessage();
             e.getCause();
-        }
-        mDatabase.child("sightings").child(key).setValue(sighting);
-        mDatabase.child("sightings").child(key).setPriority(priority);
+        }*/
+        mDatabase.child("sightings2").child(key).setValue(sighting);
+        count++;
+        Log.d(TAG, "Count is " + count);
+        //mDatabase.child("sightings2").child(key).setPriority(priority);
     }
 
     private void writeSightingCSV() {

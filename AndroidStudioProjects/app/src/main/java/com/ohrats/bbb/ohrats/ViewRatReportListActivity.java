@@ -79,7 +79,7 @@ public class ViewRatReportListActivity extends Activity{
 //        sightingList.add(r1);
 //        sightingList.add(r2);
 //        sightingList.add(r3);
-        updateSightingList();
+        //updateSightingList();
         Log.v(TAG, "sightingList.size is: " + sightingList.size());
         for(int i = 0; i < sightingList.size(); i++){
             Log.d(TAG, "Element no " + i + " of sightingList is: " + sightingList.get(i).toString());
@@ -97,7 +97,7 @@ public class ViewRatReportListActivity extends Activity{
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextPage();
+                //nextPage();
             }
         });
 
@@ -105,7 +105,7 @@ public class ViewRatReportListActivity extends Activity{
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                previousPage();
+                //previousPage();
             }
         });
         mPrevButton.setClickable(false);
