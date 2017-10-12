@@ -8,7 +8,6 @@
         android:id="@+id/raddsighting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
         android:elevation="1dp"
         android:text="Add Sighting"
         android:textColor="@color/bodyTextColor" />
@@ -17,31 +16,11 @@
         android:id="@+id/rat_reports"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFCC00"
-        android:divider="#f00"
+        android:layout_weight="0.92"
+        android:divider="@android:color/darker_gray"
         android:dividerHeight="2dp"
-        android:listSelector="#0f0">
+        android:listSelector="@color/com_facebook_button_background_color_focused_disabled">
 
     </ListView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
-    </LinearLayout>
 
 </LinearLayout>

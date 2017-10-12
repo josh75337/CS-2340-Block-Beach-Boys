@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFCC00"
     android:orientation="vertical">
 
     <TextView
@@ -18,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -33,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -48,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -63,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -78,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -93,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -108,7 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -123,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
     <TextView
@@ -138,7 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="N/A"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
 </LinearLayout>
