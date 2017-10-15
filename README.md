@@ -7,7 +7,7 @@ You must manually give the app file access permissions via Settings -> Apps -> O
 
 Dates should be stored as strings in ISO 8601 format  YYYY-MM-DDTHH:MM:SS
   
-  Example: Combined date and time in UTC:	2017-10-15T23:19:02
+  Example: 2017-10-15T23:19:02
 
 [ISO 8601 Information](https://en.wikipedia.org/wiki/ISO_8601)
 
