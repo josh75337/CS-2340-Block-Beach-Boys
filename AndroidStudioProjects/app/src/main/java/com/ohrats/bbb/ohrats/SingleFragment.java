@@ -171,6 +171,9 @@ public class SingleFragment extends Fragment {
         mDatabase.child("sightings").child(_key).setValue(newSighting);
 
         Log.i(TAG, "New RatSighting created and added to the database");
+
+        Intent in = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(in);
     }
 
 
