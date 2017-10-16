@@ -3,6 +3,16 @@ This is our main repository for the of CS2340
 
 You must manually give the app file access permissions via Settings -> Apps -> OhRats -> Folder Access before a CSV can be uploaded
 
+## Branch Structure
+
+Bleeding edge but working code should be kept in develop
+
+Staging is for demo-ready code
+
+Master is for finalized, tested code that is ready for submission
+
+Personal Branches may be created off of the develop branch. Use personal branches to experiment.
+
 ## Standards
 
 Dates should be stored as strings in ISO 8601 format  YYYY-MM-DDTHH:MM:SS
