@@ -150,6 +150,17 @@ public class SingleFragment extends Fragment {
 
     }
 
+    /**
+     *
+     * @param incidentLocationType - location type for rat sighting
+     * @param incidentAddress - address of rat sighting
+     * @param incidentCity - city of rat sighting
+     * @param incidentZip - zip of rat sighiting
+     * @param incidentLongitude -longitude of rat sighitng
+     * @param incidentLatitude - latitude of rat sighting
+     * @param createdDate - the date the rat sighting was created
+     */
+
     private void createRatSighting(String incidentLocationType,
                                    String incidentAddress,
                                    String incidentCity,
@@ -184,6 +195,10 @@ public class SingleFragment extends Fragment {
         _borough = parent.getItemAtPosition(position).toString();
     }
 
+    /**
+     * validates the rat sighting
+     * @return - true if it is valid and false if it isnt
+     */
     private boolean isValid() {
 
         if (locationType.getSelectedItem() == null) {
