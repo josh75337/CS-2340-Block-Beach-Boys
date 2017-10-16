@@ -5,11 +5,11 @@ You must manually give the app file access permissions via Settings -> Apps -> O
 
 ## Branch Structure
 
-Bleeding edge but working code should be kept in develop
+Develop is for bleeding-edge but working code.
 
-Staging is for demo-ready code
+Staging is for demo-ready code.
 
-Master is for finalized, tested code that is ready for submission
+Master is for finalized, tested code that is ready for submission.
 
 Personal Branches may be created off of the develop branch. Use personal branches to experiment.
 
