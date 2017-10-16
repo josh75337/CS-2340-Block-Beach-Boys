@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPostalAddress"
-        android:text="Incident Address" />
+        android:hint="@string/sighting_address" />
 
     <EditText
         android:id="@+id/IncidentZip"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
-        android:text="Incident ZipCode" />
+        android:hint="@string/sighting_zipCode" />
 
     <EditText
         android:id="@+id/IncidentCity"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="City" />
+        android:hint="@string/sighting_city" />
 
     <Spinner
         android:id="@+id/boroughSpinner"
@@ -45,8 +45,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:text="Latitude"
-        tools:text="Longitude" />
+        android:hint="@string/sighting_longitude" />
 
     <EditText
         android:id="@+id/IncidentLatitude"
@@ -54,12 +53,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:text="Latitude" />
+        android:hint="@string/sighting_latitude" />
 
     <Button
         android:id="@+id/submitSightingButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:text="@string/sighting_submit" />
 
 </LinearLayout>

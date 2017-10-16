@@ -1,5 +1,7 @@
 package com.ohrats.bbb.ohrats;
 
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,10 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Button;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -21,11 +31,16 @@ import java.util.List;
 /**
  * fragment that handles uploading csvs
  * Created by Matt on 10/6/2017.
+ * Edited by Josh and Eli for m7
  */
 
 
 public class SingleFragment extends Fragment {
+    //debugging log
     private static final String TAG = "SingleFragment";
+
+    //Firebase realtime database reference
+    private DatabaseReference mDatabase;
 
     //UI references
     private Spinner locationType;
@@ -36,6 +51,9 @@ public class SingleFragment extends Fragment {
     private EditText latitude;
     private EditText longitude;
 
+    //RatSighting information
+    private String _borough = "Queens";
+    private String _key;
 
 
     @Nullable
@@ -70,6 +88,27 @@ public class SingleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 submitRatSighting();
+            }
+        });
+
+        //initialize database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //find last key
+        Query lastQuery = mDatabase.child("sightings").orderByKey().limitToLast(1);
+        lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, dataSnapshot.getValue().toString());
+                String lastSighting = dataSnapshot.getValue().toString();
+                String oldKey = lastSighting.substring(1, 9);
+                Log.i(TAG, oldKey);
+                _key = (Integer.parseInt(oldKey) + 1) + "";
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getDetails());
             }
         });
     }
@@ -119,6 +158,27 @@ public class SingleFragment extends Fragment {
                                    double incidentLatitude,
                                    Date createdDate) {
         //eli here is where we need to query firebase to determine the unique key and then add the new rat sighting to the database
+
+        //convert zip to string
+        String zip = "" + incidentZip;
+        String date = "" + createdDate;
+
+        //create new sighting
+        RatSighting newSighting = new RatSighting(_key, date, incidentLocationType, zip,
+                incidentAddress, incidentCity, _borough, incidentLatitude, incidentLongitude);
+
+        //add to the database
+        mDatabase.child("sightings").child(_key).setValue(newSighting);
+
+        Log.i(TAG, "New RatSighting created and added to the database");
+    }
+
+
+    /**
+     * Gets the selected borough from the spinner
+     */
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        _borough = parent.getItemAtPosition(position).toString();
     }
 
     private boolean isValid() {

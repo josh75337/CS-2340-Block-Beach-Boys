@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OhRats</string>
 
-    <!-- Strings related to login -->
+    <!-- User and Login Strings -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -28,4 +28,13 @@
         <item>User</item>
         <item>Admin</item>
     </string-array>
+
+    <!-- Rat Sighting Strings -->
+    <string name="sighting_city">City</string>
+    <string name="sighting_zipCode">Zipcode</string>
+    <string name="sighting_latitude">Latitude</string>
+    <string name="sighting_longitude">Longitude</string>
+    <string name="sighting_address">Address</string>
+    <string name="sighting_submit">Submit</string>
+
 </resources>

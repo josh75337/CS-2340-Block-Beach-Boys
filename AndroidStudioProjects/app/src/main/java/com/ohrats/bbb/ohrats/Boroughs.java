@@ -7,5 +7,5 @@ import java.io.Serializable;
  */
 
 public enum Boroughs implements Serializable {
-    Bronx, Brooklyn, Queens, StatenIsland, Manhatten;
+    Bronx, Brooklyn, Queens, StatenIsland, Manhattan;
 }
