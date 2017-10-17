@@ -100,11 +100,10 @@ public class RatSighting implements Serializable {
 
     @Override
     public String toString() {
-        String sighting = String.format("%s | %s | %s | %s", (getKey() != null) ? getKey() : "N/A",
-                                        (getDate() != null) ? getDate() : "N/A",
-                                        (getLocationType() != null) ? getLocationType() : "N/A",
-                                        (getAddress() != null) ? getAddress() : "N/A");
-        return String.format("%.50s", sighting);
+        String sighting = String.format("%10s | %10.10s | %.20s", (!getKey().equals("")) ? getKey() : "N/A",
+                                        (!getDate().equals("")) ? getDate() : "N/A",
+                                        (!getAddress().equals("")) ? getAddress() : "N/A");
+        return sighting;
     }
 
     public RatSighting() {
