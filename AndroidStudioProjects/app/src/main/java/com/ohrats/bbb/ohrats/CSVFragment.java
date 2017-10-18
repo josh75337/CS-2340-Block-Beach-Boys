@@ -28,6 +28,32 @@ import java.util.Date;
 
 public class CSVFragment extends Fragment {
 
+    /**
+     * Static Nested class which contains info on whether or not
+     * CSV fragment is currently uploading data
+     */
+    public static class UploadStateNestedClass {
+        private static boolean isUploading = true;
+
+        /**
+         * Fetches the upload state of CSVFragment
+         * @return boolean whether a CSV is currently being updated to the database
+         */
+        public static boolean getIsUploading() {
+            return isUploading;
+        }
+
+        /**
+         * Sets the upload state of CSVFragment
+         * @param uploadingState
+         */
+        public static void setIsUploading(boolean uploadingState) {
+            isUploading = uploadingState;
+        }
+
+
+    }
+
     private DatabaseReference mDatabase;
 
     private static final String TAG = "CSVFragment";
@@ -56,6 +82,8 @@ public class CSVFragment extends Fragment {
 
         return view;
     }
+
+
 
     /**
      * Creates a RatSighting with the given data and uploads it to the database
@@ -99,8 +127,8 @@ public class CSVFragment extends Fragment {
      * https://stackoverflow.com/a/38578137
      */
     private void writeSightingCSV() {
-
         Log.v(TAG, "writeSightingCSV called");
+        CSVFragment.UploadStateNestedClass.setIsUploading(true);
 
         String csvFileName = new String(CSV_FILE_NAME);
         File dataFolder = Environment
@@ -188,6 +216,6 @@ public class CSVFragment extends Fragment {
             e.getMessage();
             e.getCause();
         }
-
+        CSVFragment.UploadStateNestedClass.setIsUploading(false);
     }
 }

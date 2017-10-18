@@ -115,6 +115,7 @@ public class SingleFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, databaseError.getDetails());
+                mDatabase.removeEventListener(this);
             }
         });
     }
@@ -165,7 +166,7 @@ public class SingleFragment extends Fragment {
     }
 
     /**
-     *
+     * Creates a rat sighting and adds it to the database
      * @param incidentLocationType - location type for rat sighting
      * @param incidentAddress - address of rat sighting
      * @param incidentCity - city of rat sighting
@@ -174,7 +175,6 @@ public class SingleFragment extends Fragment {
      * @param incidentLatitude - latitude of rat sighting
      * @param createdDate - the date the rat sighting was created
      */
-
     private void createRatSighting(String incidentLocationType,
                                    String incidentAddress,
                                    String incidentCity,
@@ -187,6 +187,8 @@ public class SingleFragment extends Fragment {
         //convert zip to string
         String zip = "" + incidentZip;
         String date = "" + createdDate;
+
+        validateKey(_key);
 
         //create new sighting
         RatSighting newSighting = new RatSighting(_key, date, incidentLocationType, zip,
@@ -201,6 +203,13 @@ public class SingleFragment extends Fragment {
         startActivity(in);
     }
 
+    /**
+     * Checks if the key already has data associated
+     * @param _key The current key
+     */
+    private void validateKey(String _key) {
+        //while the key is defined move along
+    }
 
     /**
      * Gets the selected borough from the spinner

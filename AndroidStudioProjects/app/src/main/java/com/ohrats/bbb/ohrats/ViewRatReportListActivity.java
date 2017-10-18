@@ -58,7 +58,9 @@ public class ViewRatReportListActivity extends Activity{
 
         // Populates sightingList asynchronously,
         //     i.e. We can't have our final list view until it finishes populating
-        updateSightingList();
+        if(!CSVFragment.UploadStateNestedClass.getIsUploading()) {
+            updateSightingList();
+        }
 
         // Button for going to the manual add and csv selector screen
         mAddSightingButton = (Button) findViewById(R.id.raddsighting);
@@ -125,7 +127,13 @@ public class ViewRatReportListActivity extends Activity{
                 //-----------------------------------------------------------
 
                 sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
-                updateListView();
+                while(sightingList.size() > SIGHTINGS_PER_PAGE) {
+                    sightingList.removeLast();
+                }
+
+                if(!CSVFragment.UploadStateNestedClass.getIsUploading()) {
+                    updateListView();
+                }
 
                 Log.v(TAG, "size of sightingList after adding: " + sightingList.size());
             }
