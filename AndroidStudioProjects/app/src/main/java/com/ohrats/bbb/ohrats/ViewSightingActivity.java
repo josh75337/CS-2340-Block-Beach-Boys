@@ -36,7 +36,7 @@ public class ViewSightingActivity extends AppCompatActivity{
             mUniqueKey.setText(sighting.getKey());
         }
         if (sighting.getDate() != null) {
-            mCreatedDate.setText(sighting.getDate());
+            mCreatedDate.setText(sighting.getDate() + " EST");
         }
         if (sighting.getLocationType() != null) {
             mLocationType.setText(sighting.getLocationType());
