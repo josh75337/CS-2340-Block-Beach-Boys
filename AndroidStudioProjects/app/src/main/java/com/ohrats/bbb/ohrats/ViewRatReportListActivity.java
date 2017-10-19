@@ -71,6 +71,16 @@ public class ViewRatReportListActivity extends Activity{
     }
 
     /**
+     * Navigates to MainActivity when back button pressed
+     */
+    @Override
+    public void onBackPressed(){
+        // Navigate to the MainActivity
+        Intent in = new Intent(ViewRatReportListActivity.this, MainActivity.class);
+        startActivity(in);
+    }
+
+    /**
      * Switches to the AddSightingActivity
      */
     private void viewAddSightingActivity() {
