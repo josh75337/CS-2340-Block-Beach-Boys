@@ -28,37 +28,13 @@ import java.util.Date;
 
 public class CSVFragment extends Fragment {
 
-    /**
-     * Static Nested class which contains info on whether or not
-     * CSV fragment is currently uploading data
-     */
-    public static class UploadStateNestedClass {
-        private static boolean isUploading = false;
-
-        /**
-         * Fetches the upload state of CSVFragment
-         * @return boolean whether a CSV is currently being updated to the database
-         */
-        public static boolean getIsUploading() {
-            return isUploading;
-        }
-
-        /**
-         * Sets the upload state of CSVFragment
-         * @param uploadingState
-         */
-        public static void setIsUploading(boolean uploadingState) {
-            isUploading = uploadingState;
-        }
-
-
-    }
-
     private DatabaseReference mDatabase;
 
     private static final String TAG = "CSVFragment";
 
     private Button addCSV;
+
+    int count;
 
     final String CSV_FILE_NAME = "Rat_Sightings.csv";
 
@@ -73,6 +49,7 @@ public class CSVFragment extends Fragment {
         addCSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                count = 0;
                 writeSightingCSV();
             }
         });
@@ -109,9 +86,12 @@ public class CSVFragment extends Fragment {
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
         mDatabase.child("sightings").child(key).setValue(sighting);
+        count++;
+        Log.d(TAG, "Count is " + count);
         // setPriority not entirely necessary with later versions of Firebase, but it may
         //     be useful in some scenarios
-        mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
+        // removed currently; causes lagging when uploading csv
+        //mDatabase.child("sightings").child(key).setPriority(Integer.parseInt(key));
     }
 
     /**
@@ -122,7 +102,6 @@ public class CSVFragment extends Fragment {
      */
     private void writeSightingCSV() {
         Log.v(TAG, "writeSightingCSV called");
-        CSVFragment.UploadStateNestedClass.setIsUploading(true);
 
         String csvFileName = new String(CSV_FILE_NAME);
         File dataFolder = Environment
@@ -143,9 +122,9 @@ public class CSVFragment extends Fragment {
         BufferedReader br = null;
         String line = "";
         String splitBy = ",";
-
+        FileInputStream fis;
         try {
-            FileInputStream fis = new FileInputStream(csvFile);
+            fis = new FileInputStream(csvFile);
             Log.v(TAG, "writeSightingCSV FileInputStream instantiated");
             br = new BufferedReader(new InputStreamReader(fis));
             Log.v(TAG, "writeSightingCSV BufferedReader instantiated");
@@ -187,8 +166,9 @@ public class CSVFragment extends Fragment {
                         break;
                 }
             }
-            // Deprecated date format conversion, could be useful later
-            // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+
+//            SimpleDateFormat americanGarbageDF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+//            String americanGarbageString;
 
             // This second loop grabs an individual row and uses the data at relevant indices
             //     to make a call to writeNewSighting to write a RatSighting to the database
@@ -196,7 +176,8 @@ public class CSVFragment extends Fragment {
                 sighting = line.split(splitBy);
                 int sightingLength = sighting.length;
                 String key = (fieldIndex[0] < sightingLength) ? sighting[fieldIndex[0]] : null;
-                String date = (fieldIndex[1] < sightingLength) ? sighting[fieldIndex[1]] : null;
+                String date = (fieldIndex[1] < sightingLength) ?
+                        DateStandardsBuddy.garbageAmericanStringToISO8601ESTString(sighting[fieldIndex[1]]) : null;
                 String locationType = (fieldIndex[2] < sightingLength) ? sighting[fieldIndex[2]] : null;
                 String zip = (fieldIndex[3] < sightingLength) ? sighting[fieldIndex[3]] : null;
                 String address = (fieldIndex[4] < sightingLength) ? sighting[fieldIndex[4]] : null;
@@ -206,10 +187,11 @@ public class CSVFragment extends Fragment {
                 double longitude = (fieldIndex[8] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[8]]) : 0;
                 writeNewSighting(key, date, locationType, zip, address, city, borough, latitude, longitude);
             }
+            // close the FileInputStream since we're now done with it
+            fis.close();
         } catch (Exception e) {
             e.getMessage();
             e.getCause();
         }
-        CSVFragment.UploadStateNestedClass.setIsUploading(false);
     }
 }
