@@ -125,7 +125,12 @@ public class ViewRatReportListActivity extends Activity{
                 //-----------------------------------------------------------
 
                 sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
+                while(sightingList.size() > SIGHTINGS_PER_PAGE) {
+                    sightingList.removeLast();
+                }
+
                 updateListView();
+
 
                 Log.v(TAG, "size of sightingList after adding: " + sightingList.size());
             }

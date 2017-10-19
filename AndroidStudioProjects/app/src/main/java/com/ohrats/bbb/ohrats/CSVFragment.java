@@ -57,6 +57,8 @@ public class CSVFragment extends Fragment {
         return view;
     }
 
+
+
     /**
      * Creates a RatSighting with the given data and uploads it to the database
      *
@@ -99,7 +101,6 @@ public class CSVFragment extends Fragment {
      * https://stackoverflow.com/a/38578137
      */
     private void writeSightingCSV() {
-
         Log.v(TAG, "writeSightingCSV called");
 
         String csvFileName = new String(CSV_FILE_NAME);
@@ -121,9 +122,9 @@ public class CSVFragment extends Fragment {
         BufferedReader br = null;
         String line = "";
         String splitBy = ",";
-
+        FileInputStream fis;
         try {
-            FileInputStream fis = new FileInputStream(csvFile);
+            fis = new FileInputStream(csvFile);
             Log.v(TAG, "writeSightingCSV FileInputStream instantiated");
             br = new BufferedReader(new InputStreamReader(fis));
             Log.v(TAG, "writeSightingCSV BufferedReader instantiated");
@@ -165,8 +166,9 @@ public class CSVFragment extends Fragment {
                         break;
                 }
             }
-            // Deprecated date format conversion, could be useful later
-            // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+
+//            SimpleDateFormat americanGarbageDF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+//            String americanGarbageString;
 
             // This second loop grabs an individual row and uses the data at relevant indices
             //     to make a call to writeNewSighting to write a RatSighting to the database
@@ -174,7 +176,8 @@ public class CSVFragment extends Fragment {
                 sighting = line.split(splitBy);
                 int sightingLength = sighting.length;
                 String key = (fieldIndex[0] < sightingLength) ? sighting[fieldIndex[0]] : null;
-                String date = (fieldIndex[1] < sightingLength) ? sighting[fieldIndex[1]] : null;
+                String date = (fieldIndex[1] < sightingLength) ?
+                        DateStandardsBuddy.garbageAmericanStringToISO8601ESTString(sighting[fieldIndex[1]]) : null;
                 String locationType = (fieldIndex[2] < sightingLength) ? sighting[fieldIndex[2]] : null;
                 String zip = (fieldIndex[3] < sightingLength) ? sighting[fieldIndex[3]] : null;
                 String address = (fieldIndex[4] < sightingLength) ? sighting[fieldIndex[4]] : null;
@@ -184,10 +187,11 @@ public class CSVFragment extends Fragment {
                 double longitude = (fieldIndex[8] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[8]]) : 0;
                 writeNewSighting(key, date, locationType, zip, address, city, borough, latitude, longitude);
             }
+            // close the FileInputStream since we're now done with it
+            fis.close();
         } catch (Exception e) {
             e.getMessage();
             e.getCause();
         }
-
     }
 }
