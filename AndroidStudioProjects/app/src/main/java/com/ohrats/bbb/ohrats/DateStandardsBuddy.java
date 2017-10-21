@@ -15,6 +15,9 @@ public class DateStandardsBuddy {
     private static DateFormat iso8601DF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
     private static DateFormat garbageAmericanDF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
 
+    private static DateFormat iso8601DFmax = new SimpleDateFormat("yyyy-MM-dd'T'23:59:59");
+    private static DateFormat iso8601DFmin = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00");
+
     /**
      * Private constructor: class can not be instantiated
      */
@@ -45,10 +48,53 @@ public class DateStandardsBuddy {
             return "";
         }
         TimeZone tz = TimeZone.getTimeZone("EST");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
+        DateFormat df = iso8601DF; // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);
-        String isoDateString = df.format(targetDate);
-        return isoDateString;
+        return df.format(targetDate);
+    }
+
+    /**
+     * Given a target date, returns the maximum ISO8601 EST Date/Time String
+     *
+     * e.g. given any time of a particular day, will give the maximum ISO8601 date time of the same
+     * day as the input Date
+     *
+     * Beware that method will probably maximize in terms of EST, so be careful
+     * @param targetDate the target date/time to maximize
+     * @return the maximum ISO8601 date/time string for the given date e.g.
+     * "yyyy-MM-dd'T'23:59:59"
+     * returns an empty string if the input Date is null
+     */
+    public static String getISO8601MAXStringForDate(Date targetDate) {
+        if (targetDate == null) {
+            return "";
+        }
+        TimeZone tz = TimeZone.getTimeZone("EST");
+        DateFormat df = iso8601DFmax;
+        df.setTimeZone(tz);
+        return df.format(targetDate);
+    }
+
+    /**
+     * Given a target date, returns the minimum ISO8601 EST Date/Time String
+     *
+     * e.g. given any time of a particular day, will give the minimum ISO8601 date time of the same
+     * day as the input Date
+     *
+     * Beware that method will probably minimize in terms of EST, so be careful
+     * @param targetDate the target date/time to minimize
+     * @return the minimum ISO8601 date/time string for the given date e.g.
+     * "yyyy-MM-dd'T'00:00:00"
+     * returns an empty string if the input Date is null
+     */
+    public static String getISO8601MINStringForDate(Date targetDate) {
+        if (targetDate == null) {
+            return "";
+        }
+        TimeZone tz = TimeZone.getTimeZone("EST");
+        DateFormat df = iso8601DFmin;
+        df.setTimeZone(tz);
+        return df.format(targetDate);
     }
 
     /**
@@ -86,11 +132,13 @@ public class DateStandardsBuddy {
         }
     }
 
+
+
     /**
      * Gets a date format representing ISO8601 in the format "yyyy-MM-dd'T'HH:mm:ss"
      * @return iso8601DF SimpleDateFormat
      */
-    public static DateFormat getISO8601DF() {
+    public static DateFormat getIso8601DF() {
         return iso8601DF;
     }
 
@@ -102,6 +150,25 @@ public class DateStandardsBuddy {
     public static DateFormat getGarbageAmericanDF() {
         return garbageAmericanDF;
     }
+
+    /**
+     * Gets a date format representing the maximum ISO8601 date time for a given day
+     * i.e. "yyyy-MM-dd'T'23:59:59"
+     * @return iso8601DFmax date format which will format a date to maximum time in a ISO8601 day
+     */
+    public static DateFormat getIso8601DFmax() {
+        return iso8601DFmax;
+    }
+
+    /**
+     * Gets a date format representing the minimum ISO8601 date time for a given day
+     * i.e. "yyyy-MM-dd'T'00:00:00"
+     * @return iso8601DFmin date format which will format a date to minimum time in a ISO8601 day
+     */
+    public static DateFormat getIso8601DFmin() {
+        return iso8601DFmin;
+    }
+
 
 
 }

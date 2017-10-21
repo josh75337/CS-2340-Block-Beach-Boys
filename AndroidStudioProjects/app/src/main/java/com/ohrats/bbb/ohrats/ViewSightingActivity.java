@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Activity which allows the user to view details of an individual RatSighting
@@ -13,6 +17,9 @@ import android.widget.TextView;
  */
 
 public class ViewSightingActivity extends AppCompatActivity{
+    //debugging log
+    private static final String TAG = "ViewSightingActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,29 @@ public class ViewSightingActivity extends AppCompatActivity{
         }
         if (sighting.getDate() != null) {
             mCreatedDate.setText(sighting.getDate() + " EST");
+            try {
+                Date dateFromString =
+                        DateStandardsBuddy.getDateFromISO8601ESTString(sighting.getDate());
+                String maxIso8601StringFromDate =
+                        DateStandardsBuddy.getISO8601MAXStringForDate(dateFromString);
+                String minIso8601StringFromDate =
+                        DateStandardsBuddy.getISO8601MINStringForDate(dateFromString);
+                Log.d(TAG,
+                        "Maximum of "
+                        + sighting.getDate()
+                        + " is : "
+                        + maxIso8601StringFromDate);
+                //----------------------------------
+                Log.d(TAG,
+                        "Minimum of "
+                        + sighting.getDate()
+                        + " is : "
+                        + minIso8601StringFromDate);
+                //----------------------------------
+            } catch (ParseException e) {
+                Log.d(TAG, "ParseException while trying to parse " + sighting.getDate());
+            }
+
         }
         if (sighting.getLocationType() != null) {
             mLocationType.setText(sighting.getLocationType());
