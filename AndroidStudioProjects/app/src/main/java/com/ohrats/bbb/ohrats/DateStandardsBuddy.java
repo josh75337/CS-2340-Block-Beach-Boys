@@ -15,6 +15,8 @@ public class DateStandardsBuddy {
     private static DateFormat iso8601DF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
     private static DateFormat garbageAmericanDF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
 
+    private static TimeZone estTZ = TimeZone.getTimeZone("EST");
+
     private static DateFormat iso8601DFmax = new SimpleDateFormat("yyyy-MM-dd'T'23:59:59");
     private static DateFormat iso8601DFmin = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00");
 
@@ -48,7 +50,7 @@ public class DateStandardsBuddy {
             return "";
         }
         TimeZone tz = TimeZone.getTimeZone("EST");
-        DateFormat df = iso8601DF; // Quoted "Z" to indicate UTC, no timezone offset
+        DateFormat df = iso8601DF;
         df.setTimeZone(tz);
         return df.format(targetDate);
     }
@@ -69,7 +71,7 @@ public class DateStandardsBuddy {
         if (targetDate == null) {
             return "";
         }
-        TimeZone tz = TimeZone.getTimeZone("EST");
+        TimeZone tz = estTZ;
         DateFormat df = iso8601DFmax;
         df.setTimeZone(tz);
         return df.format(targetDate);
@@ -91,7 +93,7 @@ public class DateStandardsBuddy {
         if (targetDate == null) {
             return "";
         }
-        TimeZone tz = TimeZone.getTimeZone("EST");
+        TimeZone tz = estTZ;
         DateFormat df = iso8601DFmin;
         df.setTimeZone(tz);
         return df.format(targetDate);
@@ -103,7 +105,10 @@ public class DateStandardsBuddy {
      * @return a java date object of the corresponding date and time
      */
     public static Date getDateFromISO8601ESTString(String iso8601String) throws ParseException {
-        return iso8601DF.parse(iso8601String);
+        TimeZone tz = estTZ;
+        DateFormat df = iso8601DF;
+        df.setTimeZone(tz);
+        return df.parse(iso8601String);
     }
 
     /**
