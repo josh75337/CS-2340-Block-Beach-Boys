@@ -36,5 +36,6 @@
     <string name="sighting_longitude">Longitude</string>
     <string name="sighting_address">Address</string>
     <string name="sighting_submit">Submit</string>
+    <string name="title_activity_sightings_map">Map</string>
 
 </resources>

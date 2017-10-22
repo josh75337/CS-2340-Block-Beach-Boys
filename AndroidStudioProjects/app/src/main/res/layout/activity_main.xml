@@ -40,6 +40,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="88dp"
             android:text="@string/view_rat_reports_button" />
+
+        <Button
+            android:id="@+id/ViewMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/view_report_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="37dp"
+            android:text="View Map" />
     </RelativeLayout>
 
 

@@ -63,9 +63,22 @@ public class MainActivity extends AppCompatActivity {
                 viewReportListPage();
             }
         });
+
+        Button mViewMapButton = (Button) findViewById(R.id.ViewMap);
+        mViewMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewMapPage();
+            }
+        });
     }
     private void viewReportListPage() {
         Intent inView = new Intent(MainActivity.this, ViewRatReportListActivity.class);
+        startActivity(inView);
+    }
+
+    private void viewMapPage() {
+        Intent inView = new Intent(MainActivity.this, SightingsMapActivity.class);
         startActivity(inView);
     }
 
