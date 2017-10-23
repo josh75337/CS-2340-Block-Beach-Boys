@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +44,17 @@ public class ViewRatReportListFragment extends Fragment {
     LinkedList<RatSighting> sightingList = new LinkedList<>();
 
     Button mAddSightingButton;
+    Button mNextButton;
+    Button mPrevButton;
+
+    TextView mPageNumView;
 
     private DatabaseReference mDatabase;
     private final int SIGHTINGS_PER_PAGE = 50;
 
+    String lastKey;
+
+    int pageNum;
     int count;
 
 //
@@ -61,6 +69,10 @@ public class ViewRatReportListFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        pageNum = 1;
+        count = 1;
+        lastKey = "";
+
         // Populates sightingList asynchronously,
         //     i.e. We can't have our final list view until it finishes populating
         updateSightingList();
@@ -74,39 +86,27 @@ public class ViewRatReportListFragment extends Fragment {
             }
         });
 
+        mNextButton = (Button) view.findViewById(R.id.rnext);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextPage();
+            }
+        });
+
+        mPrevButton = (Button) view.findViewById(R.id.rprevious);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previousPage();
+            }
+        });
+        mPrevButton.setClickable(false);
+
+        mPageNumView = (TextView) view.findViewById(R.id.rpagenumber);
+
         return view;
     }
-
-//    @Override
-//        protected void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            setContentView(R.layout.view_rat_report_list);
-//
-//            mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//            // Populates sightingList asynchronously,
-//            //     i.e. We can't have our final list view until it finishes populating
-//            updateSightingList();
-//
-//            // Button for going to the manual add and csv selector screen
-//            mAddSightingButton = (Button) findViewById(R.id.raddsighting);
-//            mAddSightingButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    viewAddSightingActivity();
-//                }
-//            });
-//    }
-
-//    /**
-//     * Navigates to MainActivity when back button pressed
-//     */
-//    @Override
-//    public void onBackPressed(){
-//        // Navigate to the MainActivity
-//        Intent in = new Intent(getActivity(), MainActivity.class);
-//        startActivity(in);
-//    }
 
     /**
      * Switches to the AddSightingActivity
@@ -193,5 +193,23 @@ public class ViewRatReportListFragment extends Fragment {
 
             }
         });
+    }
+
+    public void nextPage() {
+        pageNum++;
+        if (pageNum > 1) {
+            mPrevButton.setClickable(true);
+        }
+        mPageNumView.setText(String.format("Page %d", pageNum));
+        updateSightingList();
+    }
+
+    public void previousPage() {
+        pageNum--;
+        if (pageNum <= 1) {
+            mPrevButton.setClickable(false);
+        }
+        mPageNumView.setText(String.format("Page %d", pageNum));
+        updateListView();
     }
 }
