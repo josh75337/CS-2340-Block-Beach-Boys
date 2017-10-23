@@ -35,8 +35,8 @@
             android:label="@string/title_activity_registration"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
-            android:name=".ViewRatReportListActivity"
-            android:label="ViewRatReportListActivity" />
+            android:name=".ListMapComboActivity"
+            android:label="ListMapComboActivity" />
         <activity
             android:name=".AddSightingActivity"
             android:label="AddSightingActivity" />

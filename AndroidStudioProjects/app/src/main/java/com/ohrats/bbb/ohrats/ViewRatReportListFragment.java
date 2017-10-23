@@ -3,8 +3,12 @@ package com.ohrats.bbb.ohrats;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,7 +36,7 @@ import java.util.LinkedList;
  * Created by Justin on 10/4/2017.
  */
 
-public class ViewRatReportListActivity extends Activity{
+public class ViewRatReportListFragment extends Fragment {
     private static final String TAG = "RatReportListActivity";
     // Array of strings...
     ListView simpleList;
@@ -49,10 +53,11 @@ public class ViewRatReportListActivity extends Activity{
 //    Firebase mRef;
 //    FirebaseListAdapter<String> mAdapter;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_rat_report_list);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.view_rat_report_list, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -61,30 +66,53 @@ public class ViewRatReportListActivity extends Activity{
         updateSightingList();
 
         // Button for going to the manual add and csv selector screen
-        mAddSightingButton = (Button) findViewById(R.id.raddsighting);
+        mAddSightingButton = (Button) view.findViewById(R.id.raddsighting);
         mAddSightingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewAddSightingActivity();
             }
         });
+
+        return view;
     }
 
-    /**
-     * Navigates to MainActivity when back button pressed
-     */
-    @Override
-    public void onBackPressed(){
-        // Navigate to the MainActivity
-        Intent in = new Intent(ViewRatReportListActivity.this, MainActivity.class);
-        startActivity(in);
-    }
+//    @Override
+//        protected void onCreate(Bundle savedInstanceState) {
+//            super.onCreate(savedInstanceState);
+//            setContentView(R.layout.view_rat_report_list);
+//
+//            mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//            // Populates sightingList asynchronously,
+//            //     i.e. We can't have our final list view until it finishes populating
+//            updateSightingList();
+//
+//            // Button for going to the manual add and csv selector screen
+//            mAddSightingButton = (Button) findViewById(R.id.raddsighting);
+//            mAddSightingButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    viewAddSightingActivity();
+//                }
+//            });
+//    }
+
+//    /**
+//     * Navigates to MainActivity when back button pressed
+//     */
+//    @Override
+//    public void onBackPressed(){
+//        // Navigate to the MainActivity
+//        Intent in = new Intent(getActivity(), MainActivity.class);
+//        startActivity(in);
+//    }
 
     /**
      * Switches to the AddSightingActivity
      */
     private void viewAddSightingActivity() {
-        Intent inView = new Intent(ViewRatReportListActivity.this, AddSightingActivity.class);
+        Intent inView = new Intent(getActivity(), AddSightingActivity.class);
         startActivity(inView);
     }
 
@@ -93,9 +121,9 @@ public class ViewRatReportListActivity extends Activity{
      */
     private void updateListView() {
         Log.v(TAG, "updateListView called while size of sightingList is" + sightingList.size());
-        simpleList = (ListView) findViewById(R.id.rat_reports);
+        simpleList = (ListView) getActivity().findViewById(R.id.rat_reports);
         ArrayAdapter<RatSighting> arrayAdapter =
-                new ArrayAdapter<>(this,
+                new ArrayAdapter<>(getActivity(),
                         R.layout.activity_rat_listview,
                         R.id.textView,
                         sightingList);
@@ -104,7 +132,7 @@ public class ViewRatReportListActivity extends Activity{
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(view.getContext(), ViewSightingActivity.class);
+                Intent myIntent = new Intent(getActivity(), ViewSightingActivity.class);
                 myIntent.putExtra("RAT_SIGHTING", sightingList.get(position));
                 startActivity(myIntent);
             }
