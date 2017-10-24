@@ -38,7 +38,7 @@ import java.util.LinkedList;
  */
 
 public class ViewRatReportListFragment extends Fragment {
-    private static final String TAG = "RatReportListActivity";
+    private static final String TAG = "RatReportListFragment";
     // Array of strings...
     ListView simpleList;
     LinkedList<RatSighting> sightingList = new LinkedList<>();
