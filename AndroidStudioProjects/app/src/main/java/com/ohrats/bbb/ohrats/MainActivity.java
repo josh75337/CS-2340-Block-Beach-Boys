@@ -62,9 +62,22 @@ public class MainActivity extends AppCompatActivity {
                 viewListMapComboPage();
             }
         });
+
+        Button mAddRatSightingButton = (Button) findViewById(R.id.add_rat_sighting);
+        mAddRatSightingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRatSightingPage();
+            }
+        });
     }
     private void viewListMapComboPage() {
         Intent inView = new Intent(MainActivity.this, ListMapComboActivity.class);
+        startActivity(inView);
+    }
+
+    private void addRatSightingPage() {
+        Intent inView = new Intent(MainActivity.this, AddSightingActivity.class);
         startActivity(inView);
     }
 

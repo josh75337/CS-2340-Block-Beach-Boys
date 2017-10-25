@@ -22,6 +22,63 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <Button
+            android:id="@+id/raddsighting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:text="Add Sighting"
+            android:textColor="@color/bodyTextColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:focusableInTouchMode="true">
+
+                <EditText
+                    android:id="@+id/mstartdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Start Date"
+                    android:inputType="date"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/menddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="End Date"
+                    android:inputType="date"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/rsearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Search"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/rupdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update" />
+
         <android.support.v4.view.ViewPager
             android:id="@+id/scontainer"
             android:layout_width="match_parent"

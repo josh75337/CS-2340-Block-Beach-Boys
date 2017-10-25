@@ -34,9 +34,9 @@ public class CSVFragment extends Fragment {
 
     private Button addCSV;
 
-    int count;
+    private int count;
 
-    final String CSV_FILE_NAME = "Rat_Sightings.csv";
+    private final String CSV_FILE_NAME = "Rat_Sightings.csv";
 
     @Nullable
     @Override

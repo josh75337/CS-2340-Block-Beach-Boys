@@ -40,22 +40,23 @@ import java.util.LinkedList;
 public class ViewRatReportListFragment extends Fragment {
     private static final String TAG = "RatReportListFragment";
     // Array of strings...
-    ListView simpleList;
-    LinkedList<RatSighting> sightingList = new LinkedList<>();
+    private ListView simpleList;
+    private LinkedList<RatSighting> sightingList = new LinkedList<>();
 
-    Button mAddSightingButton;
-    Button mNextButton;
-    Button mPrevButton;
+//    Button mUpdateButton;
 
-    TextView mPageNumView;
+//    Button mNextButton;
+//    Button mPrevButton;
+
+//    TextView mPageNumView;
 
     private DatabaseReference mDatabase;
     private final int SIGHTINGS_PER_PAGE = 50;
 
-    String lastKey;
+    private String lastKey;
 
-    int pageNum;
-    int count;
+    private int pageNum;
+    private int count;
 
 //
 //    Firebase mRef;
@@ -75,45 +76,36 @@ public class ViewRatReportListFragment extends Fragment {
 
         // Populates sightingList asynchronously,
         //     i.e. We can't have our final list view until it finishes populating
-        updateSightingList();
 
         // Button for going to the manual add and csv selector screen
-        mAddSightingButton = (Button) view.findViewById(R.id.raddsighting);
-        mAddSightingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewAddSightingActivity();
-            }
-        });
 
-        mNextButton = (Button) view.findViewById(R.id.rnext);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextPage();
-            }
-        });
-
-        mPrevButton = (Button) view.findViewById(R.id.rprevious);
-        mPrevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                previousPage();
-            }
-        });
-        mPrevButton.setClickable(false);
-
-        mPageNumView = (TextView) view.findViewById(R.id.rpagenumber);
+//        mNextButton = (Button) view.findViewById(R.id.rnext);
+//        mNextButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                nextPage();
+//            }
+//        });
+//
+//        mPrevButton = (Button) view.findViewById(R.id.rprevious);
+//        mPrevButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                previousPage();
+//            }
+//        });
+//        mPrevButton.setClickable(false);
+//
+//        mPageNumView = (TextView) view.findViewById(R.id.rpagenumber);
 
         return view;
     }
 
     /**
-     * Switches to the AddSightingActivity
+     * public method to be called by combo activity that updates list view
      */
-    private void viewAddSightingActivity() {
-        Intent inView = new Intent(getActivity(), AddSightingActivity.class);
-        startActivity(inView);
+    public void update() {
+        updateListView();
     }
 
     /**
@@ -150,7 +142,7 @@ public class ViewRatReportListFragment extends Fragment {
         Log.v(TAG, "updateSightingList called" );
         DatabaseReference sightingsRef = mDatabase.child("sightings");
 
-        Query query = sightingsRef.orderByKey().limitToLast(SIGHTINGS_PER_PAGE);
+        Query query = sightingsRef.orderByChild("date").limitToLast(SIGHTINGS_PER_PAGE);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -195,21 +187,29 @@ public class ViewRatReportListFragment extends Fragment {
         });
     }
 
-    public void nextPage() {
-        pageNum++;
-        if (pageNum > 1) {
-            mPrevButton.setClickable(true);
-        }
-        mPageNumView.setText(String.format("Page %d", pageNum));
-        updateSightingList();
-    }
+//    public void nextPage() {
+//        pageNum++;
+//        if (pageNum > 1) {
+//            mPrevButton.setClickable(true);
+//        }
+//        mPageNumView.setText(String.format("Page %d", pageNum));
+//        updateSightingList();
+//    }
+//
+//    public void previousPage() {
+//        pageNum--;
+//        if (pageNum <= 1) {
+//            mPrevButton.setClickable(false);
+//        }
+//        mPageNumView.setText(String.format("Page %d", pageNum));
+//        updateListView();
+//    }
 
-    public void previousPage() {
-        pageNum--;
-        if (pageNum <= 1) {
-            mPrevButton.setClickable(false);
-        }
-        mPageNumView.setText(String.format("Page %d", pageNum));
-        updateListView();
+    /**
+     * public method that sets the fragments sighting list
+     * @param list
+     */
+    public void setSightingList(LinkedList list) {
+        sightingList = list;
     }
 }

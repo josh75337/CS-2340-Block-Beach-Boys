@@ -16,7 +16,6 @@
         android:id="@+id/runiquekey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -31,7 +30,6 @@
         android:id="@+id/rdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -46,7 +44,6 @@
         android:id="@+id/rlocationtype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -61,7 +58,6 @@
         android:id="@+id/rzip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -76,7 +72,6 @@
         android:id="@+id/raddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -91,7 +86,6 @@
         android:id="@+id/rcity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -106,7 +100,6 @@
         android:id="@+id/rborough"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -121,7 +114,6 @@
         android:id="@+id/rlatitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
@@ -136,7 +128,6 @@
         android:id="@+id/rlongitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="N/A"
         android:textColor="@color/bodyTextColor"
         android:textSize="24sp" />
 
