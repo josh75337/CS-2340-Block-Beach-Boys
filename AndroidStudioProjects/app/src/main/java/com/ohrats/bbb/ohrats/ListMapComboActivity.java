@@ -127,7 +127,6 @@ public class ListMapComboActivity extends AppCompatActivity {
                 month = month + 1;
                 mStartDate.setText(String.format("%02d/%02d/%4d", month, dayOfMonth, year));
                 getCurrentFocus().clearFocus();
-                mEndDate.setEnabled(true);
                 mSearchButton.setEnabled(true);
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -162,6 +161,7 @@ public class ListMapComboActivity extends AppCompatActivity {
                 month = month + 1;
                 mEndDate.setText(String.format("%02d/%02d/%4d", month, dayOfMonth, year));
                 getCurrentFocus().clearFocus();
+                mSearchButton.setEnabled(true);
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
@@ -235,8 +235,11 @@ public class ListMapComboActivity extends AppCompatActivity {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                // updates fragments sighting list
+                // inefficient atm which may be causing the slowness of app
                 sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
                 mapFragment.setSightingList(sightingList);
+                mapFragment.update();
                 ratReportListFragment.setSightingList(sightingList);
                 ratReportListFragment.update();
             }
@@ -263,12 +266,19 @@ public class ListMapComboActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * update list view with most recent search parameters
+     */
     private void update() {
         startDateMillis = updateStart;
         endDateMillis = updateEnd;
         updateSightingList();
     }
 
+    /**
+     * changes update values to the new search values and updates list with new search
+     */
     private void search() {
         startDateMillis = searchStart;
         endDateMillis = searchEnd;

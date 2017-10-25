@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public enum LocationTypes implements Serializable {
     OneTwoFamilyDwelling("1-2 Family Dwelling"), ThreePlusFamilyAptBuilding("3+ family Apt. Building"),
-    CatchBasinSewer("Catch Basin/Sewer"), CommericialBuilding("Commercial Building"),
+    CatchBasinSewer("Catch Basin/Sewer"), CommercialBuilding("Commercial Building"),
     ConstructionSite("Construction Site"), ThreePlusMixedUseBuilding("3+ Mixed Use Building"),
     DayCareNursery("DayCare/Nursery"), GovBuilding("Government Building"), Hospital("Hospital"),
     OfficeBuilding("Office Building"), Other("Other(Explain Below)"), ParkingLotGarage("Parking Lot/ Garage"),

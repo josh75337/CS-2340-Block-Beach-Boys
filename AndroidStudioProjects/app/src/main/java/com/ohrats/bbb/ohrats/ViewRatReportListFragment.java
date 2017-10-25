@@ -101,6 +101,9 @@ public class ViewRatReportListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * public method to be called by combo activity that updates list view
+     */
     public void update() {
         updateListView();
     }
@@ -202,6 +205,10 @@ public class ViewRatReportListFragment extends Fragment {
 //        updateListView();
 //    }
 
+    /**
+     * public method that sets the fragments sighting list
+     * @param list
+     */
     public void setSightingList(LinkedList list) {
         sightingList = list;
     }

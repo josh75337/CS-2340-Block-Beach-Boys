@@ -1,6 +1,7 @@
 package com.ohrats.bbb.ohrats;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,10 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.LinkedList;
 
@@ -29,11 +38,13 @@ public class ViewMapFragment extends Fragment {
     private static final String TAG = "MapFragment";
 
     private LinkedList<RatSighting> sightingList = new LinkedList<>();
+    private LinkedList<Marker> markerList = new LinkedList<>();
 
     private MapView mMapView;
     private GoogleMap mMap;
-//    FusedLocationProviderClient mFusedLocationProviderClient;
-//    Location mLastKnownLocation;
+    FusedLocationProviderClient mFusedLocationProviderClient;
+    Location mLastKnownLocation;
+
 
 
     @Nullable
@@ -47,7 +58,7 @@ public class ViewMapFragment extends Fragment {
         mMapView.onResume();
 
         // Construct a FusedLocationProviderClient.
-//        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -60,13 +71,22 @@ public class ViewMapFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Intent myIntent = new Intent(getActivity(), ViewSightingActivity.class);
+                        myIntent.putExtra("RAT_SIGHTING", (RatSighting) marker.getTag());
+                        startActivity(myIntent);
+                    }
+                });
                 if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
-//                getDeviceLocation();
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                getDeviceLocation();
+                updateMapMarkers();
 
             }
 
@@ -74,31 +94,72 @@ public class ViewMapFragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * sets sighting list
+     */
     public void setSightingList(LinkedList list) {
         sightingList = list;
     }
 
-//    private void getDeviceLocation() {
-//    /*
-//     * Get the best and most recent location of the device, which may be null in rare
-//     * cases when a location is not available.
-//     */
-//        try {
-//            Task locationResult = mFusedLocationProviderClient.getLastLocation();
-//            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener() {
-//                @Override
-//                public void onComplete(@NonNull Task task) {
-//                    if (task.isSuccessful()) {
-//                        // Set the map's camera position to the current location of the device.
-//                        mLastKnownLocation = (Location) task.getResult();
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//                                new LatLng(mLastKnownLocation.getLatitude(),
-//                                        mLastKnownLocation.getLongitude()), 12));
-//                    }
-//                }
-//            });
-//        } catch(SecurityException e)  {
-//            Log.e("Exception: %s", e.getMessage());
-//        }
-//    }
+    /**
+     * public method called by combo activity that calls the updateMapMarkers method
+     */
+    public void update() {
+        updateMapMarkers();
+    }
+
+    /**
+     * updates markers on map
+     */
+    private void updateMapMarkers() {
+        for (Marker m : markerList) {
+            m.remove();
+        }
+        for (RatSighting r : sightingList) {
+            String rDate = (!r.getDate().equals("")) ? r.getDate() : "N/A";
+            String rAddress = (!r.getAddress().equals("")) ? r.getAddress() : "N/A";
+            double rLat = (r.getLatitude() != 0) ? r.getLatitude() : 40.7128;
+            double rLong = (r.getLongitude() != 0) ? r.getLongitude() : -74.0060;
+
+            Marker m = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(rLat, rLong))
+                    .title(r.getKey())
+                    .snippet(String.format("Date: %10.10s | Address: %.20s", rDate, rAddress)));
+            m.setTag(r);
+            markerList.add(m);
+        }
+    }
+
+    /**
+     * gets the location of the device and focuses camera on that location
+     */
+    private void getDeviceLocation() {
+
+//     Get the best and most recent location of the device, which may be null in rare
+//     cases when a location is not available.
+
+        try {
+            Task locationResult = mFusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        // Set the map's camera position to the current location of the device.
+                        mLastKnownLocation = (Location) task.getResult();
+                        if (mLastKnownLocation == null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(40.7128, -74.0060), 12));
+                        } else {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()), 12));
+                        }
+                    }
+                }
+            });
+        } catch(SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
 }
