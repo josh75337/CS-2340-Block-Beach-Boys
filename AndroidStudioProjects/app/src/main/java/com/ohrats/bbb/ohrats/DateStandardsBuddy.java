@@ -137,6 +137,26 @@ public class DateStandardsBuddy {
         }
     }
 
+    /**
+     *
+     * @param garbageAmericanString input String in the garbage American date format
+     * @return a Date  in ISO8601 where the time is in eastern standard time
+     */
+    public static Date garbageAmericanStringToISO8601ESTDate(String garbageAmericanString) {
+        if (garbageAmericanString == null || garbageAmericanString.isEmpty()) {
+            return null;
+        } else {
+            Date date = null;
+            try {
+                date = garbageAmericanDF.parse(garbageAmericanString);
+            } catch (ParseException e) {
+                // parsing failed, input was likely invalid
+                return null;
+            }
+            return date;
+        }
+    }
+
 
 
     /**
