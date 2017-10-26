@@ -1,7 +1,6 @@
 package com.ohrats.bbb.ohrats;
 
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -60,12 +59,25 @@ public class MainActivity extends AppCompatActivity {
         mViewReportListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewReportListPage();
+                viewListMapComboPage();
+            }
+        });
+
+        Button mAddRatSightingButton = (Button) findViewById(R.id.add_rat_sighting);
+        mAddRatSightingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRatSightingPage();
             }
         });
     }
-    private void viewReportListPage() {
-        Intent inView = new Intent(MainActivity.this, ViewRatReportListActivity.class);
+    private void viewListMapComboPage() {
+        Intent inView = new Intent(MainActivity.this, ListMapComboActivity.class);
+        startActivity(inView);
+    }
+
+    private void addRatSightingPage() {
+        Intent inView = new Intent(MainActivity.this, AddSightingActivity.class);
         startActivity(inView);
     }
 
