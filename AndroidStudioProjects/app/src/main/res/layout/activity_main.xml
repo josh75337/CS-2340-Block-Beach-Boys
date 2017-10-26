@@ -40,6 +40,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="88dp"
             android:text="@string/view_rat_reports_button" />
+
+        <Button
+            android:id="@+id/add_rat_sighting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_rat_sighting_button"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="31dp" />
     </RelativeLayout>
 
 

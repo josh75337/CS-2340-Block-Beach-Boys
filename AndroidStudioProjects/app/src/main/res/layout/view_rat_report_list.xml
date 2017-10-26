@@ -2,15 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/raddsighting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="1dp"
-        android:text="Add Sighting"
-        android:textColor="@color/bodyTextColor" />
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <ListView
         android:id="@+id/rat_reports"
@@ -22,5 +15,35 @@
         android:listSelector="@color/com_facebook_button_background_color_focused_disabled">
 
     </ListView>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/rprevious"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="Previous" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/rpagenumber"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="Page 1"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@color/bodyTextColor"-->
+            <!--android:textSize="18sp" />-->
+
+        <!--<Button-->
+            <!--android:id="@+id/rnext"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="Next" />-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>
