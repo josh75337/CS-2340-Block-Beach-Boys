@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(inView);
     }
 
+    /**
+     * Switches to AddSightingActivity
+      */
     private void addRatSightingPage() {
         Intent inView = new Intent(MainActivity.this, AddSightingActivity.class);
         startActivity(inView);
