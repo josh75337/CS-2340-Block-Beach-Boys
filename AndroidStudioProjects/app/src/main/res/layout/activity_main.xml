@@ -49,6 +49,16 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="31dp" />
+
+        <Button
+            android:id="@+id/historical_charts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/view_report_list"
+            android:layout_alignEnd="@+id/add_rat_sighting"
+            android:layout_alignStart="@+id/view_report_list"
+            android:layout_marginBottom="99dp"
+            android:text="@string/historical_charts_button" />
     </RelativeLayout>
 
 

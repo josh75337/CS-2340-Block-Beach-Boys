@@ -22,6 +22,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_settings">Logout</string>
+    <string name="historical_charts_button">Historical Charts</string>
     <string name="view_rat_reports_button">View Rat Reports</string>
     <string name="add_rat_sighting_button">Add Rat Sighting</string>
     <string name="title_activity_registration">RegistrationActivity</string>
