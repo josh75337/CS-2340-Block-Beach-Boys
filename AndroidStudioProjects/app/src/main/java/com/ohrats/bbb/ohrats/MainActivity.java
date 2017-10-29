@@ -70,7 +70,22 @@ public class MainActivity extends AppCompatActivity {
                 addRatSightingPage();
             }
         });
+
+        Button mChartsButton = (Button) findViewById(R.id.historical_charts);
+        mChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toChartsActivity();
+            }
+        });
     }
+
+    private void toChartsActivity() {
+        Intent inView = new Intent(MainActivity.this, ChartsActivity.class);
+        Log.d(TAG, "New intent to ChartsActivity");
+        startActivity(inView);
+    }
+
     private void viewListMapComboPage() {
         Intent inView = new Intent(MainActivity.this, ListMapComboActivity.class);
         startActivity(inView);
