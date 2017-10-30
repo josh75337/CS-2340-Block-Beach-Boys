@@ -49,9 +49,13 @@
     <!-- Chart Strings -->
     <string name="chart_hub_message">Pleae configure a chart</string>
     <string name="launch_chart_button">Show Chart</string>
-    <string name="chart_range">Chose a time period</string>
+    <string name="chart_range_message">Chose a time period</string>
+    <string name="chart_type_message">Chose a chart type</string>
+    <string name="date_start_hint">Start Date</string>
+    <string name="date_end_hint">End Date</string>
     <string-array name="chart_type_array">
         <item>XY Plot</item>
     </string-array>
+
 
 </resources>

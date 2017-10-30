@@ -13,47 +13,53 @@
         android:id="@+id/chart_hub_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/launch_chart"
-        android:layout_alignParentStart="true"
         android:layout_marginBottom="30dp"
         android:text="@string/chart_hub_message" />
 
     <TextView
-        android:id="@+id/chart_range"
+        android:id="@+id/chart_range_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/chart_range_message" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/mstartdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/date_start_hint"
+            android:inputType="date"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/menddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/date_end_hint"
+            android:inputType="date"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chart_type_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/launch_chart"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="5dp"
-        android:text="@string/chart_range" />
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:focusableInTouchMode="true"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/mstartdate"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:ems="10"-->
-            <!--android:hint="Start Date"-->
-            <!--android:inputType="date"-->
-            <!--android:textAlignment="center" />-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/menddate"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:ems="10"-->
-            <!--android:hint="End Date"-->
-            <!--android:inputType="date"-->
-            <!--android:textAlignment="center" />-->
-
-    <!--</LinearLayout>-->
+        android:layout_marginTop="20dp"
+        android:text="@string/chart_type_message" />
 
     <RelativeLayout
         android:layout_width="match_parent"
