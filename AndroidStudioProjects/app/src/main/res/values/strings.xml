@@ -56,6 +56,10 @@
     <string-array name="chart_type_array">
         <item>XY Plot</item>
     </string-array>
+    <string-array name="chart_time_array">
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
 
 
 </resources>

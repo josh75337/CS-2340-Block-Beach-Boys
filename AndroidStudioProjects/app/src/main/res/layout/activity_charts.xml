@@ -66,12 +66,19 @@
         android:layout_height="match_parent">
 
         <Spinner
-        android:id="@+id/type_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp"
-        />
+            android:id="@+id/type_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/time_spinner"
+            android:layout_marginTop="50dp" />
+
+        <Spinner
+            android:id="@+id/time_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
 
         <Button
             android:id="@+id/launch_chart_button"
@@ -81,6 +88,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="33dp"
             android:text="@string/launch_chart_button" />
+
     </RelativeLayout>
 
 
