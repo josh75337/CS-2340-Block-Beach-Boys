@@ -168,7 +168,7 @@ public class ChartHubActivity extends AppCompatActivity {
         mLaunchChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getRangedSightings();
             }
         });
     }
