@@ -2,6 +2,7 @@ package com.ohrats.bbb.ohrats;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,8 @@ import java.util.Arrays;
 
 public class XYDefaultPlot extends AppCompatActivity {
 
+    private static final String TAG = "XYDefaultPlot";
+
     private XYPlot plot;
 
     private Number[] xVals;
@@ -35,6 +38,7 @@ public class XYDefaultPlot extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
+        Log.v(TAG, domain.toString());
         xVals = new Number[domain.size()];
         for (int j = 0; j < domain.size(); j++) {
             xVals[j] = domain.get(j);
@@ -45,6 +49,10 @@ public class XYDefaultPlot extends AppCompatActivity {
         for (int j = 0; j < range.size(); j++) {
             yVals[j] = range.get(j);
         }
+
+        Log.v(TAG, yVals.toString());
+        Log.v(TAG, xVals.toString());
+
         timeframe = getIntent().getStringExtra("XYSERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
@@ -71,7 +79,8 @@ public class XYDefaultPlot extends AppCompatActivity {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
                 Log.v("XY Default Plot", obj.toString());
-                int i = Math.round(((Number) obj).floatValue());
+                double temp = ((Number) obj).doubleValue();
+                int i = (int) Math.ceil(temp);
                 return toAppendTo.append(domainLabels[i]);
             }
             @Override

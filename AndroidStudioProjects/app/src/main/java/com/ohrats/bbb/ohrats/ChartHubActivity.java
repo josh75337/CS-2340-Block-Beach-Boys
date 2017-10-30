@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.text.ParseException;
@@ -39,7 +40,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
     private static final String TAG = "ChartHubActivity";
 
-    private final int SIGHTINGS_PER_PAGE = 50;
+    private final int SIGHTINGS_LIMIT = 50;
 
     //spinner to select the type of chart
     private Spinner typeSpinner;
@@ -205,11 +206,12 @@ public class ChartHubActivity extends AppCompatActivity {
         }
 
 
-        try {
-            createChart(title, chartType, sortedTimeFrame, isYears);
-        } catch (NullPointerException npe) {
-            Log.d(TAG, "sortedTimeFrame may have been null");
-        }
+        Log.d(TAG, sortedTimeFrame.toString());
+//        try {
+//            createChart(title, chartType, sortedTimeFrame, isYears);
+//        } catch (NullPointerException npe) {
+//            Log.d(TAG, "sortedTimeFrame may have been null");
+//        }
     }
 
     /**
@@ -235,8 +237,10 @@ public class ChartHubActivity extends AppCompatActivity {
                 break;
         }
         if (isYears) {
+            Log.v(TAG, "Sending yearly title");
             in.putExtra("XYSERIES_TITLE", "Yearly");
         } else {
+            Log.v(TAG, "Sending monthly title");
             in.putExtra("XYSERIES_TITLE", "Monthly");
         }
 
@@ -248,11 +252,14 @@ public class ChartHubActivity extends AppCompatActivity {
             range = new ArrayList<>(inputData.values());
         }
 
+        Log.d(TAG, domain.toString());
         ArrayList<Integer> xVals = new ArrayList<>(domain.size());
         for (int i = 0; i < domain.size(); i++) {
             String cur = domain.get(i);
             xVals.add(Integer.parseInt(cur));
         }
+
+        Log.v(TAG, xVals.toString());
 
         //pass data with the intent
         in.putExtra("X_VALS", xVals);
@@ -268,32 +275,27 @@ public class ChartHubActivity extends AppCompatActivity {
         //reset the arraylist of rat-sightings
         sightingList = new ArrayList<>();
 
-        Query query = sightingsRef.orderByChild("date")
-                .startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(startDateMillis)))
-                .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(endDateMillis))).limitToLast(SIGHTINGS_PER_PAGE);
-        query.addChildEventListener(new ChildEventListener() {
+        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(startDateMillis)))
+                .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(endDateMillis))).limitToLast(SIGHTINGS_LIMIT);
+        Log.v(TAG, "Query is: " + query.toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // updates arraylist to include added data
-                sightingList.add(dataSnapshot.getValue(RatSighting.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ...
+                Log.d(TAG, "Detected a data change");
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    RatSighting thisSighting = data.getValue(RatSighting.class);
+                    sightingList.add(thisSighting);
+                }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                sightingList.remove(dataSnapshot.getValue(RatSighting.class));
-
+            public void onCancelled(DatabaseError databaseError) {
+                // ...
             }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
         });
 
+        Log.d(TAG, sightingList.toString());
         return sightingList;
     }
 
@@ -312,7 +314,7 @@ public class ChartHubActivity extends AppCompatActivity {
         for (int i = 0; i < inputList.size(); i++) {
             //this may be my friend here getISO8601ESTSansDayStringForDate()
             try {
-                Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(0).getDate());
+                Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(i).getDate());
                 String isoDate = DateStandardsBuddy.getISO8601ESTSansDayStringForDate(aDate);
                 String[] isoSplit = isoDate.split("-");
                 String rYear = isoSplit[0];
