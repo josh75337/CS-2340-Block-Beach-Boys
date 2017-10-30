@@ -275,8 +275,8 @@ public class ChartHubActivity extends AppCompatActivity {
         //reset the arraylist of rat-sightings
         sightingList = new ArrayList<>();
 
-        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(startDateMillis)))
-                .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(endDateMillis))).limitToLast(SIGHTINGS_LIMIT);
+        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(chartStart)))
+                .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(chartEnd))).limitToLast(SIGHTINGS_LIMIT);
         Log.v(TAG, "Query is: " + query.toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
