@@ -275,24 +275,30 @@ public class ChartHubActivity extends AppCompatActivity {
         //reset the arraylist of rat-sightings
         sightingList = new ArrayList<>();
 
-        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(chartStart)))
-                .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(chartEnd))).limitToLast(SIGHTINGS_LIMIT);
+        //after date .startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(chartStart))).endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(chartEnd)))
+        Query query = sightingsRef.orderByChild("date").limitToLast(SIGHTINGS_LIMIT);
         Log.v(TAG, "Query is: " + query.toString());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // ...
-                Log.d(TAG, "Detected a data change");
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    RatSighting thisSighting = data.getValue(RatSighting.class);
-                    sightingList.add(thisSighting);
-                }
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                Log.d(TAG, "Inside on child added: ");
+                RatSighting sighting = dataSnapshot.getValue(RatSighting.class);
+                Log.d(TAG, sighting.getKey());
+                sightingList.add(sighting);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // ...
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey){
             }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
         Log.d(TAG, sightingList.toString());
