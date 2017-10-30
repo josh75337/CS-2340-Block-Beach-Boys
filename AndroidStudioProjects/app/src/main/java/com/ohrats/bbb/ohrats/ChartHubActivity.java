@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class ChartHubActivity extends AppCompatActivity {
                 try {
                     getCurrentFocus().clearFocus();
                     mLaunchChartButton.setEnabled(true);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (NullPointerException npe) {
                     Log.d(TAG, "Caught null pointer exception");
@@ -153,7 +154,7 @@ public class ChartHubActivity extends AppCompatActivity {
                 try {
                     getCurrentFocus().clearFocus();
                     mLaunchChartButton.setEnabled(true);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (NullPointerException npe) {
                     Log.d(TAG, "Caught null pointer exception");
@@ -167,56 +168,11 @@ public class ChartHubActivity extends AppCompatActivity {
         mLaunchChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetDataAsync().execute();
+
             }
         });
-
     }
 
-    //Inner class for getting rat sightings
-    private class GetDataAsync extends AsyncTask<Void, Void, ArrayList<RatSighting>> {
-
-        DatabaseReference sightingsRef = mDatabase.child("sightings");
-
-        private ArrayList<RatSighting> toReturn;
-
-        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(chartStart))).
-                endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(chartEnd))).limitToLast(SIGHTINGS_LIMIT);
-
-        @Override
-        protected ArrayList<RatSighting> doInBackground(Void... voids) {
-
-            Log.v(TAG, "Query is: " + query.toString());
-            query.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                    Log.d(TAG, "Inside on child added: ");
-                    RatSighting sighting = dataSnapshot.getValue(RatSighting.class);
-                    Log.d(TAG, sighting.getKey());
-                    sightingList.add(sighting);
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey){}
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            });
-
-
-            return toReturn;
-        }
-
-
-        protected void onPostExecute(ArrayList<RatSighting> result) {
-            super.onPostExecute(result);
-            startCreateChart(toReturn);
-            Log.d(TAG, "The Async task has finished");
-        }
-    }
 
 
     private void startCreateChart(ArrayList<RatSighting> inputs) {
@@ -234,26 +190,28 @@ public class ChartHubActivity extends AppCompatActivity {
                 break;
         }
 
-        //call a query that gets the rat sightings within the range and puts them in an arraylist
-        ArrayList<RatSighting> rangedSightings = inputs;
+        Log.d(TAG, "Arraylist size: " + inputs.size());
 
-        HashMap<String, Integer> sortedTimeFrame = null;
-        if (isYears) {
-            sortedTimeFrame = sortByYear(rangedSightings);
-        } else if (chartTime.equals("Monthly")) {
-            sortedTimeFrame = sortByMonth(rangedSightings);
-        } else {
-            Log.d(TAG, "Charttime was invalid, not meeting any expected values");
-            //@TODO: maybe throw a pop-up and make them restart
-        }
-
-
-        Log.d(TAG, sortedTimeFrame.toString());
-        try {
-            createChart(title, chartType, sortedTimeFrame, isYears);
-        } catch (NullPointerException npe) {
-            Log.d(TAG, "sortedTimeFrame may have been null");
-        }
+//        //call a query that gets the rat sightings within the range and puts them in an arraylist
+//        ArrayList<RatSighting> rangedSightings = inputs;
+//
+//        HashMap<String, Integer> sortedTimeFrame = null;
+//        if (isYears) {
+//            sortedTimeFrame = sortByYear(rangedSightings);
+//        } else if (chartTime.equals("Monthly")) {
+//            sortedTimeFrame = sortByMonth(rangedSightings);
+//        } else {
+//            Log.d(TAG, "Charttime was invalid, not meeting any expected values");
+//            //@TODO: maybe throw a pop-up and make them restart
+//        }
+//
+//
+//        Log.d(TAG, sortedTimeFrame.toString());
+//        try {
+//            createChart(title, chartType, sortedTimeFrame, isYears);
+//        } catch (NullPointerException npe) {
+//            Log.d(TAG, "sortedTimeFrame may have been null");
+//        }
     }
 
     /**
@@ -311,14 +269,30 @@ public class ChartHubActivity extends AppCompatActivity {
         startActivity(in);
     }
 
-    private ArrayList<RatSighting> getRangedSightings(){
+    private void getRangedSightings(){
 
-        //@TODO: call the async task
+        DatabaseReference sightingsRef = mDatabase.child("sightings");
 
+        final ArrayList<RatSighting> toReturn = new ArrayList<>();
 
+        Query query = sightingsRef.orderByChild("date").startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(chartStart))).
+                endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(chartEnd))).limitToLast(SIGHTINGS_LIMIT);
 
-        Log.d(TAG, sightingList.toString());
-        return sightingList;
+        Log.v(TAG, "Query is: " + query.toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    toReturn.add(data.getValue(RatSighting.class));
+                }
+                startCreateChart(toReturn);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // ...
+            }
+        });
     }
 
     /**
