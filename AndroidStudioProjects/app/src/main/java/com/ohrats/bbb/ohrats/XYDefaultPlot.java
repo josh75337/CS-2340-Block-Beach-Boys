@@ -18,16 +18,16 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Arrays;
 
-public class ChartsActivity extends AppCompatActivity {
+public class XYDefaultPlot extends AppCompatActivity {
 
     private XYPlot plot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_charts);
+        setContentView(R.layout.activity_xyplot);
 
-        //initialize XYPlot reference
+        // initialize our XYDefaultPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
@@ -35,17 +35,18 @@ public class ChartsActivity extends AppCompatActivity {
         Number[] series1Numbers = {1, 4, 2, 8, 4, 16, 8, 32, 16, 64};
         Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
 
-        //turn values in the arrays into XYSeries
-        XYSeries series1 = new SimpleXYSeries(Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-        XYSeries series2 = new SimpleXYSeries(Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
+        // turn the above arrays into XYSeries':
+        // (Y_VALS_ONLY means use the element index as the x value)
+        XYSeries monthly = new SimpleXYSeries(
+                Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Monthly");
+        XYSeries yearly = new SimpleXYSeries(
+                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Yearly");
 
         // create formatters to use for drawing a series using LineAndPointRenderer
-        // and configure them from java or xml
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.GREEN, Color.BLUE, null);
-        LineAndPointFormatter series2Format = new LineAndPointFormatter(Color.YELLOW, Color.CYAN, Color.BLACK, null);
+        // and configure them from xml:
+        LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.BLUE, Color.WHITE, null, null);
 
-        //xml configuration
-        // LineAndPointFormatter series2Format = new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels_2);
+        LineAndPointFormatter series2Format = new LineAndPointFormatter(Color.GREEN, Color.WHITE, null, null);
 
         // add an "dash" effect to the series2 line:
         series2Format.getLinePaint().setPathEffect(new DashPathEffect(new float[] {
@@ -54,17 +55,10 @@ public class ChartsActivity extends AppCompatActivity {
                 PixelUtils.dpToPix(20),
                 PixelUtils.dpToPix(15)}, 0));
 
-        // just for fun, add some smoothing to the lines:
-        // see: http://androidplot.com/smooth-curves-and-androidplot/
-        series1Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
-        series2Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
         // add a new series' to the xyplot:
-        plot.addSeries(series1, series1Format);
-        plot.addSeries(series2, series2Format);
+        plot.addSeries(monthly, series1Format);
+        plot.addSeries(yearly, series2Format);
 
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
@@ -77,5 +71,6 @@ public class ChartsActivity extends AppCompatActivity {
                 return null;
             }
         });
+
     }
 }

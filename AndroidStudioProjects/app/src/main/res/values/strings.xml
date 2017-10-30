@@ -38,5 +38,20 @@
     <string name="sighting_longitude">Longitude</string>
     <string name="sighting_address">Address</string>
     <string name="sighting_submit">Submit</string>
+    <string-array name="boroughs_array">
+        <item>Bronx</item>
+        <item>Brooklyn</item>
+        <item>Queens</item>
+        <item>StatenIsland</item>
+        <item>Manhattan</item>
+    </string-array>
+
+    <!-- Chart Strings -->
+    <string name="chart_hub_message">Pleae configure a chart</string>
+    <string name="launch_chart_button">Show Chart</string>
+    <string name="chart_range">Chose a time period</string>
+    <string-array name="chart_type_array">
+        <item>XY Plot</item>
+    </string-array>
 
 </resources>

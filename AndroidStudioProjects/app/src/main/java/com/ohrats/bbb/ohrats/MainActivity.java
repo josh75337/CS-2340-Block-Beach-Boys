@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toChartsActivity() {
-        Intent inView = new Intent(MainActivity.this, ChartsActivity.class);
-        Log.d(TAG, "New intent to ChartsActivity");
+        Intent inView = new Intent(MainActivity.this, ChartHubActivity.class);
+        Log.d(TAG, "New intent to ChartHubActivity");
         startActivity(inView);
     }
 

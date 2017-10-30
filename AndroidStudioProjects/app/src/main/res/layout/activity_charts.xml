@@ -1,21 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ap="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ohrats.bbb.ohrats.ChartsActivity">
+    android:orientation="vertical"
+    tools:context="com.ohrats.bbb.ohrats.ChartHubActivity"
+    android:weightSum="1">
 
-    <com.androidplot.xy.XYPlot
-        style="@style/APDefacto.Dark"
-        android:id="@+id/plot"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        ap:title="A Simple XY Plot"
-        ap:rangeTitle="range"
-        ap:domainTitle="domain"
-        ap:lineLabels="left|bottom"
-        ap:lineLabelRotationBottom="-45"/>
+    <TextView
+        android:id="@+id/chart_hub_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/launch_chart"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/chart_hub_message" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/chart_range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/launch_chart"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/chart_range" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:focusableInTouchMode="true"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/mstartdate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:ems="10"-->
+            <!--android:hint="Start Date"-->
+            <!--android:inputType="date"-->
+            <!--android:textAlignment="center" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/menddate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:ems="10"-->
+            <!--android:hint="End Date"-->
+            <!--android:inputType="date"-->
+            <!--android:textAlignment="center" />-->
+
+    <!--</LinearLayout>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+        android:id="@+id/type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp"
+        />
+
+        <Button
+            android:id="@+id/launch_chart_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="33dp"
+            android:text="@string/launch_chart_button" />
+    </RelativeLayout>
+
+
+</LinearLayout>
