@@ -15,6 +15,9 @@ public class DateStandardsBuddy {
     private static DateFormat iso8601DF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
     private static DateFormat garbageAmericanDF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
 
+    private static DateFormat iso8601SansTime = new SimpleDateFormat("yyyy-MM-dd");
+    private static DateFormat iso8601SansDay = new SimpleDateFormat("yyyy-MM");
+
     private static TimeZone estTZ = TimeZone.getTimeZone("EST");
 
     private static DateFormat iso8601DFmax = new SimpleDateFormat("yyyy-MM-dd'T'23:59:59");
@@ -53,6 +56,65 @@ public class DateStandardsBuddy {
         DateFormat df = iso8601DF;
         df.setTimeZone(tz);
         return df.format(targetDate);
+    }
+
+    /**
+     * Return an ISO 8601 EST String WITHOUT a time at the end
+     * e.g. yyyy-MM-dd
+     *
+     * @param targetDate date object of which the output string will represent
+     * @return String with format "yyyy-MM-dd" where the time is EST
+     */
+    public static String getISO8601ESTSansTimeStringForDate(Date targetDate) {
+        if (targetDate == null) {
+            return "";
+        }
+        TimeZone tz = TimeZone.getTimeZone("EST");
+        DateFormat df = iso8601SansTime;
+        df.setTimeZone(tz);
+        return df.format(targetDate);
+
+    }
+
+    /**
+     * Return an ISO 8601 EST String WITHOUT a specific Day nor time at the end (year and month)
+     *  e.g. yyyy-MM
+     *
+     * @param targetDate date object of which the output string will represent year and month of
+     * @return String with the format "yyyy-MM" where the time alignment is EST
+     */
+    public static String getISO8601ESTSansDayStringForDate(Date targetDate) {
+        if (targetDate == null) {
+            return "";
+        }
+        TimeZone tz = TimeZone.getTimeZone("EST");
+        DateFormat df = iso8601SansDay;
+        df.setTimeZone(tz);
+        return df.format(targetDate);
+    }
+
+    /**
+     * Given a full ISO8601 String, returns a String without the time at the end
+     *
+     * @param input8601 A string in the format "yyyy-MM-ddTHH:mm:ss"
+     * @return A truncated date string i.e. "yyyy-MM-dd"
+     * @throws ParseException if the input string is not of the mentioned format
+     */
+    public static String truncateTimeFromISO8601ESTString(String input8601) throws ParseException {
+        Date intermediaryDate = getDateFromISO8601ESTString(input8601);
+        return getISO8601ESTSansTimeStringForDate(intermediaryDate);
+    }
+
+    /**
+     * Given a full ISO8601 String, returns a String without the specific Day nor time at the end
+     *
+     * @param input8601 A string in the format "yyyy-MM-ddTHH:mm:ss"
+     * @return A truncated date string i.e. "yyyy-MM"
+     * @throws ParseException if the input string is not of the mentioned format
+     */
+    public static String truncateDayFromISO8601ESTString(String input8601) throws ParseException {
+        Date intermediaryDate = getDateFromISO8601ESTString(input8601);
+        return getISO8601ESTSansDayStringForDate(intermediaryDate);
     }
 
     /**
@@ -175,6 +237,13 @@ public class DateStandardsBuddy {
     public static DateFormat getGarbageAmericanDF() {
         return garbageAmericanDF;
     }
+
+    /**
+     * Gets a date format representing ISO8601 without a time at the end
+     * i.e. "yyyy-MM-dd"
+     * @return iso8601SansTime SimpleDateFormat
+     */
+    public static DateFormat getIso8601SansTime() { return iso8601SansTime; }
 
     /**
      * Gets a date format representing the maximum ISO8601 date time for a given day
