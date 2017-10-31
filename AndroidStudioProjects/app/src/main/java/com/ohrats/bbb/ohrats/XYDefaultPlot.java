@@ -25,9 +25,9 @@ public class XYDefaultPlot extends AppCompatActivity {
 
     private XYPlot plot;
 
-    private Integer[] xVals;
+    private Number[] xVals = new Number[10];
 
-    private Integer[] yVals;
+    private Number[] yVals = new Number[10];
 
     private String timeframe;
 
@@ -38,10 +38,12 @@ public class XYDefaultPlot extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
-        xVals = (Integer[]) domain.toArray();
+        Log.d(TAG, "Domain passed by intent is: " + domain.toString());
+        xVals = (Number[]) domain.toArray(xVals);
 
         ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
-//        yVals = (Number[]) range.toArray();
+        Log.d(TAG, "Range passed by intent is: " + range.toString());
+        yVals = (Number[]) range.toArray(yVals);
 
 
         timeframe = getIntent().getStringExtra("XYSERIES_TITLE");
@@ -50,13 +52,13 @@ public class XYDefaultPlot extends AppCompatActivity {
         plot = (XYPlot) findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
-        final Integer[] domainLabels = xVals;
+        final Number[] domainLabels = xVals;
 
         // turn the above arrays into XYSeries':
-        XYSeries monthly = new SimpleXYSeries(domain, range, timeframe);
+        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yVals), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
+        Log.d(TAG, monthly.toString());
 
         // create formatters to use for drawing a series using LineAndPointRenderer
-        // and configure them from xml:
         LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.BLUE, Color.WHITE, null, null);
 
 
@@ -66,7 +68,12 @@ public class XYDefaultPlot extends AppCompatActivity {
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                int i = Math.round(((Number) obj).floatValue());
+                Number tempNum = (Number) obj;
+                double d = tempNum.doubleValue();
+                int i = (int) Math.ceil(d);
+                if (i < 0) {
+                    i = 0;
+                }
                 return toAppendTo.append(domainLabels[i]);
             }
             @Override

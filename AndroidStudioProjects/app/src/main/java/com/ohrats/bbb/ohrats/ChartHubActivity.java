@@ -248,15 +248,15 @@ public class ChartHubActivity extends AppCompatActivity {
 
         Set<Map.Entry<String, Integer>> pairSet = (Set<Map.Entry<String, Integer>>) inputData.entrySet();
 
-        ArrayList<Integer> xValues = new ArrayList<>();
-        ArrayList<Integer> yValues = new ArrayList<>();
+        ArrayList<String> tempString = new ArrayList<>(inputData.keySet());
 
-        for (Map.Entry<String, Integer> entry : pairSet) {
-             xValues.add(Integer.parseInt(entry.getKey()));
-             yValues.add(entry.getValue());
-             Log.v(TAG, "YearMonth is:" + Integer.parseInt(entry.getKey()));
-             Log.v(TAG, "Number of occurances" + entry.getValue());
+        ArrayList<Integer> xValues = new ArrayList<>();
+        for (String str : tempString) {
+            xValues.add(Integer.parseInt(str));
         }
+
+        ArrayList<Integer> yValues = new ArrayList<>(inputData.values());
+
 
         Log.v(TAG, xValues.toString());
         Log.v(TAG, yValues.toString());
