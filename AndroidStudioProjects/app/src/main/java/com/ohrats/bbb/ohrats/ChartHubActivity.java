@@ -192,26 +192,24 @@ public class ChartHubActivity extends AppCompatActivity {
 
         Log.d(TAG, "Arraylist size: " + inputs.size());
 
-//        //call a query that gets the rat sightings within the range and puts them in an arraylist
-//        ArrayList<RatSighting> rangedSightings = inputs;
-//
-//        HashMap<String, Integer> sortedTimeFrame = null;
-//        if (isYears) {
-//            sortedTimeFrame = sortByYear(rangedSightings);
-//        } else if (chartTime.equals("Monthly")) {
-//            sortedTimeFrame = sortByMonth(rangedSightings);
-//        } else {
-//            Log.d(TAG, "Charttime was invalid, not meeting any expected values");
-//            //@TODO: maybe throw a pop-up and make them restart
-//        }
-//
-//
-//        Log.d(TAG, sortedTimeFrame.toString());
-//        try {
-//            createChart(title, chartType, sortedTimeFrame, isYears);
-//        } catch (NullPointerException npe) {
-//            Log.d(TAG, "sortedTimeFrame may have been null");
-//        }
+
+        HashMap<String, Integer> sortedTimeFrame = null;
+        if (isYears) {
+            sortedTimeFrame = sortByYear(inputs);
+        } else if (chartTime.equals("Monthly")) {
+            sortedTimeFrame = sortByMonth(inputs);
+        } else {
+            Log.d(TAG, "Charttime was invalid, not meeting any expected values");
+            //@TODO: maybe throw a pop-up and make them restart
+        }
+
+
+        Log.d(TAG, sortedTimeFrame.toString());
+        try {
+            createChart(title, chartType, sortedTimeFrame, isYears);
+        } catch (NullPointerException npe) {
+            Log.d(TAG, "sortedTimeFrame may have been null");
+        }
     }
 
     /**
@@ -306,27 +304,18 @@ public class ChartHubActivity extends AppCompatActivity {
     private HashMap<String, Integer> sortByYear(ArrayList<RatSighting> inputList) {
         HashMap<String, Integer> toReturn = new HashMap<>();
         String year = null;
-        int yearCount = 0;
         for (int i = 0; i < inputList.size(); i++) {
-            //this may be my friend here getISO8601ESTSansDayStringForDate()
             try {
                 Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(i).getDate());
                 String isoDate = DateStandardsBuddy.getISO8601ESTSansDayStringForDate(aDate);
                 String[] isoSplit = isoDate.split("-");
                 String rYear = isoSplit[0];
 
-                if (year.equals(null)) {
-                    year = rYear;
-                    yearCount++;
-                } else if (!(year.equals(rYear))) {
-                    Log.v(TAG, rYear.toString());
-                    //the year has changed
-                    toReturn.put(year, yearCount);
-                    yearCount = 0;
-                    //update the year
-                    year = rYear;
+                if (toReturn.containsKey(rYear)) {
+                    Integer amount = toReturn.get(rYear);
+                    toReturn.put(rYear, amount++);
                 } else {
-                    yearCount++;
+                    toReturn.put(rYear, 1);
                 }
 
             } catch (ParseException pe) {
@@ -349,23 +338,17 @@ public class ChartHubActivity extends AppCompatActivity {
     private HashMap<String, Integer> sortByMonth(ArrayList<RatSighting> inputList) {
         // need to count the amount of sightings per year/per month
         HashMap<String, Integer> toReturn = new HashMap<>();
-        String month = null;
-        int monthCount = 0;
         for (int i = 0; i < inputList.size(); i++) {
             try {
                 Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(0).getDate());
                 String isoDate = DateStandardsBuddy.getISO8601ESTSansDayStringForDate(aDate);
+                String month = isoDate.replace("-", "");
 
-                if (month.equals(null)) {
-                    month = isoDate;
-                    monthCount++;
-                } else if (!(month.equals(isoDate))) {
-                    Log.v(TAG, isoDate.toString());
-                    toReturn.put(month, monthCount);
-                    monthCount = 0;
-                    month = isoDate;
+                if (toReturn.containsKey(month)) {
+                    Integer amount = toReturn.get(month);
+                    toReturn.put(month, amount);
                 } else {
-                    monthCount++;
+                    toReturn.put(month, 1);
                 }
 
             } catch (ParseException pe) {
@@ -374,7 +357,6 @@ public class ChartHubActivity extends AppCompatActivity {
                 Log.d(TAG, "Date from sighting caused exception in sortByMonth");
             }
         }
-
         return toReturn;
     }
 }
