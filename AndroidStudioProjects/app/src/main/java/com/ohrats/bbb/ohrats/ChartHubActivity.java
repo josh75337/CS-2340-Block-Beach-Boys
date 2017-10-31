@@ -44,7 +44,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
     private static final String TAG = "ChartHubActivity";
 
-    private final int SIGHTINGS_LIMIT = 50;
+    private final int SIGHTINGS_LIMIT = 1000;
 
     //spinner to select the type of chart
     private Spinner typeSpinner;
@@ -246,7 +246,7 @@ public class ChartHubActivity extends AppCompatActivity {
             in.putExtra("XYSERIES_TITLE", "Monthly");
         }
 
-        TreeSet<Map.Entry<String, Integer>> pairSet = (TreeSet<Map.Entry<String, Integer>>) inputData.entrySet();
+        Set<Map.Entry<String, Integer>> pairSet = (Set<Map.Entry<String, Integer>>) inputData.entrySet();
 
         ArrayList<Integer> xValues = new ArrayList<>();
         ArrayList<Integer> yValues = new ArrayList<>();
@@ -254,6 +254,8 @@ public class ChartHubActivity extends AppCompatActivity {
         for (Map.Entry<String, Integer> entry : pairSet) {
              xValues.add(Integer.parseInt(entry.getKey()));
              yValues.add(entry.getValue());
+             Log.v(TAG, "YearMonth is:" + Integer.parseInt(entry.getKey()));
+             Log.v(TAG, "Number of occurances" + entry.getValue());
         }
 
 
@@ -282,7 +284,11 @@ public class ChartHubActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    toReturn.add(data.getValue(RatSighting.class));
+                    RatSighting sightingToAdd = data.getValue(RatSighting.class);
+                    toReturn.add(sightingToAdd);
+                    Log.v(TAG, "Sighting populated with UID: " + sightingToAdd.getKey());
+                    Log.v(TAG, "Sighting populated with Date: "  + sightingToAdd.getDate());
+
                 }
                 startCreateChart(toReturn);
             }
@@ -314,7 +320,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
                 if (toReturn.containsKey(rYear)) {
                     Integer amount = toReturn.get(rYear);
-                    toReturn.put(rYear, amount++);
+                    toReturn.put(rYear, ++amount);
                 } else {
                     toReturn.put(rYear, 1);
                 }
@@ -347,7 +353,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
                 if (toReturn.containsKey(month)) {
                     Integer amount = toReturn.get(month);
-                    toReturn.put(month, amount);
+                    toReturn.put(month, ++amount);
                 } else {
                     toReturn.put(month, 1);
                 }

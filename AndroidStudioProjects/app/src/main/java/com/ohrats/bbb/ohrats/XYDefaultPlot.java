@@ -25,9 +25,9 @@ public class XYDefaultPlot extends AppCompatActivity {
 
     private XYPlot plot;
 
-    private Number[] xVals;
+    private Integer[] xVals;
 
-    private Number[] yVals;
+    private Integer[] yVals;
 
     private String timeframe;
 
@@ -38,10 +38,11 @@ public class XYDefaultPlot extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
-        xVals = (Number[]) domain.toArray();
+        xVals = (Integer[]) domain.toArray();
 
         ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
-        yVals = (Number[]) range.toArray();
+//        yVals = (Number[]) range.toArray();
+
 
         timeframe = getIntent().getStringExtra("XYSERIES_TITLE");
 
@@ -49,7 +50,7 @@ public class XYDefaultPlot extends AppCompatActivity {
         plot = (XYPlot) findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
-        final Number[] domainLabels = xVals;
+        final Integer[] domainLabels = xVals;
 
         // turn the above arrays into XYSeries':
         XYSeries monthly = new SimpleXYSeries(domain, range, timeframe);
@@ -65,9 +66,7 @@ public class XYDefaultPlot extends AppCompatActivity {
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                Log.v("XY Default Plot", obj.toString());
-                double temp = ((Number) obj).doubleValue();
-                int i = (int) Math.ceil(temp);
+                int i = Math.round(((Number) obj).floatValue());
                 return toAppendTo.append(domainLabels[i]);
             }
             @Override
