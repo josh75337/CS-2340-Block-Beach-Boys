@@ -256,7 +256,6 @@ public class ChartHubActivity extends AppCompatActivity {
              yValues.add(entry.getValue());
         }
 
-
         Log.v(TAG, xValues.toString());
         Log.v(TAG, yValues.toString());
 
