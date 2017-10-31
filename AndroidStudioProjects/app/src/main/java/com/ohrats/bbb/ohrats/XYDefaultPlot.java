@@ -38,20 +38,10 @@ public class XYDefaultPlot extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
-        Log.v(TAG, domain.toString());
-        xVals = new Number[domain.size()];
-        for (int j = 0; j < domain.size(); j++) {
-            xVals[j] = domain.get(j);
-        }
+        xVals = (Number[]) domain.toArray();
 
         ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
-        yVals = new Number[range.size()];
-        for (int j = 0; j < range.size(); j++) {
-            yVals[j] = range.get(j);
-        }
-
-        Log.v(TAG, yVals.toString());
-        Log.v(TAG, xVals.toString());
+        yVals = (Number[]) range.toArray();
 
         timeframe = getIntent().getStringExtra("XYSERIES_TITLE");
 
@@ -60,12 +50,9 @@ public class XYDefaultPlot extends AppCompatActivity {
 
         // create a couple arrays of y-values to plot:
         final Number[] domainLabels = xVals;
-        Number[] series1Numbers = yVals;
 
         // turn the above arrays into XYSeries':
-        // (Y_VALS_ONLY means use the element index as the x value)
-        XYSeries monthly = new SimpleXYSeries(
-                Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
+        XYSeries monthly = new SimpleXYSeries(domain, range, timeframe);
 
         // create formatters to use for drawing a series using LineAndPointRenderer
         // and configure them from xml:

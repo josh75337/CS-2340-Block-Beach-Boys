@@ -29,6 +29,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Eli Bailey
@@ -242,26 +246,23 @@ public class ChartHubActivity extends AppCompatActivity {
             in.putExtra("XYSERIES_TITLE", "Monthly");
         }
 
-        ArrayList<String> domain = new ArrayList<>();
-        ArrayList<Integer> range = new ArrayList<>();
-        //setup the plot with the user selected values
-        if (!inputData.isEmpty()) {
-            domain = new ArrayList<>(inputData.keySet());
-            range = new ArrayList<>(inputData.values());
+        TreeSet<Map.Entry<String, Integer>> pairSet = (TreeSet<Map.Entry<String, Integer>>) inputData.entrySet();
+
+        ArrayList<Integer> xValues = new ArrayList<>();
+        ArrayList<Integer> yValues = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : pairSet) {
+             xValues.add(Integer.parseInt(entry.getKey()));
+             yValues.add(entry.getValue());
         }
 
-        Log.d(TAG, domain.toString());
-        ArrayList<Integer> xVals = new ArrayList<>(domain.size());
-        for (int i = 0; i < domain.size(); i++) {
-            String cur = domain.get(i);
-            xVals.add(Integer.parseInt(cur));
-        }
 
-        Log.v(TAG, xVals.toString());
+        Log.v(TAG, xValues.toString());
+        Log.v(TAG, yValues.toString());
 
         //pass data with the intent
-        in.putExtra("X_VALS", xVals);
-        in.putExtra("Y_VALS", range);
+        in.putExtra("X_VALS", xValues);
+        in.putExtra("Y_VALS", yValues);
 
         //navigate the the plot
         startActivity(in);
