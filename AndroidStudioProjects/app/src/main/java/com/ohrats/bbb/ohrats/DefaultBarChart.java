@@ -73,14 +73,15 @@ public class DefaultBarChart extends AppCompatActivity {
                 Number tempNum = (Number) obj;
                 double d = tempNum.doubleValue();
                 int i = (int) Math.ceil(d);
-                if (alreadyListed.contains(i)) {
-                    Log.d(TAG, obj.toString() + "integer is already contained.");
-                    return toAppendTo.append("");
-                } else {
-                    alreadyListed.add(i);
-                    Log.d(TAG, obj.toString() + "integer is " + i);
-                    return toAppendTo.append(domainLabels[i]);
-                }
+                return toAppendTo.append(domainLabels[i]);
+//                if (alreadyListed.contains(i)) {
+//                    Log.d(TAG, obj.toString() + "integer is already contained.");
+//                    return toAppendTo.append("");
+//                } else {
+//                    alreadyListed.add(i);
+//                    Log.d(TAG, obj.toString() + "integer is " + i);
+//                    return toAppendTo.append(domainLabels[i]);
+//                }
             }
             @Override
             public Object parseObject(String source, ParsePosition pos) {

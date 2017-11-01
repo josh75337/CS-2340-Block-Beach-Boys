@@ -65,7 +65,8 @@ public class XYDefaultPlot extends AppCompatActivity {
         // create formatters to use for drawing a series using LineAndPointRenderer
         LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
 
-        PanZoom.attach(plot);
+        // axis lables may get messed up by this
+        //PanZoom.attach(plot);
 
         // add a new series' to the xyplot:
         plot.addSeries(monthly, series1Format);
