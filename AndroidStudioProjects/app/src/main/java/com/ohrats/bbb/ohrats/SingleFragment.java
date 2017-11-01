@@ -80,9 +80,9 @@ public class SingleFragment extends Fragment {
         latitude = (EditText) view.findViewById(R.id.IncidentLatitude);
         longitude = (EditText) view.findViewById(R.id.IncidentLongitude);
 
-        ArrayAdapter<Boroughs> boroughAdapter = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, Arrays.asList(Boroughs.values()));
-        boroughAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        boroughSpinner.setAdapter(boroughAdapter);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.boroughs_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        boroughSpinner.setAdapter(adapter);
 
         ArrayAdapter<LocationTypes> locationTypeAdapter = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item, Arrays.asList(LocationTypes.values()));
         locationTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -196,6 +196,7 @@ public class SingleFragment extends Fragment {
         validateKey(_key);
 
         _borough = (String) boroughSpinner.getSelectedItem();
+        Log.d(TAG, _borough);
 
         //create new sighting
         RatSighting newSighting = new RatSighting(_key, date, incidentLocationType, zip,
