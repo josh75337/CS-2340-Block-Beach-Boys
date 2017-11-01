@@ -45,7 +45,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
     private static final String TAG = "ChartHubActivity";
 
-    private final int SIGHTINGS_LIMIT = 1000;
+    private final int SIGHTINGS_LIMIT = 5000;
 
     //spinner to select the type of chart
     private Spinner typeSpinner;

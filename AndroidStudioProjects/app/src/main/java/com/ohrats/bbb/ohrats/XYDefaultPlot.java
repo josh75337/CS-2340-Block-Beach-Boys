@@ -58,6 +58,7 @@ public class XYDefaultPlot extends AppCompatActivity {
         final Number[] domainLabels = xVals;
 
         // turn the above arrays into XYSeries':
+        Log.d(TAG, yVals.toString());
         XYSeries monthly = new SimpleXYSeries(Arrays.asList(yVals), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
         Log.d(TAG, monthly.toString());
 
