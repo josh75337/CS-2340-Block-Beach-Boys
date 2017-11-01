@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -247,18 +248,17 @@ public class ChartHubActivity extends AppCompatActivity {
             in.putExtra("SERIES_TITLE", "Monthly");
         }
 
-        Set<Map.Entry<String, Integer>> pairSet = (Set<Map.Entry<String, Integer>>) inputData.entrySet();
+        TreeMap<String, Integer> sortedPairs = new TreeMap<>(inputData);
 
-        ArrayList<String> tempString = new ArrayList<>(inputData.keySet());
-
+        ArrayList<String> tempString = new ArrayList<>(sortedPairs.keySet());
         ArrayList<Integer> xValues = new ArrayList<>();
         for (String str : tempString) {
             xValues.add(Integer.parseInt(str));
         }
-        Collections.reverse(xValues);
+        //Collections.reverse(xValues);
 
-        ArrayList<Integer> yValues = new ArrayList<>(inputData.values());
-        Collections.reverse(yValues);
+        ArrayList<Integer> yValues = new ArrayList<>(sortedPairs.values());
+        //Collections.reverse(yValues);
 
         Log.v(TAG, xValues.toString());
         Log.v(TAG, yValues.toString());
