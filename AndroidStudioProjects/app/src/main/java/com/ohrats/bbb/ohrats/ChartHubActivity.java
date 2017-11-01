@@ -190,7 +190,9 @@ public class ChartHubActivity extends AppCompatActivity {
         //create a title based of of the chart
         String title = "Sighting by Month and Year";
         switch (chartType) {
-            case "Pie Chart": title = title + ": XY Plot";
+            case "Pie Chart": title = title + ": Pie Chart";
+                break;
+            case "XY Plot": title = title + ":XY Plot";
                 break;
             default: title = title + ": Bar Chart";
                 break;
@@ -234,6 +236,10 @@ public class ChartHubActivity extends AppCompatActivity {
             case "Pie Chart":
                 Log.v(TAG, "creating pie chart");
                 in = new Intent(this, DefaultPieChart.class);
+                break;
+            case "XY Plot":
+                Log.v(TAG, "creating xy plot");
+                in = new Intent(this, XYDefaultPlot.class);
                 break;
             default:
                 Log.v(TAG, "creating bar chart");

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BarFormatter;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PanZoom;
@@ -61,10 +62,17 @@ public class DefaultBarChart extends AppCompatActivity {
 
         BarFormatter bf = new BarFormatter(Color.RED, Color.WHITE);
 
+        //allow zooming and panning
         PanZoom.attach(plot);
 
         // add a new series' to the xyplot:
         plot.addSeries(series1, bf);
+
+        //limit the amount of lines on the x axis
+        plot.getGraph().setLinesPerDomainLabel(domain.size());
+
+        //set insets on the graph
+        plot.getGraph().getLineLabelInsets().setLeft(PixelUtils.dpToPix(-5));
 
         final ArrayList<Integer> alreadyListed = new ArrayList<>();
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {

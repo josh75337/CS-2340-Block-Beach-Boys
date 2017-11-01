@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PanZoom;
@@ -63,9 +64,15 @@ public class XYDefaultPlot extends AppCompatActivity {
         Log.d(TAG, monthly.toString());
 
         // create formatters to use for drawing a series using LineAndPointRenderer
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
+        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.BLUE, null, null);
 
         PanZoom.attach(plot);
+
+        //limit the amount of lines on the x axis
+        plot.getGraph().setLinesPerDomainLabel(domain.size());
+
+        //set insets on the graph
+        plot.getGraph().getLineLabelInsets().setLeft(PixelUtils.dpToPix(-5));
 
         // add a new series' to the xyplot:
         plot.addSeries(monthly, series1Format);

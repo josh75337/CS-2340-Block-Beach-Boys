@@ -56,6 +56,7 @@
     <string-array name="chart_type_array">
         <item>Pie Chart</item>
         <item>Bar Chart</item>
+        <item>XY Plot</item>
     </string-array>
     <string-array name="chart_time_array">
         <item>Monthly</item>
