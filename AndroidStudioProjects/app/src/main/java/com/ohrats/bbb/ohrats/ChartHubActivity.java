@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -188,9 +189,9 @@ public class ChartHubActivity extends AppCompatActivity {
         //create a title based of of the chart
         String title = "Sighting by Month and Year";
         switch (chartType) {
-//            case "XY Plot": title = title + ": XY Plot";
-//                break;
-            default: title = title + ": XY Plot";
+            case "Pie Chart": title = title + ": XY Plot";
+                break;
+            default: title = title + ": Bar Chart";
                 break;
         }
 
@@ -225,25 +226,25 @@ public class ChartHubActivity extends AppCompatActivity {
     private void createChart(String title, String chartType, HashMap<String, Integer> inputData, Boolean isYears) {
         Log.v(TAG, "Called createChart()");
 
-        //create a default to the xy plot
-        Intent in = new Intent(this, XYDefaultPlot.class);
+        Intent in = null;
 
         //determine what plot the user wants
         switch (chartType) {
-            case "Histogram":
-                Log.v(TAG, "creating histogram");
+            case "Pie Chart":
+                Log.v(TAG, "creating pie chart");
+                in = new Intent(this, DefaultPieChart.class);
                 break;
             default:
-                Log.v(TAG, "creating xy plot");
-                //this is the XYDefaultPlot
+                Log.v(TAG, "creating bar chart");
+                in = new Intent(this, DefaultBarChart.class);
                 break;
         }
         if (isYears) {
             Log.v(TAG, "Sending yearly title");
-            in.putExtra("XYSERIES_TITLE", "Yearly");
+            in.putExtra("SERIES_TITLE", "Yearly");
         } else {
             Log.v(TAG, "Sending monthly title");
-            in.putExtra("XYSERIES_TITLE", "Monthly");
+            in.putExtra("SERIES_TITLE", "Monthly");
         }
 
         Set<Map.Entry<String, Integer>> pairSet = (Set<Map.Entry<String, Integer>>) inputData.entrySet();
@@ -254,9 +255,10 @@ public class ChartHubActivity extends AppCompatActivity {
         for (String str : tempString) {
             xValues.add(Integer.parseInt(str));
         }
+        Collections.reverse(xValues);
 
         ArrayList<Integer> yValues = new ArrayList<>(inputData.values());
-
+        Collections.reverse(yValues);
 
         Log.v(TAG, xValues.toString());
         Log.v(TAG, yValues.toString());
@@ -285,10 +287,10 @@ public class ChartHubActivity extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     RatSighting sightingToAdd = data.getValue(RatSighting.class);
                     toReturn.add(sightingToAdd);
-                    Log.v(TAG, "Sighting populated with UID: " + sightingToAdd.getKey());
                     Log.v(TAG, "Sighting populated with Date: "  + sightingToAdd.getDate());
 
                 }
+                Log.v(TAG, "Arraylist is: " + toReturn.toString());
                 startCreateChart(toReturn);
             }
 
@@ -309,7 +311,6 @@ public class ChartHubActivity extends AppCompatActivity {
      */
     private HashMap<String, Integer> sortByYear(ArrayList<RatSighting> inputList) {
         HashMap<String, Integer> toReturn = new HashMap<>();
-        String year = null;
         for (int i = 0; i < inputList.size(); i++) {
             try {
                 Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(i).getDate());
@@ -317,10 +318,14 @@ public class ChartHubActivity extends AppCompatActivity {
                 String[] isoSplit = isoDate.split("-");
                 String rYear = isoSplit[0];
 
+                Log.v(TAG, rYear);
+
                 if (toReturn.containsKey(rYear)) {
+                    Log.v(TAG, "Increasing:" + rYear);
                     Integer amount = toReturn.get(rYear);
                     toReturn.put(rYear, ++amount);
                 } else {
+                    Log.v(TAG, "New key is:" + rYear);
                     toReturn.put(rYear, 1);
                 }
 
@@ -344,16 +349,21 @@ public class ChartHubActivity extends AppCompatActivity {
     private HashMap<String, Integer> sortByMonth(ArrayList<RatSighting> inputList) {
         // need to count the amount of sightings per year/per month
         HashMap<String, Integer> toReturn = new HashMap<>();
+        Log.v(TAG, "Input array list size is: " + inputList.size());
         for (int i = 0; i < inputList.size(); i++) {
             try {
-                Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(0).getDate());
+                Date aDate = DateStandardsBuddy.getDateFromISO8601ESTString(inputList.get(i).getDate());
                 String isoDate = DateStandardsBuddy.getISO8601ESTSansDayStringForDate(aDate);
                 String month = isoDate.replace("-", "");
 
+                Log.v(TAG, "Key is: " + month);
+
                 if (toReturn.containsKey(month)) {
+                    Log.v(TAG, "Incrementing key: " + month);
                     Integer amount = toReturn.get(month);
                     toReturn.put(month, ++amount);
                 } else {
+                    Log.v(TAG, "added key:" + month);
                     toReturn.put(month, 1);
                 }
 

@@ -3,11 +3,14 @@ package com.ohrats.bbb.ohrats;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.nfc.Tag;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.PanZoom;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
@@ -46,7 +49,7 @@ public class XYDefaultPlot extends AppCompatActivity {
         yVals = (Number[]) range.toArray(yVals);
 
 
-        timeframe = getIntent().getStringExtra("XYSERIES_TITLE");
+        timeframe = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);
@@ -59,8 +62,9 @@ public class XYDefaultPlot extends AppCompatActivity {
         Log.d(TAG, monthly.toString());
 
         // create formatters to use for drawing a series using LineAndPointRenderer
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.BLUE, Color.WHITE, null, null);
+        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
 
+        PanZoom.attach(plot);
 
         // add a new series' to the xyplot:
         plot.addSeries(monthly, series1Format);

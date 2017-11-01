@@ -54,7 +54,8 @@
     <string name="date_start_hint">Start Date</string>
     <string name="date_end_hint">End Date</string>
     <string-array name="chart_type_array">
-        <item>XY Plot</item>
+        <item>Pie Chart</item>
+        <item>Bar Chart</item>
     </string-array>
     <string-array name="chart_time_array">
         <item>Monthly</item>

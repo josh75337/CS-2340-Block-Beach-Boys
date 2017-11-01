@@ -51,7 +51,9 @@
             android:value="AIzaSyCQs5SfqRPScXVocLN1GsP0AUt62pWmrII" />
 
         <activity android:name=".ChartHubActivity" />
-        <activity android:name=".XYDefaultPlot"></activity>
+        <activity android:name=".XYDefaultPlot" />
+        <activity android:name=".DefaultPieChart" />
+        <activity android:name=".DefaultBarChart"></activity>
     </application>
 
 </manifest>
