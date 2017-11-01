@@ -195,6 +195,8 @@ public class SingleFragment extends Fragment {
 
         validateKey(_key);
 
+        _borough = (String) boroughSpinner.getSelectedItem();
+
         //create new sighting
         RatSighting newSighting = new RatSighting(_key, date, incidentLocationType, zip,
                 incidentAddress, incidentCity, _borough, incidentLatitude, incidentLongitude);
