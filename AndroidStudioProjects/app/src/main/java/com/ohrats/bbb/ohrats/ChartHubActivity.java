@@ -47,7 +47,8 @@ public class ChartHubActivity extends AppCompatActivity {
 
     private static final String TAG = "ChartHubActivity";
 
-    private final int SIGHTINGS_LIMIT = 50000;
+    // Can be set to something more reasonable to limit how much data is pulled from the databse
+    private final int SIGHTINGS_LIMIT = Integer.MAX_VALUE;
 
     //spinner to select the type of chart
     private Spinner typeSpinner;
