@@ -50,9 +50,9 @@ public class DefaultPieChart extends Activity
 
     public PieChart pie;
 
-    private Number[] xVals;
-    private Number[] yVals;
-            
+//    private Number[] xVals;
+//    private Number[] yVals;
+
     private Segment s1;
     private Segment s2;
     private Segment s3;
@@ -67,11 +67,11 @@ public class DefaultPieChart extends Activity
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
-        xVals = (Number[]) domain.toArray(xVals);
+//        xVals = (Number[]) domain.toArray(xVals);
 
         ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
-        yVals = (Number[]) range.toArray(yVals);
+//        yVals = (Number[]) range.toArray(yVals);
 
         // initialize our XYPlot reference:
         pie = (PieChart) findViewById(R.id.mySimplePieChart);
@@ -141,18 +141,37 @@ public class DefaultPieChart extends Activity
         donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
         updateDonutText();
 
-        s1 = new Segment("s1", 3);
-        s2 = new Segment("s2", 1);
-        s3 = new Segment("s3", 7);
-        s4 = new Segment("s4", 9);
+        ArrayList<Segment> pieSegments = new ArrayList<Segment>();
+        for(int i = 0; i < domain.size(); i++) {
+            pieSegments.add(new Segment(domain.get(i).toString(), range.get(i)));
+        }
+
+
+//        s1 = new Segment("s1", 3);
+//        s2 = new Segment("s2", 1);
+//        s3 = new Segment("s3", 7);
+//        s4 = new Segment("s4", 9);
 
         EmbossMaskFilter emf = new EmbossMaskFilter(
                 new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
 
-        SegmentFormatter sf1 = new SegmentFormatter(Color.RED);
-        SegmentFormatter sf2 = new SegmentFormatter(Color.BLACK);
-        SegmentFormatter sf3 = new SegmentFormatter(Color.BLUE);
-        SegmentFormatter sf4 = new SegmentFormatter(Color.GREEN);
+        ArrayList<SegmentFormatter> pieSegmentFormatters = new ArrayList<SegmentFormatter>();
+        Random rand = new Random();
+        int randomColor;
+        int r;
+        int g;
+        int b;
+        for (int i = 0; i < domain.size(); i++) {
+            r = rand.nextInt(255);
+            g = rand.nextInt(255);
+            b = rand.nextInt(255);
+            randomColor = Color.rgb(r, g, b);
+            pieSegmentFormatters.add(new SegmentFormatter(randomColor));
+        }
+//        SegmentFormatter sf1 = new SegmentFormatter(Color.RED);
+//        SegmentFormatter sf2 = new SegmentFormatter(Color.BLACK);
+//        SegmentFormatter sf3 = new SegmentFormatter(Color.BLUE);
+//        SegmentFormatter sf4 = new SegmentFormatter(Color.GREEN);
 
 //        SegmentFormatter sf1 = new SegmentFormatter(this, R.xml.pie_segment_formatter1);
 //        sf1.getLabelPaint().setShadowLayer(3, 0, 0, Color.BLACK);
@@ -170,10 +189,14 @@ public class DefaultPieChart extends Activity
 //        sf4.getLabelPaint().setShadowLayer(3, 0, 0, Color.BLACK);
 //        sf4.getFillPaint().setMaskFilter(emf);
 
-        pie.addSegment(s1, sf1);
-        pie.addSegment(s2, sf2);
-        pie.addSegment(s3, sf3);
-        pie.addSegment(s4, sf4);
+        for(int i = 0; i < pieSegments.size(); i++) {
+            pie.addSegment(pieSegments.get(i), pieSegmentFormatters.get(i));
+        }
+
+//        pie.addSegment(s1, sf1);
+//        pie.addSegment(s2, sf2);
+//        pie.addSegment(s3, sf3);
+//        pie.addSegment(s4, sf4);
 
         pie.getBorderPaint().setColor(Color.TRANSPARENT);
         pie.getBackgroundPaint().setColor(Color.TRANSPARENT);
