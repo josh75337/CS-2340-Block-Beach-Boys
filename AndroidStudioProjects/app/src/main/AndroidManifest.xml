@@ -35,7 +35,7 @@
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ListMapComboActivity"
             android:label="ListMapComboActivity" />
@@ -50,6 +50,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCQs5SfqRPScXVocLN1GsP0AUt62pWmrII" />
 
+        <activity android:name=".ChartHubActivity" />
+        <activity android:name=".XYDefaultPlot" />
+        <activity android:name=".DefaultPieChart" />
+        <activity android:name=".DefaultBarChart"></activity>
     </application>
 
 </manifest>

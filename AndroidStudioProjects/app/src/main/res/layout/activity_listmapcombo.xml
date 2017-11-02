@@ -22,13 +22,13 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <Button
-            android:id="@+id/raddsighting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="1dp"
-            android:text="Add Sighting"
-            android:textColor="@color/bodyTextColor" />
+        <!--<Button-->
+            <!--android:id="@+id/raddsighting"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:elevation="1dp"-->
+            <!--android:text="Add Sighting"-->
+            <!--android:textColor="@color/bodyTextColor" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -48,7 +48,7 @@ public class ListMapComboActivity extends AppCompatActivity {
 
     private LinkedList<RatSighting> sightingList = new LinkedList<>();
 
-    private Button mAddSightingButton;
+//    private Button mAddSightingButton;
     private Button mUpdateButton;
     private Button mSearchButton;
 
@@ -89,13 +89,13 @@ public class ListMapComboActivity extends AppCompatActivity {
         ratReportListFragment = new ViewRatReportListFragment();
         updateSightingList();
 
-        mAddSightingButton = (Button) findViewById(R.id.raddsighting);
-        mAddSightingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewAddSightingActivity();
-            }
-        });
+//        mAddSightingButton = (Button) findViewById(R.id.raddsighting);
+//        mAddSightingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewAddSightingActivity();
+//            }
+//        });
 
 
 
@@ -211,13 +211,13 @@ public class ListMapComboActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Switches to the AddSightingActivity
-     */
-    private void viewAddSightingActivity() {
-        Intent inView = new Intent(this, AddSightingActivity.class);
-        startActivity(inView);
-    }
+//    /**
+//     * Switches to the AddSightingActivity
+//     */
+//    private void viewAddSightingActivity() {
+//        Intent inView = new Intent(this, AddSightingActivity.class);
+//        startActivity(inView);
+//    }
 
 
     /**
