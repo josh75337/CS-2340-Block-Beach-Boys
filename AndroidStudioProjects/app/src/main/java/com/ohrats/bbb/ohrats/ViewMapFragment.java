@@ -122,6 +122,7 @@ public class ViewMapFragment extends Fragment {
             double rLat = (r.getLatitude() != 0) ? r.getLatitude() : 40.7128;
             double rLong = (r.getLongitude() != 0) ? r.getLongitude() : -74.0060;
 
+            // @TODO Somehow a null pointer happened here?
             Marker m = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(rLat, rLong))
                     .title(r.getKey())
