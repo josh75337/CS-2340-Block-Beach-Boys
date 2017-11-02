@@ -19,12 +19,16 @@ package com.ohrats.bbb.ohrats;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.androidplot.pie.PieChart;
@@ -50,8 +54,12 @@ public class DefaultPieChart extends Activity
 
     public PieChart pie;
 
+    private ListView simpleList;
+
 //    private Number[] xVals;
 //    private Number[] yVals;
+    ArrayList<Integer> domain;
+    ArrayList<Integer> range;
 
     private Segment s1;
     private Segment s2;
@@ -65,13 +73,15 @@ public class DefaultPieChart extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_pie_chart);
 
-        ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
+        domain = getIntent().getIntegerArrayListExtra("X_VALS");
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
 //        xVals = (Number[]) domain.toArray(xVals);
 
-        ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
+        range = getIntent().getIntegerArrayListExtra("Y_VALS");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
 //        yVals = (Number[]) range.toArray(yVals);
+
+        updateListView();
 
         // initialize our XYPlot reference:
         pie = (PieChart) findViewById(R.id.mySimplePieChart);
@@ -138,8 +148,8 @@ public class DefaultPieChart extends Activity
             }
         });
 
-        donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
-        updateDonutText();
+//        donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
+//        updateDonutText();
 
         ArrayList<Segment> pieSegments = new ArrayList<Segment>();
         for(int i = 0; i < domain.size(); i++) {
@@ -211,6 +221,23 @@ public class DefaultPieChart extends Activity
     protected void updateDonutText() {
         donutSizeTextView.setText(donutSizeSeekBar.getProgress() + "%");
     }
+
+    private void updateListView() {
+        ArrayList<String>pieDataList = new ArrayList<String>();
+        for(int i = 0; i < domain.size(); i++) {
+            pieDataList.add("Time-frame: " + domain.get(i).toString()
+                            + " Occurrences: " + range.get(i).toString());
+        }
+        simpleList = (ListView) this.findViewById(R.id.pie_listview);
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(this,
+                        R.layout.activity_pie_list_item,
+                        R.id.textView,
+                        pieDataList);
+        //---------------------------------------------
+        simpleList.setAdapter(arrayAdapter);
+    }
+
 
     protected void setupIntroAnimation() {
 

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +47,7 @@ public class ChartHubActivity extends AppCompatActivity {
 
     private static final String TAG = "ChartHubActivity";
 
-    private final int SIGHTINGS_LIMIT = 5000;
+    private final int SIGHTINGS_LIMIT = 50000;
 
     //spinner to select the type of chart
     private Spinner typeSpinner;
@@ -175,6 +176,8 @@ public class ChartHubActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getRangedSightings();
+                Toast.makeText(ChartHubActivity.this, "Please Wait, Loading...",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
