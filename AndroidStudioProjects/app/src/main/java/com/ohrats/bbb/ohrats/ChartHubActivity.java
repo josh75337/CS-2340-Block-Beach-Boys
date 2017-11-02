@@ -188,9 +188,9 @@ public class ChartHubActivity extends AppCompatActivity {
         Boolean isYears = chartTime.equals("Yearly");
 
         //create a title based of of the chart
-        String title = "Sighting by Month and Year";
+        String title = isYears ? "Sighting by year" : "Sightings by Month and Year";
         switch (chartType) {
-            case "Pie Chart": title = title + ": XY Plot";
+            case "Pie Chart": title = title + ": Pie Chart";
                 break;
             default: title = title + ": Bar Chart";
                 break;
@@ -240,6 +240,7 @@ public class ChartHubActivity extends AppCompatActivity {
                 in = new Intent(this, DefaultBarChart.class);
                 break;
         }
+
         if (isYears) {
             Log.v(TAG, "Sending yearly title");
             in.putExtra("SERIES_TITLE", "Yearly");
