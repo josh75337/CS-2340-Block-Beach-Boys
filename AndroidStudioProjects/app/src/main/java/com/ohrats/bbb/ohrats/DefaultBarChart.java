@@ -1,14 +1,11 @@
 package com.ohrats.bbb.ohrats;
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.nfc.Tag;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.androidplot.xy.BoundaryMode;
+import com.androidplot.xy.BarFormatter;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PanZoom;
 import com.androidplot.xy.SimpleXYSeries;
@@ -22,9 +19,9 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class XYDefaultPlot extends AppCompatActivity {
+public class DefaultBarChart extends AppCompatActivity {
 
-    private static final String TAG = "XYDefaultPlot";
+    private final String TAG = "DefaultBarChart";
 
     private XYPlot plot;
 
@@ -58,29 +55,33 @@ public class XYDefaultPlot extends AppCompatActivity {
         final Number[] domainLabels = xVals;
 
         // turn the above arrays into XYSeries':
-        Log.d(TAG, yVals.toString());
-        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yVals), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
-        Log.d(TAG, monthly.toString());
+        Log.v(TAG, yVals.toString());
+        XYSeries series1 = new SimpleXYSeries(Arrays.asList(yVals), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
+        Log.d(TAG, series1.toString());
 
-        // create formatters to use for drawing a series using LineAndPointRenderer
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
+        BarFormatter bf = new BarFormatter(Color.RED, Color.WHITE);
 
-        // axis lables may get messed up by this
-        //PanZoom.attach(plot);
+        PanZoom.attach(plot);
 
         // add a new series' to the xyplot:
-        plot.addSeries(monthly, series1Format);
+        plot.addSeries(series1, bf);
 
+        final ArrayList<Integer> alreadyListed = new ArrayList<>();
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
                 Number tempNum = (Number) obj;
                 double d = tempNum.doubleValue();
                 int i = (int) Math.ceil(d);
-                if (i < 0) {
-                    i = 0;
-                }
                 return toAppendTo.append(domainLabels[i]);
+//                if (alreadyListed.contains(i)) {
+//                    Log.d(TAG, obj.toString() + "integer is already contained.");
+//                    return toAppendTo.append("");
+//                } else {
+//                    alreadyListed.add(i);
+//                    Log.d(TAG, obj.toString() + "integer is " + i);
+//                    return toAppendTo.append(domainLabels[i]);
+//                }
             }
             @Override
             public Object parseObject(String source, ParsePosition pos) {
