@@ -22,7 +22,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_settings">Logout</string>
+    <string name="historical_charts_button">Historical Charts</string>
     <string name="view_rat_reports_button">View Rat Reports</string>
+    <string name="add_rat_sighting_button">Add Rat Sighting</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string-array name="level_array">
         <item>User</item>
@@ -36,5 +38,29 @@
     <string name="sighting_longitude">Longitude</string>
     <string name="sighting_address">Address</string>
     <string name="sighting_submit">Submit</string>
+    <string-array name="boroughs_array">
+        <item>Bronx</item>
+        <item>Brooklyn</item>
+        <item>Queens</item>
+        <item>StatenIsland</item>
+        <item>Manhattan</item>
+    </string-array>
+
+    <!-- Chart Strings -->
+    <string name="chart_hub_message">Pleae configure a chart</string>
+    <string name="launch_chart_button">Show Chart</string>
+    <string name="chart_range_message">Chose a time period</string>
+    <string name="chart_type_message">Chose a chart type</string>
+    <string name="date_start_hint">Start Date</string>
+    <string name="date_end_hint">End Date</string>
+    <string-array name="chart_type_array">
+        <item>Pie Chart</item>
+        <item>Bar Chart</item>
+    </string-array>
+    <string-array name="chart_time_array">
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
 
 </resources>

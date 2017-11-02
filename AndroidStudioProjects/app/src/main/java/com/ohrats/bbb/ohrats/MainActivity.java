@@ -1,7 +1,6 @@
 package com.ohrats.bbb.ohrats;
 
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -60,12 +59,43 @@ public class MainActivity extends AppCompatActivity {
         mViewReportListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewReportListPage();
+                viewListMapComboPage();
+            }
+        });
+
+        Button mAddRatSightingButton = (Button) findViewById(R.id.add_rat_sighting);
+        mAddRatSightingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRatSightingPage();
+            }
+        });
+
+        Button mChartsButton = (Button) findViewById(R.id.historical_charts);
+        mChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toChartsActivity();
             }
         });
     }
-    private void viewReportListPage() {
-        Intent inView = new Intent(MainActivity.this, ViewRatReportListActivity.class);
+
+    private void toChartsActivity() {
+        Intent inView = new Intent(MainActivity.this, ChartHubActivity.class);
+        Log.v(TAG, "New intent to ChartHubActivity");
+        startActivity(inView);
+    }
+
+    private void viewListMapComboPage() {
+        Intent inView = new Intent(MainActivity.this, ListMapComboActivity.class);
+        startActivity(inView);
+    }
+
+    /**
+     * Switches to AddSightingActivity
+      */
+    private void addRatSightingPage() {
+        Intent inView = new Intent(MainActivity.this, AddSightingActivity.class);
         startActivity(inView);
     }
 

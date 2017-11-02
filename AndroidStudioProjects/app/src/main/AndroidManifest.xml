@@ -3,6 +3,8 @@
     package="com.ohrats.bbb.ohrats">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -33,10 +35,10 @@
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ViewRatReportListActivity"
-            android:label="ViewRatReportListActivity" />
+            android:name=".ListMapComboActivity"
+            android:label="ListMapComboActivity" />
         <activity
             android:name=".AddSightingActivity"
             android:label="AddSightingActivity" />
@@ -44,6 +46,14 @@
             android:name=".ViewSightingActivity"
             android:label="ViewSightingActivity" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCQs5SfqRPScXVocLN1GsP0AUt62pWmrII" />
+
+        <activity android:name=".ChartHubActivity" />
+        <activity android:name=".XYDefaultPlot" />
+        <activity android:name=".DefaultPieChart" />
+        <activity android:name=".DefaultBarChart"></activity>
     </application>
 
 </manifest>

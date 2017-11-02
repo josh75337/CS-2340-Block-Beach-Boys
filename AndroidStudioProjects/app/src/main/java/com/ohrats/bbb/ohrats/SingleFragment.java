@@ -24,9 +24,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParseException;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
+
 
 /**
  * fragment that handles uploading csvs
@@ -99,11 +105,16 @@ public class SingleFragment extends Fragment {
         lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, dataSnapshot.getValue().toString());
-                String lastSighting = dataSnapshot.getValue().toString();
-                String oldKey = lastSighting.substring(1, 9);
-                Log.i(TAG, oldKey);
-                _key = (Integer.parseInt(oldKey) + 1) + "";
+                if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                    Log.i(TAG, dataSnapshot.getValue().toString());
+                    String lastSighting = dataSnapshot.getValue().toString();
+                    String oldKey = lastSighting.substring(1, 9);
+                    Log.i(TAG, oldKey);
+                    _key = (Integer.parseInt(oldKey) + 1) + "";
+                } else {
+                    _key = "1";
+                }
+
             }
 
             @Override
@@ -142,8 +153,16 @@ public class SingleFragment extends Fragment {
             // so this is fine
             Date createdDate = new Date();
 
+            String dateTime = createdDate.toString();
+
+            String isoCurrentDate = DateStandardsBuddy.getISO8601ESTStringForCurrentDate();
+//            TimeZone tz = TimeZone.getTimeZone("EST");
+//            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
+//            df.setTimeZone(tz);
+//            String nowAsISO = df.format(new Date());
+
             createRatSighting(incidentLocationType, incidentAddress, incidentCity,
-                    incidentZip, incidentLongitude, incidentLatitude, createdDate);
+                    incidentZip, incidentLongitude, incidentLatitude, isoCurrentDate);
         } else {
             return;
         }
@@ -167,7 +186,7 @@ public class SingleFragment extends Fragment {
                                    int incidentZip,
                                    double incidentLongitude,
                                    double incidentLatitude,
-                                   Date createdDate) {
+                                   String createdDate) {
         //eli here is where we need to query firebase to determine the unique key and then add the new rat sighting to the database
 
         //convert zip to string
