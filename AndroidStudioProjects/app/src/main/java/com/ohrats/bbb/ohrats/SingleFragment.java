@@ -66,7 +66,6 @@ public class SingleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single, container, false);
-
         return view;
     }
 
@@ -149,17 +148,8 @@ public class SingleFragment extends Fragment {
             } catch(Exception e) {
                 return;
             }
-            //note that the default value is the date time at which the object is created
-            // so this is fine
-            Date createdDate = new Date();
-
-            String dateTime = createdDate.toString();
 
             String isoCurrentDate = DateStandardsBuddy.getISO8601ESTStringForCurrentDate();
-//            TimeZone tz = TimeZone.getTimeZone("EST");
-//            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
-//            df.setTimeZone(tz);
-//            String nowAsISO = df.format(new Date());
 
             createRatSighting(incidentLocationType, incidentAddress, incidentCity,
                     incidentZip, incidentLongitude, incidentLatitude, isoCurrentDate);
