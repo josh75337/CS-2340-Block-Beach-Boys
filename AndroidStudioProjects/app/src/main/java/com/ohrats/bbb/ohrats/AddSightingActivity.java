@@ -2,12 +2,8 @@ package com.ohrats.bbb.ohrats;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
 import com.google.firebase.database.DatabaseReference;
 
 /**
@@ -20,12 +16,15 @@ public class AddSightingActivity extends AppCompatActivity{
 
     //FireBase
 
-    //Firebase Realtime DataBase
+    //Firebase realtime DataBase
     private DatabaseReference mDatabase;
 
     //Keep a log for debugging
     private static final String TAG = "AddSightingActivity";
 
+    //Both of these could be local variables but it is better
+    //to have them as fields because they could be needed
+    //for additional methods to the code
     private SectionsPageAdapter mSectionPageAdapter;
     private ViewPager mViewPager;
 
@@ -49,7 +48,7 @@ public class AddSightingActivity extends AppCompatActivity{
 
     /**
      * takes view pager and adds fragments that will be the different tabs
-     * @param viewPager
+     * @param viewPager - the viewpager object that the fragments will be added to
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
