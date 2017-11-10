@@ -16,7 +16,7 @@ public class User {
     //Level -> User or Admin
     private String level;
 
-    //Either getters and setters or public variables required by firebase database
+    //Getters and setters required by firebase database
     public String getEmail() {
         return email;
     }
@@ -52,9 +52,9 @@ public class User {
 
     /**
      * Creates a user with an email, password, and level.
-     * @param email
-     * @param password
-     * @param level
+     * @param email The users email
+     * @param password The password the user chose to using in app
+     * @param level Their "clearance" either user or admin
      */
     public User(String email, String password, String level) {
         this.email = email;
