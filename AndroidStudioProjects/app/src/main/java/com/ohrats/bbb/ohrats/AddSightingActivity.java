@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import com.google.firebase.database.DatabaseReference;
 
 /**
  * a screen for adding rat sightings using singularly or through using a csv
@@ -14,10 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 public class AddSightingActivity extends AppCompatActivity{
 
 
-    //FireBase
-
-    //Firebase realtime DataBase
-    private DatabaseReference mDatabase;
 
     //Keep a log for debugging
     private static final String TAG = "AddSightingActivity";

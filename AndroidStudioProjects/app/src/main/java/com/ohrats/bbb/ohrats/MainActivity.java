@@ -17,12 +17,19 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * the home screen of the application
+ *
+ * Created by Eli on 9/18/2017.
+ */
 public class MainActivity extends AppCompatActivity {
 
     //FireBase
     private FirebaseAuth mAuth;
+    //having this is standard practice for firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    //needed for the Navigation item switch statement
     private TextView mTextMessage;
 
     //Keep track of the FireBase attempts
@@ -100,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener
+            mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -134,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 signOut();
 
-                //navigates back to the logn screen
+                //navigates back to the login screen
                 Intent in = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(in);
                 return true;
