@@ -80,9 +80,9 @@ public class DefaultPieChart extends Activity
 
 
     @Override
-    @SuppressWarnings({"ChainedMethodCall", "OverlyLongMethod"})
     // The API code uses quite a few chained methods
     // The API code's onCreate method is pretty long, but this is fine in this case
+    @SuppressWarnings({"ChainedMethodCall", "OverlyLongMethod"})
     @SuppressLint("ClickableViewAccessibility") // this suppress doesn't work for some reason
     public void onCreate(Bundle savedInstanceState)
     {
