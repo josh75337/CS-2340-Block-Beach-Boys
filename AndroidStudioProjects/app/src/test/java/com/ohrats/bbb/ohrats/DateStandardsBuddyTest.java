@@ -14,15 +14,12 @@ import static org.junit.Assert.*;
  */
 public class DateStandardsBuddyTest {
 
-    private DateFormat iso8601DF;
-
     private Date curDate1;
 
     private String expected1;
 
     @Before
     public void setUp() throws Exception {
-        iso8601DF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Quoted "Z" to indicate UTC, no timezone offset
 
         //date is the epoch
         curDate1 = new Date(0);
