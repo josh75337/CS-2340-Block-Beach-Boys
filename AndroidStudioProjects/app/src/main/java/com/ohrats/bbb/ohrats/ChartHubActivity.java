@@ -269,8 +269,8 @@ public class ChartHubActivity extends AppCompatActivity {
         Log.v(TAG, yValues.toString());
 
         //pass data with the intent
-        in.putExtra("X_VALS", xValues);
-        in.putExtra("Y_VALS", yValues);
+        in.putExtra("X_VALUES", xValues);
+        in.putExtra("Y_VALUES", yValues);
 
         //navigate the the plot
         startActivity(in);
