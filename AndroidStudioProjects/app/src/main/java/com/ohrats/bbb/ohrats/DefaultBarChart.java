@@ -1,6 +1,7 @@
 package com.ohrats.bbb.ohrats;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +21,9 @@ import java.util.Arrays;
 
 public class DefaultBarChart extends AppCompatActivity {
 
-    private final String TAG = "DefaultBarChart";
-
-    private XYPlot plot;
-
     private Number[] xValues = new Number[10];
 
     private Number[] yValues = new Number[10];
-
-    private String timeFrame;
 
 
     @Override
@@ -37,26 +32,27 @@ public class DefaultBarChart extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALUES");
+        String TAG = "DefaultBarChart";
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
-        xValues = (Number[]) domain.toArray(xValues);
+        xValues = domain.toArray(xValues);
 
         ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALUES");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
-        yValues = (Number[]) range.toArray(yValues);
+        yValues = range.toArray(yValues);
 
 
-        timeFrame = getIntent().getStringExtra("SERIES_TITLE");
+        String timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
-        plot = (XYPlot) findViewById(R.id.plot);
+        XYPlot plot = (XYPlot) findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
         final Number[] domainLabels = xValues;
 
         // turn the above arrays into XYSeries':
-        Log.v(TAG, yValues.toString());
+        //Log.v(TAG, yValues.toString());
         XYSeries series1 = new SimpleXYSeries(Arrays.asList(yValues), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeFrame);
-        Log.d(TAG, series1.toString());
+        //Log.d(TAG, series1.toString());
 
         BarFormatter bf = new BarFormatter(Color.RED, Color.WHITE);
 
@@ -65,10 +61,9 @@ public class DefaultBarChart extends AppCompatActivity {
         // add a new series' to the xy plot:
         plot.addSeries(series1, bf);
 
-        final ArrayList<Integer> alreadyListed = new ArrayList<>();
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+            public StringBuffer format(@NonNull Object obj, @NonNull StringBuffer toAppendTo, @NonNull FieldPosition pos) {
                 Number tempNum = (Number) obj;
                 double d = tempNum.doubleValue();
                 int i = (int) Math.ceil(d);
@@ -83,7 +78,7 @@ public class DefaultBarChart extends AppCompatActivity {
 //                }
             }
             @Override
-            public Object parseObject(String source, ParsePosition pos) {
+            public Object parseObject(String source, @NonNull ParsePosition pos) {
                 return null;
             }
         });
