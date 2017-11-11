@@ -73,12 +73,22 @@ public class DefaultPieChart extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_pie_chart);
 
-        domain = getIntent().getIntegerArrayListExtra("X_VALS");
-        Log.d(TAG, "Domain passed by intent is: " + domain.toString());
+        domain = getIntent().getIntegerArrayListExtra("X_VALUES");
+        if (domain != null) {
+            Log.d(TAG, "Domain passed by intent is: " + domain.toString());
+        } else {
+            Log.d(TAG, "Domain passed by intent was null!");
+        }
 //        xVals = (Number[]) domain.toArray(xVals);
 
-        range = getIntent().getIntegerArrayListExtra("Y_VALS");
-        Log.d(TAG, "Range passed by intent is: " + range.toString());
+        range = getIntent().getIntegerArrayListExtra("Y_VALUES");
+        if (range != null) {
+            Log.d(TAG, "Range passed by intent is: " + range.toString());
+        } else {
+            Log.d(TAG, "Range passed by intent was null!");
+        }
+
+
 //        yVals = (Number[]) range.toArray(yVals);
 
         updateListView();
