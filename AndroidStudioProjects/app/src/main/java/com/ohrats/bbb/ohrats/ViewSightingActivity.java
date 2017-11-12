@@ -1,6 +1,5 @@
 package com.ohrats.bbb.ohrats;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,15 +21,20 @@ public class ViewSightingActivity extends AppCompatActivity{
     //debugging log
     private static final String TAG = "ViewSightingActivity";
 
+    //checks for nulls a lot
+    //suppressed because the classes need to be called to get the correct information per sighting
+    @SuppressWarnings({"OverlyComplexMethod", "FeatureEnvy", "OverlyLongMethod"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewsighting);
 
         // grabs rat sighting object passed with intent
+        //suppressed because it grabs each intent and passes it along to a view
+        @SuppressWarnings("ChainedMethodCall")
         RatSighting sighting = (RatSighting) getIntent().getSerializableExtra("RAT_SIGHTING");
 
-        // grab textview elements from ui
+        // grab text view elements from ui
         TextView mUniqueKey = (TextView) findViewById(R.id.runiquekey);
         TextView mCreatedDate = (TextView) findViewById(R.id.rdate);
         TextView mLocationType = (TextView) findViewById(R.id.rlocationtype);
@@ -41,18 +45,23 @@ public class ViewSightingActivity extends AppCompatActivity{
         TextView mLatitude = (TextView) findViewById(R.id.rlatitude);
         TextView mLongitude = (TextView) findViewById(R.id.rlongitude);
 
-        mUniqueKey.setText((!sighting.getKey().equals("")) ? sighting.getKey() : "N/A");
-        mLocationType.setText((!sighting.getLocationType().equals("")) ? sighting.getLocationType() : "N/A");
-        mIncidentZip.setText((!sighting.getZip().equals("")) ? sighting.getZip() : "N/A");
-        mIncidentAddress.setText((!sighting.getAddress().equals("")) ? sighting.getAddress() : "N/A");
-        mCity.setText((!sighting.getCity().equals("")) ? sighting.getCity() : "N/A");
-        mBorough.setText((!sighting.getBorough().equals("")) ? sighting.getBorough() : "N/A");
-        mLatitude.setText((sighting.getLatitude() != 0) ? Double.toString(sighting.getLatitude()) : "N/A");
-        mLongitude.setText((sighting.getLongitude() != 0) ? Double.toString(sighting.getLongitude()) : "N/A");
+        mUniqueKey.setText((!("").equals(sighting.getKey())) ? sighting.getKey() : "N/A");
+        mLocationType.setText((!("").equals(sighting.getLocationType()))
+                ? sighting.getLocationType() : "N/A");
+        mIncidentZip.setText((!("").equals(sighting.getZip())) ? sighting.getZip() : "N/A");
+        mIncidentAddress.setText((!("").equals(sighting.getAddress()))
+                ? sighting.getAddress() : "N/A");
+        mCity.setText((!("").equals(sighting.getCity())) ? sighting.getCity() : "N/A");
+        mBorough.setText((!("").equals(sighting.getBorough())) ? sighting.getBorough() : "N/A");
+        mLatitude.setText((sighting.getLatitude() != 0)
+                ? Double.toString(sighting.getLatitude()) : "N/A");
+        mLongitude.setText((sighting.getLongitude() != 0)
+                ? Double.toString(sighting.getLongitude()) : "N/A");
 
-        if (!sighting.getDate().equals("")) {
+        if (!("").equals(sighting.getDate())) {
             if (useISO8601Display) {
-                mCreatedDate.setText(sighting.getDate() + " EST");
+                String createdDate = sighting.getDate() + R.string.EST;
+                mCreatedDate.setText(createdDate);
             } else {
                 try {
                     Date dateFromString =
@@ -81,7 +90,8 @@ public class ViewSightingActivity extends AppCompatActivity{
                 } catch (ParseException e) {
                     Log.d(TAG, "ParseException while trying to parse " + sighting.getDate());
                     // inform the user of bad data
-                    mCreatedDate.setText("ERR PARSING: " + sighting.getDate());
+                    String stringError = R.string.Error_Parsing + sighting.getDate();
+                    mCreatedDate.setText(stringError);
                 }
             }
 

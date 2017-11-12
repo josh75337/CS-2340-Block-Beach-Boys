@@ -53,6 +53,8 @@
     <string name="chart_type_message">Chose a chart type</string>
     <string name="date_start_hint">Start Date</string>
     <string name="date_end_hint">End Date</string>
+    <string name="EST"> EST</string>
+    <string name="Error_Parsing">Error Parsing: </string>
     <string-array name="chart_type_array">
         <item>Pie Chart</item>
         <item>Bar Chart</item>
