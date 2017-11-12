@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="com.ohrats.bbb.ohrats.DateStandardsBuddy" method="truncateTimeFromISO8601ESTString" />
+    <pattern value="com.ohrats.bbb.ohrats.ViewRatReportListFragment" method="updateSightingList" />
+    <pattern value="com.ohrats.bbb.ohrats.ViewRatReportListFragment" method="setSightingList" />
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
