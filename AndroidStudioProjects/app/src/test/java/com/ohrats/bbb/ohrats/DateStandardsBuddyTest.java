@@ -34,4 +34,10 @@ public class DateStandardsBuddyTest {
         assertEquals(expected1, date);
     }
 
+    @Test
+    public void getISO8601ESTStringForNullDate() throws Exception {
+        String date = DateStandardsBuddy.getISO8601ESTStringForDate(null);
+        assertEquals("", date);
+    }
+
 }
