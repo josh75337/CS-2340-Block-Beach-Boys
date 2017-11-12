@@ -12,7 +12,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 
 @IgnoreExtraProperties
-public class RatSighting implements Serializable {
+class RatSighting implements Serializable {
 
     private String key;                // unique key
     private String date;              // created date

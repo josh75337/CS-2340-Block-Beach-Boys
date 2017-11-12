@@ -8,7 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
  * Created by Elijah on 9/25/2017.
  */
 @IgnoreExtraProperties
-public class User {
+class User {
 
     private String email;
     private String password;

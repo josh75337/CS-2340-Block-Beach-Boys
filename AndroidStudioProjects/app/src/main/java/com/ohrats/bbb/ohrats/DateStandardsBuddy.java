@@ -18,7 +18,7 @@ import java.util.TimeZone;
 //   just an abstraction to help programmers deal with date formatting and not a thing that needs to
 //   exist as its own object
 @SuppressWarnings({"UtilityClass", "DefaultFileTemplate"})
-public final class DateStandardsBuddy {
+final class DateStandardsBuddy {
 
     // Suppressing warnings which tell us that we're not respecting the date format of the user's
     // locale. i.e. I know what I'm doing
