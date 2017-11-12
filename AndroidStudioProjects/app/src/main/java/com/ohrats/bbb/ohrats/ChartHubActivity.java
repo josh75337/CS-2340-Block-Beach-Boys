@@ -300,7 +300,7 @@ public class ChartHubActivity extends AppCompatActivity {
         //noinspection CollectionDeclaredAsConcreteClass,TypeMayBeWeakened
         SortedMap<String, Integer> sortedPairs = new TreeMap<>(inputData);
 
-        ArrayList<String> tempString = new ArrayList<>(sortedPairs.keySet());
+        Iterable<String> tempString = new ArrayList<>(sortedPairs.keySet());
         ArrayList<Integer> xValues = new ArrayList<>();
         for (String str : tempString) {
             xValues.add(Integer.parseInt(str));
