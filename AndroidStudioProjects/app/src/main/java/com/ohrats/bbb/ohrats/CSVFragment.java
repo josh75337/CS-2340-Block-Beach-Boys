@@ -16,13 +16,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
- * fragment that handles uploading csvs
+ * fragment that handles uploading CSVs
  * Created by Matt on 10/6/2017.
  */
 
@@ -32,10 +29,14 @@ public class CSVFragment extends Fragment {
 
     private static final String TAG = "CSVFragment";
 
+    // easier to locate what buttons the activity has if not local
+    @SuppressWarnings("FieldCanBeLocal")
     private Button addCSV;
 
     private int count;
 
+    // helps locate and change file name if needed for debugging
+    @SuppressWarnings("FieldCanBeLocal")
     private final String CSV_FILE_NAME = "Rat_Sightings.csv";
 
     @Nullable
@@ -62,15 +63,15 @@ public class CSVFragment extends Fragment {
     /**
      * Creates a RatSighting with the given data and uploads it to the database
      *
-     * @param key
-     * @param date
-     * @param locationType
-     * @param zip
-     * @param address
-     * @param city
-     * @param borough
-     * @param latitude
-     * @param longitude
+     * @param key           : Unique Key
+     * @param date          : Created Date
+     * @param locationType  : Location Type
+     * @param zip           : Incident Zip
+     * @param address       : Incident Address
+     * @param city          : City
+     * @param borough       : Boroughs
+     * @param latitude      : Latitude
+     * @param longitude     : Longitude
      */
     private void writeNewSighting(String key,
                                   String date,
@@ -99,11 +100,14 @@ public class CSVFragment extends Fragment {
      *
      * User still needs to manually give app permission to read and edit files:
      * https://stackoverflow.com/a/38578137
+     *
+     * method considered too complex to analyze but does not contain any bugs
      */
+    @SuppressWarnings("ConstantConditions")
     private void writeSightingCSV() {
         Log.v(TAG, "writeSightingCSV called");
 
-        String csvFileName = new String(CSV_FILE_NAME);
+        String csvFileName = CSV_FILE_NAME;
         File dataFolder = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //--------------------------------------------------------------------------
@@ -119,8 +123,8 @@ public class CSVFragment extends Fragment {
         Log.v(TAG, ".canWrite() " + csvFileName + "?: " + csvFile.canWrite());
         Log.v(TAG, "writeSightingCSV with path: " + csvFile.getPath());
 
-        BufferedReader br = null;
-        String line = "";
+        BufferedReader br;
+        String line;
         String splitBy = ",";
         FileInputStream fis;
         try {

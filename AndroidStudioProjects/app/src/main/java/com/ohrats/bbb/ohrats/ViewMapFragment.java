@@ -30,20 +30,20 @@ import com.google.android.gms.tasks.Task;
 import java.util.LinkedList;
 
 /**
+ * Displays rat sighting data using GoogleMaps API
  * Created by Matt on 10/23/2017.
  */
 
 public class ViewMapFragment extends Fragment {
 
-    private static final String TAG = "MapFragment";
+//    private static final String TAG = "MapFragment";
 
     private LinkedList<RatSighting> sightingList = new LinkedList<>();
-    private LinkedList<Marker> markerList = new LinkedList<>();
+    private final LinkedList<Marker> markerList = new LinkedList<>();
 
-    private MapView mMapView;
     private GoogleMap mMap;
-    FusedLocationProviderClient mFusedLocationProviderClient;
-    Location mLastKnownLocation;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Location mLastKnownLocation;
 
 
 
@@ -52,7 +52,7 @@ public class ViewMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mMapView = (MapView) view.findViewById(R.id.mapView);
+        MapView mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();
@@ -98,7 +98,7 @@ public class ViewMapFragment extends Fragment {
     /**
      * sets sighting list
      */
-    public void setSightingList(LinkedList list) {
+    public void setSightingList(LinkedList<RatSighting> list) {
         sightingList = list;
     }
 
@@ -141,8 +141,8 @@ public class ViewMapFragment extends Fragment {
 //     cases when a location is not available.
 
         try {
-            Task locationResult = mFusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener() {
+            Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
