@@ -206,12 +206,14 @@ public class LoginActivity extends AppCompatActivity {
      * @param password The users password
      * REQUIRED by Firebase
      */
+    @SuppressWarnings("unused")
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
 
         // Calls upon the Firebase Gods to login
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @SuppressWarnings("unused")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -239,6 +241,7 @@ public class LoginActivity extends AppCompatActivity {
      * Signs a user out from Firebase
      * REQUIRED by Firebase
      */
+    @SuppressWarnings("unused")
     private void signOut() {
         mAuth.signOut();
     }
