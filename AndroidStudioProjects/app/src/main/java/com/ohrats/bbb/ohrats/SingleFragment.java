@@ -63,6 +63,10 @@ public class SingleFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_single, container, false);
     }
 
+    @SuppressWarnings("ChainedMethodCall")
+    /*
+    * see within the method for explanations
+    * */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         locationType = (Spinner) view.findViewById(R.id.IncidentLocationType);
@@ -139,6 +143,10 @@ public class SingleFragment extends Fragment {
      * called when the user clicks the submit button. Calls validation method
      * and creates rat sighting object and if valid adds it to the database
      */
+    @SuppressWarnings("ChainedMethodCall")
+    /*
+    * see internals of method for explanation
+    * */
     private void submitRatSighting() {
         if(isValid()) {
             /*
@@ -184,6 +192,8 @@ public class SingleFragment extends Fragment {
      * @param incidentLatitude - latitude of rat sighting
      * @param createdDate - the date the rat sighting was created
      */
+    @SuppressWarnings("MethodWithTooManyParameters")
+    //this is necessary for the creation of the rat sighting object
     private void createRatSighting(String incidentLocationType,
                                    String incidentAddress,
                                    String incidentCity,
@@ -198,7 +208,7 @@ public class SingleFragment extends Fragment {
         String zip = "" + incidentZip;
         String date = "" + createdDate;
 
-        validateKey(_key);
+        //validateKey(_key);
 
         _borough = (String) boroughSpinner.getSelectedItem();
 
@@ -207,6 +217,9 @@ public class SingleFragment extends Fragment {
                 incidentAddress, incidentCity, _borough, incidentLatitude, incidentLongitude);
 
         //add to the database
+        //noinspection ChainedMethodCall
+        //firebase convention
+        //noinspection ChainedMethodCall
         mDatabase.child("sightings").child(_key).setValue(newSighting);
 
         Log.i(TAG, "New RatSighting created and added to the database");
@@ -215,17 +228,17 @@ public class SingleFragment extends Fragment {
         startActivity(in);
     }
 
-    /**
+    /*
      * Checks if the key already has data associated
      * @param _key The current key
      */
-    private void validateKey(String _key) {
+    //private void validateKey(String _key) {
         //while the key is defined move along
         /*
          * Bob said we didn't need to cover key collisions yet but this
          * method is here for if we want to ever implement it
          */
-    }
+    //}
 
     /**
      * Gets the selected borough from the spinner
@@ -235,11 +248,13 @@ public class SingleFragment extends Fragment {
      * @param id- id of the spinner
      */
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        /*
+    @SuppressWarnings({"unused", "ChainedMethodCall"})
+    /*
          * this method needs to arguments it has now because that is what
-         * android wants I think
+         * android wants I think --> android convention
          */
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
         _borough = parent.getItemAtPosition(position).toString();
     }
 
@@ -247,6 +262,8 @@ public class SingleFragment extends Fragment {
      * validates the rat sighting
      * @return - true if it is valid and false if it isn't
      */
+    @SuppressWarnings("ChainedMethodCall")
+    //
     private boolean isValid() {
 
         if (locationType.getSelectedItem() == null) {
@@ -259,14 +276,23 @@ public class SingleFragment extends Fragment {
             return false;
         } else if (TextUtils.isEmpty(latitude.getText().toString())) {
             return false;
-        } else if(TextUtils.isEmpty(longitude.getText().toString())) {
-            return false;
-        } else if (TextUtils.isEmpty(zip.getText().toString())) {
-            //this style makes the code way more readable and does not affect performance
-            //compared to alternative approaches so I think it is fine
+        } else
+            // bob said
+        //this way is so much easier to read so just suppress it
+            //noinspection SimplifiableIfStatement
+            if(TextUtils.isEmpty(longitude.getText().toString())) {
             return false;
         } else {
-            return true;
+            return !TextUtils.isEmpty(zip.getText().toString());
         }
+
+            //        } else
+//            if (TextUtils.isEmpty(zip.getText().toString())) {
+//            //this style makes the code way more readable and does not affect performance
+//            //compared to alternative approaches so I think it is fine
+//            return false;
+//        } else {
+//            return true;
+//        }
     }
 }

@@ -15,12 +15,19 @@ public class AddSightingActivity extends AppCompatActivity{
 
 
     //Keep a log for debugging
+    @SuppressWarnings("unused")
+    //this field is used in debugging so we keep it around
     private static final String TAG = "AddSightingActivity";
 
-    //Both of these could be local variables but it is better
-    //to have them as fields because they could be needed
-    //for additional methods to the code
-    private SectionsPageAdapter mSectionPageAdapter;
+// --Commented out by Inspection START (11/13/2017 2:15 PM):
+//    //Both of these could be local variables but it is better
+//    //to have them as fields because they could be needed
+//    //for additional methods to the code. Also,
+//    //this is the convention for firebase
+//    @SuppressWarnings("FieldCanBeLocal")
+//    private SectionsPageAdapter mSectionPageAdapter;
+// --Commented out by Inspection STOP (11/13/2017 2:15 PM)
+    @SuppressWarnings("FieldCanBeLocal")
     private ViewPager mViewPager;
 
     @Override
@@ -28,7 +35,7 @@ public class AddSightingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addsighting);
 
-        mSectionPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        //mSectionPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         mViewPager  = (ViewPager) findViewById(R.id.scontainer);
 

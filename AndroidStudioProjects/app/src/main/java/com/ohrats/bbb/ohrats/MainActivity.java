@@ -26,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     //FireBase
     private FirebaseAuth mAuth;
-    //having this is standard practice for firebase
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
+    @SuppressWarnings("unused")
     //needed for the Navigation item switch statement
     private TextView mTextMessage;
 
@@ -48,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase initialization and listener creation
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        @SuppressWarnings("unused")
+                //this is useful for debugging
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("unused")
+    //needed to set the text of the text message UI element
     private final BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
