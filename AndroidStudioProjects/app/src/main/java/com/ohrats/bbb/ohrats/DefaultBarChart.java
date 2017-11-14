@@ -19,6 +19,10 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A class the creates a bar chart
+ * Eli Bailey
+ */
 public class DefaultBarChart extends AppCompatActivity {
 
     private Number[] xValues = new Number[10];
@@ -45,7 +49,9 @@ public class DefaultBarChart extends AppCompatActivity {
         yValues = range.toArray(yValues);
 
         //Getting information from intent, suppressed method
-        @SuppressWarnings("ChainedMethodCall") String timeFrame = getIntent().getStringExtra("SERIES_TITLE");
+        @SuppressWarnings("ChainedMethodCall")
+        String timeFrame;
+        timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
         XYPlot plot = (XYPlot) findViewById(R.id.plot);
@@ -67,7 +73,7 @@ public class DefaultBarChart extends AppCompatActivity {
         plot.addSeries(series1, bf);
 
         //Getting information from intent, suppressed method
-        //STANDARD for the androidplot library
+        //STANDARD for the android plot library
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, @NonNull StringBuffer toAppendTo,

@@ -18,6 +18,10 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A class the creates an XY Plot
+ * Eli Bailey
+ */
 public class XYDefaultPlot extends AppCompatActivity {
 
     private static final String TAG = "XYDefaultPlot";
@@ -43,7 +47,9 @@ public class XYDefaultPlot extends AppCompatActivity {
         yValues = range.toArray(yValues);
 
 
-        @SuppressWarnings("ChainedMethodCall") String timeFrame = getIntent().getStringExtra("SERIES_TITLE");
+        //Line too long because of suppressed
+        @SuppressWarnings("ChainedMethodCall") String timeFrame;
+        timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
         XYPlot plot = (XYPlot) findViewById(R.id.plot);
