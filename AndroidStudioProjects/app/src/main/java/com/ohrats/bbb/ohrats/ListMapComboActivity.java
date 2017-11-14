@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * Created by Matt on 10/23/2017.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings({"DefaultFileTemplate", "CyclicClassDependency"})
 public class ListMapComboActivity extends AppCompatActivity {
 
 
@@ -119,7 +119,7 @@ public class ListMapComboActivity extends AppCompatActivity {
                 searchStart = new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis();
                 //noinspection AssignmentToMethodParameter
                 month = month + 1;
-                //suppressed because only used in US
+                //suppressed because string only used in U.S.
                 mStartDate.setText(String.format("%02d/%02d/%4d", month, dayOfMonth, year));
                 if (getCurrentFocus() != null) {
                     getCurrentFocus().clearFocus();
