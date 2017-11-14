@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
  * 
  * Created by Matt on 10/3/2017.
  */
+@SuppressWarnings("CyclicClassDependency")
 public class AddSightingActivity extends AppCompatActivity{
 
 

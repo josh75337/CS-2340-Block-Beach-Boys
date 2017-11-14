@@ -86,7 +86,7 @@ public class ViewRatReportListFragment extends Fragment {
 
         // Button for going to the manual add and csv selector screen
 
-//        mNextButton = (Button) view.findViewById(R.id.rnext);
+//        mNextButton = (Button) view.findViewById(R.id.rNext);
 //        mNextButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -94,7 +94,7 @@ public class ViewRatReportListFragment extends Fragment {
 //            }
 //        });
 //
-//        mPrevButton = (Button) view.findViewById(R.id.rprevious);
+//        mPrevButton = (Button) view.findViewById(R.id.rPrevious);
 //        mPrevButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -103,7 +103,7 @@ public class ViewRatReportListFragment extends Fragment {
 //        });
 //        mPrevButton.setClickable(false);
 //
-//        mPageNumView = (TextView) view.findViewById(R.id.rpagenumber);
+//        mPageNumView = (TextView) view.findViewById(R.id.rPageNumber);
 
         return view;
     }
