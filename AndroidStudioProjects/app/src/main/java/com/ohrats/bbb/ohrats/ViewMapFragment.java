@@ -38,18 +38,25 @@ public class ViewMapFragment extends Fragment {
 
 //    private static final String TAG = "MapFragment";
 
+    // declaration as linked list makes it clearer as to what you are doing
+    @SuppressWarnings("CollectionDeclaredAsConcreteClass")
     private LinkedList<RatSighting> sightingList = new LinkedList<>();
+    @SuppressWarnings({"CollectionDeclaredAsConcreteClass", "TypeMayBeWeakened"})
     private final LinkedList<Marker> markerList = new LinkedList<>();
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
 
+    private final int DEFAULT_ZOOM = 12;
+
 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         MapView mMapView = (MapView) view.findViewById(R.id.mapView);
@@ -58,9 +65,12 @@ public class ViewMapFragment extends Fragment {
         mMapView.onResume();
 
         // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        mFusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(getActivity());
 
         try {
+            // necessary for google maps
+            //noinspection ChainedMethodCall
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.getMessage();
@@ -79,11 +89,20 @@ public class ViewMapFragment extends Fragment {
                         startActivity(myIntent);
                     }
                 });
-                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                if ((ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) &&
+                        (ActivityCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED)) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
+                //necessary for google maps
+                //noinspection ChainedMethodCall
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 getDeviceLocation();
                 updateMapMarkers();
@@ -97,8 +116,11 @@ public class ViewMapFragment extends Fragment {
 
     /**
      * sets sighting list
+     * @param list that sightingList is being set to
      */
     public void setSightingList(LinkedList<RatSighting> list) {
+        // necessary setter for functionality
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         sightingList = list;
     }
 
@@ -112,17 +134,24 @@ public class ViewMapFragment extends Fragment {
     /**
      * updates markers on map
      */
+    // rat sighting class is plain old java object
+    @SuppressWarnings("FeatureEnvy")
     private void updateMapMarkers() {
         for (Marker m : markerList) {
             m.remove();
         }
         for (RatSighting r : sightingList) {
-            String rDate = (!r.getDate().equals("")) ? r.getDate() : "N/A";
-            String rAddress = (!r.getAddress().equals("")) ? r.getAddress() : "N/A";
+            String rDate = (!"".equals(r.getDate())) ? r.getDate() : "N/A";
+            String rAddress = (!"".equals(r.getAddress())) ? r.getAddress() : "N/A";
+            // defaults location to New York city if no lat and long given
+            // will change possibly to look at street address, city, borough to be location
+            //noinspection MagicNumber
             double rLat = (r.getLatitude() != 0) ? r.getLatitude() : 40.7128;
+            //noinspection MagicNumber
             double rLong = (r.getLongitude() != 0) ? r.getLongitude() : -74.0060;
 
-            // @TODO Somehow a null pointer happened here?
+            // architectural decision
+            @SuppressWarnings("ChainedMethodCall")
             Marker m = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(rLat, rLong))
                     .title(r.getKey())
@@ -143,18 +172,22 @@ public class ViewMapFragment extends Fragment {
         try {
             Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
             locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                @SuppressWarnings("MagicNumber")
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         // Set the map's camera position to the current location of the device.
                         mLastKnownLocation = (Location) task.getResult();
                         if (mLastKnownLocation == null) {
+                            // lat long of NYC
+                            //noinspection MagicNumber
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(40.7128, -74.0060), 12));
+                                    new LatLng(40.7128, -74.0060), DEFAULT_ZOOM));
                         } else {
+                            //noinspection MagicNumber
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), 12));
+                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                         }
                     }
                 }
