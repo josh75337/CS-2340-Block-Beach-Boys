@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
+@SuppressWarnings("CyclicClassDependency")  //Intents used
 public class LoginActivity extends AppCompatActivity {
 
     //FireBase
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        //Firebase favors this style
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -137,7 +139,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = mEmailView.getText().toString();
+        //Architectural decision
+        @SuppressWarnings("ChainedMethodCall") String email = mEmailView.getText().toString();
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError("Required.");
             valid = false;
@@ -145,7 +148,8 @@ public class LoginActivity extends AppCompatActivity {
             mEmailView.setError(null);
         }
 
-        String password = mPasswordView.getText().toString();
+        //Architectural decision
+        @SuppressWarnings("ChainedMethodCall") String password = mPasswordView.getText().toString();
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("Required.");
             valid = false;
@@ -168,8 +172,9 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        //Architectural decision -> modularity
+        @SuppressWarnings("ChainedMethodCall") String email = mEmailView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String password = mPasswordView.getText().toString();
 
         //Check to ensure the user has input valid information
         if (!validateForm()) {
@@ -211,6 +216,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "signIn:" + email);
 
         // Calls upon the Firebase Gods to login
+        //noinspection ChainedMethodCall
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @SuppressWarnings("unused")
@@ -226,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            //noinspection ChainedMethodCall
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

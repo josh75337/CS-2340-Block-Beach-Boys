@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
  *
  * Created by Eli on 9/18/2017.
  */
+@SuppressWarnings("CyclicClassDependency")
 public class MainActivity extends AppCompatActivity {
 
     //FireBase

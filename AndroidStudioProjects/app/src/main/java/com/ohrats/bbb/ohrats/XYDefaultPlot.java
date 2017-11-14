@@ -32,16 +32,18 @@ public class XYDefaultPlot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xyplot);
 
-        ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALUES");
+        @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> domain;
+        domain = getIntent().getIntegerArrayListExtra("X_VALUES");
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
         xValues = domain.toArray(xValues);
 
-        ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALUES");
+        @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> range;
+        range = getIntent().getIntegerArrayListExtra("Y_VALUES");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
         yValues = range.toArray(yValues);
 
 
-        String timeFrame = getIntent().getStringExtra("SERIES_TITLE");
+        @SuppressWarnings("ChainedMethodCall") String timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
         XYPlot plot = (XYPlot) findViewById(R.id.plot);
@@ -51,11 +53,14 @@ public class XYDefaultPlot extends AppCompatActivity {
 
         // turn the above arrays into XYSeries':
         //Log.d(TAG, yValues.toString());
-        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yValues), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeFrame);
+        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yValues),
+                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeFrame);
         //Log.d(TAG, monthly.toString());
 
         // create formatter to use for drawing a series using LineAndPointRenderer
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
+        LineAndPointFormatter series1Format;
+        series1Format = new LineAndPointFormatter(null, Color.WHITE,
+                null, null);
 
         // axis labels may get messed up by this
         //PanZoom.attach(plot);
@@ -63,9 +68,11 @@ public class XYDefaultPlot extends AppCompatActivity {
         // add a new series' to the xy plot:
         plot.addSeries(monthly, series1Format);
 
+        //noinspection ChainedMethodCall,ChainedMethodCall
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
-            public StringBuffer format(Object obj, @NonNull StringBuffer toAppendTo, @NonNull FieldPosition pos) {
+            public StringBuffer format(Object obj, @NonNull StringBuffer toAppendTo,
+                                       @NonNull FieldPosition pos) {
                 Number tempNum = (Number) obj;
                 double d = tempNum.doubleValue();
                 int i = (int) Math.ceil(d);

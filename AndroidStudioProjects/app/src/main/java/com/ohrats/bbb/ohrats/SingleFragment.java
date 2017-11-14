@@ -32,6 +32,7 @@ import java.util.Arrays;
  */
 
 
+@SuppressWarnings("CyclicClassDependency")
 public class SingleFragment extends Fragment {
     //debugging log
     private static final String TAG = "SingleFragment";

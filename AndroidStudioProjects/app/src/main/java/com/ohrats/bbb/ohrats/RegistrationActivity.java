@@ -24,11 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+@SuppressWarnings("CyclicClassDependency")
 public class RegistrationActivity extends AppCompatActivity {
 
     //FireBase Authentication
     private FirebaseAuth mAuth;
-    @SuppressWarnings({"unused", "FieldCanBeLocal"}) //Required by Firebase
+    @SuppressWarnings("unused") //Required by Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     //Firebase Realtime DataBase
@@ -56,7 +57,9 @@ public class RegistrationActivity extends AppCompatActivity {
         levelSpinner = (Spinner) findViewById(R.id.level_spinner);
 
         //Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.level_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter;
+        adapter = ArrayAdapter.createFromResource(this, R.array.level_array,
+                android.R.layout.simple_spinner_item);
         //Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
@@ -88,6 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         //initialize database reference
+        //noinspection ChainedMethodCall
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // database event listener
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -121,6 +125,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void writeNewUser(String email, String password, String level, String userId) {
         User user = new User(email, password, level);
         //Add the Plain Old Java Object to the database
+        //noinspection ChainedMethodCall,ChainedMethodCall
         mDatabase.child("users").child(userId).setValue(user);
         Log.d(TAG, "writeNewUser:success");
     }
@@ -136,8 +141,8 @@ public class RegistrationActivity extends AppCompatActivity {
         rPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = rEmailView.getText().toString();
-        String password = rPasswordView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String email = rEmailView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String password = rPasswordView.getText().toString();
         String level = (String) levelSpinner.getSelectedItem();
 
         if (!validateForm()) {
@@ -173,6 +178,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void createAccount(final String email, final String password) {
         Log.d(TAG, "createAccount:" + email);
 
+        //noinspection ChainedMethodCall
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -184,6 +190,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            //noinspection ChainedMethodCall
                             Toast.makeText(RegistrationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -199,7 +206,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = rEmailView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String email = rEmailView.getText().toString();
         if (TextUtils.isEmpty(email)) {
             rEmailView.setError("Required.");
             valid = false;
@@ -207,7 +214,7 @@ public class RegistrationActivity extends AppCompatActivity {
             rEmailView.setError(null);
         }
 
-        String password = rPasswordView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String password = rPasswordView.getText().toString();
         if (TextUtils.isEmpty(password)) {
             rPasswordView.setError("Required.");
             valid = false;
