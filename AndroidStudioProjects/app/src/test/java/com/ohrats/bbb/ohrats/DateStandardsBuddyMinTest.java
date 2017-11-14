@@ -21,7 +21,7 @@ public class DateStandardsBuddyMinTest {
     //meant to be null
     @SuppressWarnings({"AssignmentToNull", "ConstantConditions"})
     @Test
-    public void testEmptyString() {
+    public void testNullDate() {
         testDate = null;
         String testResult = DateStandardsBuddy.getISO8601MINStringForDate(testDate);
         assertEquals("", testResult);
