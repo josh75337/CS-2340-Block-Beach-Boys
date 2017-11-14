@@ -28,7 +28,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //FireBase Authentication
     private FirebaseAuth mAuth;
-    @SuppressWarnings("unused") //Required by Firebase
+    @SuppressWarnings({"unused", "FieldCanBeLocal"}) //Required by Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     //Firebase Realtime DataBase
