@@ -24,12 +24,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Where the user signs up for the application
+ */
 @SuppressWarnings("CyclicClassDependency")
 public class RegistrationActivity extends AppCompatActivity {
 
     //FireBase Authentication
     private FirebaseAuth mAuth;
-    @SuppressWarnings("unused") //Required by Firebase
+    @SuppressWarnings({"unused", "FieldCanBeLocal"}) //Required by Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     //Firebase Realtime DataBase

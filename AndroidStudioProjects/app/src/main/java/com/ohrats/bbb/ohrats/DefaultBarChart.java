@@ -29,7 +29,10 @@ public class DefaultBarChart extends AppCompatActivity {
 
     private Number[] yValues = new Number[10];
 
-
+    /**
+     * Called on the creation of the app
+     * @param savedInstanceState Passed in by the activity lifestyle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
