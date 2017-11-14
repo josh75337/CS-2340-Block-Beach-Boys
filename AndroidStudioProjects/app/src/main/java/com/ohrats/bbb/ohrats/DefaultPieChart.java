@@ -16,18 +16,21 @@
 
 package com.ohrats.bbb.ohrats;
 
-import android.animation.Animator;
+//import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.*;
+//import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.AdapterView;
+//import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -35,51 +38,71 @@ import com.androidplot.pie.PieChart;
 import com.androidplot.pie.PieRenderer;
 import com.androidplot.pie.Segment;
 import com.androidplot.pie.SegmentFormatter;
-import com.androidplot.util.*;
+import com.androidplot.util.PixelUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * The simplest possible example of using AndroidPlot to plot some data.
  */
+@SuppressWarnings("MagicNumber") // All of suppressed magic numbers are from API code
+@SuppressLint("ClickableViewAccessibility") // support of performClick is out of scope
 public class DefaultPieChart extends Activity
 {
 
+    @SuppressWarnings("FieldCanBeLocal") // Shouldn't be local var because bad for visibility
     private final String TAG = "DefaultPieChart";
 
-    public static final int SELECTED_SEGMENT_OFFSET = 50;
+    private static final int SELECTED_SEGMENT_OFFSET = 50;
 
+    @SuppressWarnings("unused") // this is very clearly used, gives errors if removed
     private TextView donutSizeTextView;
+
+    @SuppressWarnings("FieldCanBeLocal") // this is from API code, should be kept for clarity
     private SeekBar donutSizeSeekBar;
 
-    public PieChart pie;
+    private PieChart pie;
 
+    // Shouldn't be local var because may be used in
+    // multiple functions later and should be accessible
+    @SuppressWarnings("FieldCanBeLocal")
     private ListView simpleList;
 
-//    private Number[] xVals;
-//    private Number[] yVals;
-    ArrayList<Integer> domain;
-    ArrayList<Integer> range;
+    private List<Integer> domain;
+    private List<Integer> range;
 
-    private Segment s1;
-    private Segment s2;
-    private Segment s3;
-    private Segment s4;
+    // --Commented out by Inspection (11/11/2017 4:46 PM):private Segment s1;
+    // --Commented out by Inspection (11/11/2017 4:46 PM):private Segment s2;
+    // --Commented out by Inspection (11/11/2017 4:46 PM):private Segment s3;
+    // --Commented out by Inspection (11/11/2017 4:46 PM):private Segment s4;
+
 
     @Override
+    // The API code uses quite a few chained methods
+    // The API code's onCreate method is pretty long, but this is fine in this case
+    @SuppressWarnings({"ChainedMethodCall", "OverlyLongMethod"})
+    @SuppressLint("ClickableViewAccessibility") // this suppress doesn't work for some reason
     public void onCreate(Bundle savedInstanceState)
     {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_pie_chart);
 
-        domain = getIntent().getIntegerArrayListExtra("X_VALS");
-        Log.d(TAG, "Domain passed by intent is: " + domain.toString());
-//        xVals = (Number[]) domain.toArray(xVals);
+        domain = getIntent().getIntegerArrayListExtra("X_VALUES");
+        if (domain != null) {
+            Log.d(TAG, "Domain passed by intent is: " + domain.toString());
+        } else {
+            Log.d(TAG, "Domain passed by intent was null!");
+        }
 
-        range = getIntent().getIntegerArrayListExtra("Y_VALS");
-        Log.d(TAG, "Range passed by intent is: " + range.toString());
-//        yVals = (Number[]) range.toArray(yVals);
+        range = getIntent().getIntegerArrayListExtra("Y_VALUES");
+        if (range != null) {
+            Log.d(TAG, "Range passed by intent is: " + range.toString());
+        } else {
+            Log.d(TAG, "Range passed by intent was null!");
+        }
 
         updateListView();
 
@@ -93,13 +116,18 @@ public class DefaultPieChart extends Activity
         pie.getPie().setPadding(padding, padding, padding, padding);
 
         // detect segment clicks:
+
+        // can't suppress an accessibility warning here
+        // android is super pedantic about a touch versus a click
         pie.setOnTouchListener(new View.OnTouchListener() {
             @Override
+            @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 PointF click = new PointF(motionEvent.getX(), motionEvent.getY());
                 if(pie.getPie().containsPoint(click)) {
-                    Segment segment = pie.getRenderer(PieRenderer.class).getContainingSegment(click);
-
+                    Segment segment =
+                            pie.getRenderer(PieRenderer.class).getContainingSegment(click);
+                    //---------------------------------------------------------------------
                     if(segment != null) {
                         final boolean isSelected = getFormatter(segment).getOffset() != 0;
                         deselectAll();
@@ -148,10 +176,10 @@ public class DefaultPieChart extends Activity
             }
         });
 
-//        donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
-//        updateDonutText();
+        //donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
+        updateDonutText();
 
-        ArrayList<Segment> pieSegments = new ArrayList<Segment>();
+        List<Segment> pieSegments = new ArrayList<>();
         for(int i = 0; i < domain.size(); i++) {
             pieSegments.add(new Segment(domain.get(i).toString(), range.get(i)));
         }
@@ -162,10 +190,10 @@ public class DefaultPieChart extends Activity
 //        s3 = new Segment("s3", 7);
 //        s4 = new Segment("s4", 9);
 
-        EmbossMaskFilter emf = new EmbossMaskFilter(
-                new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
+//        EmbossMaskFilter emf = new EmbossMaskFilter(
+//                new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
 
-        ArrayList<SegmentFormatter> pieSegmentFormatters = new ArrayList<SegmentFormatter>();
+        List<SegmentFormatter> pieSegmentFormats = new ArrayList<>();
         Random rand = new Random();
         int randomColor;
         int r;
@@ -176,7 +204,7 @@ public class DefaultPieChart extends Activity
             g = rand.nextInt(255);
             b = rand.nextInt(255);
             randomColor = Color.rgb(r, g, b);
-            pieSegmentFormatters.add(new SegmentFormatter(randomColor));
+            pieSegmentFormats.add(new SegmentFormatter(randomColor));
         }
 //        SegmentFormatter sf1 = new SegmentFormatter(Color.RED);
 //        SegmentFormatter sf2 = new SegmentFormatter(Color.BLACK);
@@ -200,7 +228,7 @@ public class DefaultPieChart extends Activity
 //        sf4.getFillPaint().setMaskFilter(emf);
 
         for(int i = 0; i < pieSegments.size(); i++) {
-            pie.addSegment(pieSegments.get(i), pieSegmentFormatters.get(i));
+            pie.addSegment(pieSegments.get(i), pieSegmentFormats.get(i));
         }
 
 //        pie.addSegment(s1, sf1);
@@ -218,18 +246,22 @@ public class DefaultPieChart extends Activity
         setupIntroAnimation();
     }
 
-    protected void updateDonutText() {
-        donutSizeTextView.setText(donutSizeSeekBar.getProgress() + "%");
+    @SuppressLint("SetTextI18n") // can't use @string value because is not static
+    private void updateDonutText() {
+        if (donutSizeTextView != null) {
+            donutSizeTextView.setText(donutSizeSeekBar.getProgress() + "%");
+        }
     }
 
+    @SuppressWarnings("ChainedMethodCall") // this helps with code clarity for adding to the list
     private void updateListView() {
-        ArrayList<String>pieDataList = new ArrayList<String>();
+        ArrayList<String>pieDataList = new ArrayList<>();
         for(int i = 0; i < domain.size(); i++) {
             pieDataList.add("Time-frame: " + domain.get(i).toString()
                             + " Occurrences: " + range.get(i).toString());
         }
         simpleList = (ListView) this.findViewById(R.id.pie_listview);
-        ArrayAdapter<String> arrayAdapter =
+        ListAdapter arrayAdapter =
                 new ArrayAdapter<>(this,
                         R.layout.activity_pie_list_item,
                         R.id.textView,
@@ -239,7 +271,7 @@ public class DefaultPieChart extends Activity
     }
 
 
-    protected void setupIntroAnimation() {
+    private void setupIntroAnimation() {
 
         final PieRenderer renderer = pie.getRenderer(PieRenderer.class);
         // start with a zero degrees pie:

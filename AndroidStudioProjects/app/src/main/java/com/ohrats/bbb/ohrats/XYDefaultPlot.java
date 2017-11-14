@@ -1,16 +1,12 @@
 package com.ohrats.bbb.ohrats;
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.PanZoom;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
@@ -22,17 +18,17 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A class the creates an XY Plot
+ * Eli Bailey
+ */
 public class XYDefaultPlot extends AppCompatActivity {
 
     private static final String TAG = "XYDefaultPlot";
 
-    private XYPlot plot;
+    private Number[] xValues = new Number[10];
 
-    private Number[] xVals = new Number[10];
-
-    private Number[] yVals = new Number[10];
-
-    private String timeframe;
+    private Number[] yValues = new Number[10];
 
 
     @Override
@@ -40,40 +36,52 @@ public class XYDefaultPlot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xyplot);
 
-        ArrayList<Integer> domain = getIntent().getIntegerArrayListExtra("X_VALS");
+        @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> domain;
+        //noinspection ChainedMethodCall
+        domain = getIntent().getIntegerArrayListExtra("X_VALUES");
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
-        xVals = (Number[]) domain.toArray(xVals);
+        xValues = domain.toArray(xValues);
 
-        ArrayList<Integer> range = getIntent().getIntegerArrayListExtra("Y_VALS");
+        @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> range;
+        //noinspection ChainedMethodCall
+        range = getIntent().getIntegerArrayListExtra("Y_VALUES");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
-        yVals = (Number[]) range.toArray(yVals);
+        yValues = range.toArray(yValues);
 
 
-        timeframe = getIntent().getStringExtra("SERIES_TITLE");
+        //Line too long because of suppressed
+        @SuppressWarnings("ChainedMethodCall") String timeFrame;
+        //noinspection ChainedMethodCall
+        timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
-        plot = (XYPlot) findViewById(R.id.plot);
+        XYPlot plot = (XYPlot) findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
-        final Number[] domainLabels = xVals;
+        final Number[] domainLabels = xValues;
 
         // turn the above arrays into XYSeries':
-        Log.d(TAG, yVals.toString());
-        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yVals), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeframe);
-        Log.d(TAG, monthly.toString());
+        //Log.d(TAG, yValues.toString());
+        XYSeries monthly = new SimpleXYSeries(Arrays.asList(yValues),
+                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, timeFrame);
+        //Log.d(TAG, monthly.toString());
 
-        // create formatters to use for drawing a series using LineAndPointRenderer
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(null, Color.WHITE, null, null);
+        // create formatter to use for drawing a series using LineAndPointRenderer
+        LineAndPointFormatter series1Format;
+        series1Format = new LineAndPointFormatter(null, Color.WHITE,
+                null, null);
 
-        // axis lables may get messed up by this
+        // axis labels may get messed up by this
         //PanZoom.attach(plot);
 
-        // add a new series' to the xyplot:
+        // add a new series' to the xy plot:
         plot.addSeries(monthly, series1Format);
 
+        //noinspection ChainedMethodCall,ChainedMethodCall
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+            public StringBuffer format(Object obj, @NonNull StringBuffer toAppendTo,
+                                       @NonNull FieldPosition pos) {
                 Number tempNum = (Number) obj;
                 double d = tempNum.doubleValue();
                 int i = (int) Math.ceil(d);
@@ -83,7 +91,7 @@ public class XYDefaultPlot extends AppCompatActivity {
                 return toAppendTo.append(domainLabels[i]);
             }
             @Override
-            public Object parseObject(String source, ParsePosition pos) {
+            public Object parseObject(String source, @NonNull ParsePosition pos) {
                 return null;
             }
         });

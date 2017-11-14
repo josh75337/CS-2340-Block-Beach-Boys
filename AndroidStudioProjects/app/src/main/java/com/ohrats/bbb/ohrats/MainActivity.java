@@ -17,12 +17,19 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * the home screen of the application
+ *
+ * Created by Eli on 9/18/2017.
+ */
+@SuppressWarnings("CyclicClassDependency")
 public class MainActivity extends AppCompatActivity {
 
     //FireBase
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
+    @SuppressWarnings("unused")
+    //needed for the Navigation item switch statement
     private TextView mTextMessage;
 
     //Keep track of the FireBase attempts
@@ -41,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase initialization and listener creation
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        @SuppressWarnings("unused")
+                //this is useful for debugging
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -100,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    @SuppressWarnings("unused")
+    //needed to set the text of the text message UI element
+    private final BottomNavigationView.OnNavigationItemSelectedListener
+            mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -134,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 signOut();
 
-                //navigates back to the logn screen
+                //navigates back to the login screen
                 Intent in = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(in);
                 return true;

@@ -1,10 +1,9 @@
 package com.ohrats.bbb.ohrats;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -33,23 +32,20 @@ import java.util.LinkedList;
  * Created by Matt on 10/23/2017.
  */
 
+@SuppressWarnings({"DefaultFileTemplate", "CyclicClassDependency"})
 public class ListMapComboActivity extends AppCompatActivity {
 
 
     //Keep a log for debugging
     private static final String TAG = "ListMapComboActivity";
 
-    private ViewPager mViewPager;
     private DatabaseReference mDatabase;
-    private final int SIGHTINGS_PER_PAGE = 50;
 
     private ViewMapFragment mapFragment;
     private ViewRatReportListFragment ratReportListFragment;
 
     private LinkedList<RatSighting> sightingList = new LinkedList<>();
 
-//    private Button mAddSightingButton;
-    private Button mUpdateButton;
     private Button mSearchButton;
 
     private TextView mStartDate;
@@ -67,16 +63,20 @@ public class ListMapComboActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
     private DatePickerDialog.OnDateSetListener mEndDateSetListener;
 
+    @SuppressWarnings("ChainedMethodCall")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        ViewPager mViewPager;
         Log.d(TAG, "Created Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listmapcombo);
         mViewPager  = (ViewPager) findViewById(R.id.scontainer);
 
+        //suppressed because Firebase requires weird rules
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         startDateMillis = 0;
+        //suppressed because has to be done per instance
         endDateMillis = Calendar.getInstance().getTimeInMillis();
 
         updateStart = startDateMillis;
@@ -88,16 +88,6 @@ public class ListMapComboActivity extends AppCompatActivity {
         mapFragment = new ViewMapFragment();
         ratReportListFragment = new ViewRatReportListFragment();
         updateSightingList();
-
-//        mAddSightingButton = (Button) findViewById(R.id.raddsighting);
-//        mAddSightingButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewAddSightingActivity();
-//            }
-//        });
-
-
 
 
         mStartDate = (TextView) findViewById(R.id.mstartdate);
@@ -113,7 +103,8 @@ public class ListMapComboActivity extends AppCompatActivity {
                             ListMapComboActivity.this,
                             mStartDateSetListener,
                             year, month, day);
-//                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    //suppressed because sets bounds for date in text box
                     dialog.getDatePicker().setMaxDate(searchEnd);
                     dialog.show();
                 }
@@ -121,15 +112,24 @@ public class ListMapComboActivity extends AppCompatActivity {
         });
 
         mStartDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("DefaultLocale")
+            @SuppressWarnings({"ConstantConditions", "AssignmentToMethodParameter"})
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 searchStart = new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis();
+                //noinspection AssignmentToMethodParameter
                 month = month + 1;
+                //suppressed because string only used in U.S.
                 mStartDate.setText(String.format("%02d/%02d/%4d", month, dayOfMonth, year));
-                getCurrentFocus().clearFocus();
+                if (getCurrentFocus() != null) {
+                    getCurrentFocus().clearFocus();
+                }
                 mSearchButton.setEnabled(true);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
             }
         };
 
@@ -146,7 +146,7 @@ public class ListMapComboActivity extends AppCompatActivity {
                             ListMapComboActivity.this,
                             mEndDateSetListener,
                             year, month, day);
-//                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.getDatePicker().setMinDate(searchStart);
                     dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
                     dialog.show();
@@ -155,15 +155,24 @@ public class ListMapComboActivity extends AppCompatActivity {
         });
 
         mEndDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("DefaultLocale")
+            @SuppressWarnings({"ConstantConditions", "AssignmentToMethodParameter"})
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                searchEnd = new GregorianCalendar(year, month, dayOfMonth + 1).getTimeInMillis() - 1;
+                searchEnd = new GregorianCalendar(year, month,
+                        dayOfMonth + 1).getTimeInMillis() - 1;
+                //noinspection AssignmentToMethodParameter
                 month = month + 1;
                 mEndDate.setText(String.format("%02d/%02d/%4d", month, dayOfMonth, year));
-                getCurrentFocus().clearFocus();
+                if (getCurrentFocus() != null) {
+                    getCurrentFocus().clearFocus();
+                }
                 mSearchButton.setEnabled(true);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                InputMethodManager imm =
+                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
             }
         };
 
@@ -175,6 +184,8 @@ public class ListMapComboActivity extends AppCompatActivity {
             }
         });
 
+
+        Button mUpdateButton;
         mUpdateButton = (Button) findViewById(R.id.rupdate);
         mUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +212,7 @@ public class ListMapComboActivity extends AppCompatActivity {
 
     /**
      * takes view pager and adds fragments that will be the different tabs
-     * @param viewPager
+     * @param viewPager the passed in viewPager that reads in the list and map
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
@@ -223,11 +234,15 @@ public class ListMapComboActivity extends AppCompatActivity {
     /**
      * fetches RatSighting(s) from database and adds them to sightingList
      */
+    @SuppressWarnings("ChainedMethodCall")
     private void updateSightingList() {
+        final int SIGHTINGS_PER_PAGE = 50;
         Log.v(TAG, "updateSightingList called");
         DatabaseReference sightingsRef = mDatabase.child("sightings");
         sightingList = new LinkedList<>();
 
+        //noinspection ChainedMethodCall,ChainedMethodCall,ChainedMethodCall
+        // suppressed because used to set up sightings by date
         Query query = sightingsRef.orderByChild("date")
                 .startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(startDateMillis)))
                 .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(endDateMillis)))
