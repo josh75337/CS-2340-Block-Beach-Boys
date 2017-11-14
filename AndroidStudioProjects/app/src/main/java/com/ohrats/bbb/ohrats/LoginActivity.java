@@ -1,33 +1,16 @@
 package com.ohrats.bbb.ohrats;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.LightingColorFilter;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,14 +22,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
-
 /**
  * A login screen that offers login via email/password.
  */
+@SuppressWarnings("CyclicClassDependency")  //Intents used
 public class LoginActivity extends AppCompatActivity {
 
     //FireBase
@@ -60,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    //private View mProgressView;
+    //private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        //Firebase favors this style
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                //noinspection UnclearExpression
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
@@ -110,8 +91,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mLoginFormView = findViewById(R.id.login_form);
+        //mProgressView = findViewById(R.id.login_progress);
 
         //Firebase initialization and lister creation
         mAuth = FirebaseAuth.getInstance();
@@ -133,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Attaches the listerence to mAuth for FireBase
+     * Attaches the listener to mAuth for FireBase
      */
     @Override
     public void onStart() {
@@ -159,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = mEmailView.getText().toString();
+        //Architectural decision
+        @SuppressWarnings("ChainedMethodCall") String email = mEmailView.getText().toString();
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError("Required.");
             valid = false;
@@ -167,7 +149,8 @@ public class LoginActivity extends AppCompatActivity {
             mEmailView.setError(null);
         }
 
-        String password = mPasswordView.getText().toString();
+        //Architectural decision
+        @SuppressWarnings("ChainedMethodCall") String password = mPasswordView.getText().toString();
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("Required.");
             valid = false;
@@ -190,8 +173,9 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        //Architectural decision -> modularity
+        @SuppressWarnings("ChainedMethodCall") String email = mEmailView.getText().toString();
+        @SuppressWarnings("ChainedMethodCall") String password = mPasswordView.getText().toString();
 
         //Check to ensure the user has input valid information
         if (!validateForm()) {
@@ -226,13 +210,17 @@ public class LoginActivity extends AppCompatActivity {
      * If valid, the user is logged-in and taken to the main application screen
      * @param email The users email
      * @param password The users password
+     * REQUIRED by Firebase
      */
+    @SuppressWarnings("unused")
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
 
         // Calls upon the Firebase Gods to login
+        //noinspection ChainedMethodCall
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @SuppressWarnings("unused")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -245,6 +233,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            //noinspection ChainedMethodCall
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -258,7 +247,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Signs a user out from Firebase
+     * REQUIRED by Firebase
      */
+    @SuppressWarnings("unused")
     private void signOut() {
         mAuth.signOut();
     }

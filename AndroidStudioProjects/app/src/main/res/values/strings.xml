@@ -33,7 +33,7 @@
 
     <!-- Rat Sighting Strings -->
     <string name="sighting_city">City</string>
-    <string name="sighting_zipCode">Zipcode</string>
+    <string name="sighting_zipCode">ZIP code</string>
     <string name="sighting_latitude">Latitude</string>
     <string name="sighting_longitude">Longitude</string>
     <string name="sighting_address">Address</string>
@@ -47,12 +47,14 @@
     </string-array>
 
     <!-- Chart Strings -->
-    <string name="chart_hub_message">Pleae configure a chart</string>
+    <string name="chart_hub_message">Please configure a chart</string>
     <string name="launch_chart_button">Show Chart</string>
     <string name="chart_range_message">Chose a time period</string>
     <string name="chart_type_message">Chose a chart type</string>
     <string name="date_start_hint">Start Date</string>
     <string name="date_end_hint">End Date</string>
+    <string name="EST"> EST</string>
+    <string name="Error_Parsing">Error Parsing: </string>
     <string-array name="chart_type_array">
         <item>Pie Chart</item>
         <item>Bar Chart</item>

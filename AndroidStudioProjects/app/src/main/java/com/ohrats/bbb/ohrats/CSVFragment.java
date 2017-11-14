@@ -16,13 +16,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
- * fragment that handles uploading csvs
+ * fragment that handles uploading CSVs
  * Created by Matt on 10/6/2017.
  */
 
@@ -32,18 +29,26 @@ public class CSVFragment extends Fragment {
 
     private static final String TAG = "CSVFragment";
 
+    // easier to locate what buttons the activity has if not local
+    @SuppressWarnings("FieldCanBeLocal")
     private Button addCSV;
 
     private int count;
 
+    // helps locate and change file name if needed for debugging
+    @SuppressWarnings("FieldCanBeLocal")
     private final String CSV_FILE_NAME = "Rat_Sightings.csv";
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_csv, container, false);
         addCSV = (Button) view.findViewById(R.id.raddcsv);
 
+        //necessary for firebase
+        //noinspection ChainedMethodCall
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         addCSV.setOnClickListener(new View.OnClickListener() {
@@ -62,16 +67,18 @@ public class CSVFragment extends Fragment {
     /**
      * Creates a RatSighting with the given data and uploads it to the database
      *
-     * @param key
-     * @param date
-     * @param locationType
-     * @param zip
-     * @param address
-     * @param city
-     * @param borough
-     * @param latitude
-     * @param longitude
+     * @param key           : Unique Key
+     * @param date          : Created Date
+     * @param locationType  : Location Type
+     * @param zip           : Incident Zip
+     * @param address       : Incident Address
+     * @param city          : City
+     * @param borough       : Boroughs
+     * @param latitude      : Latitude
+     * @param longitude     : Longitude
      */
+    // necessary because rat sighting plain old java object has that many parameters 
+    @SuppressWarnings("MethodWithTooManyParameters")
     private void writeNewSighting(String key,
                                   String date,
                                   String locationType,
@@ -85,6 +92,8 @@ public class CSVFragment extends Fragment {
 
         RatSighting sighting = new RatSighting(key, date, locationType, zip, address,
                 city, borough, latitude, longitude);
+        // necessary for firebase
+        //noinspection ChainedMethodCall,ChainedMethodCall
         mDatabase.child("sightings").child(key).setValue(sighting);
         count++;
         Log.d(TAG, "Count is " + count);
@@ -99,11 +108,16 @@ public class CSVFragment extends Fragment {
      *
      * User still needs to manually give app permission to read and edit files:
      * https://stackoverflow.com/a/38578137
+     *
      */
+    // method considered too complex to analyze but does not contain any bugs
+    // switch statement inside for loop to find indices of fields followed by while to parse csv
+    // code is long because it parses the csv and there a decent number of fields
+    @SuppressWarnings({"ConstantConditions", "OverlyComplexMethod", "OverlyLongMethod"})
     private void writeSightingCSV() {
         Log.v(TAG, "writeSightingCSV called");
 
-        String csvFileName = new String(CSV_FILE_NAME);
+        String csvFileName = CSV_FILE_NAME;
         File dataFolder = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //--------------------------------------------------------------------------
@@ -111,16 +125,13 @@ public class CSVFragment extends Fragment {
 
         Log.v(TAG, "dataFolder path: " + dataFolder.getPath());
 
-        // Deprecated filepath
-        //String csvFile = Environment.getExternalStorageDirectory().getPath().concat("/Android/data/org.krupczak.matthew/Rat_Sightings.csv");
-
         Log.v(TAG, "does " + csvFileName + " exist?: " + csvFile.exists());
         Log.v(TAG, ".canRead() " + csvFileName + "?: " + csvFile.canRead());
         Log.v(TAG, ".canWrite() " + csvFileName + "?: " + csvFile.canWrite());
         Log.v(TAG, "writeSightingCSV with path: " + csvFile.getPath());
 
-        BufferedReader br = null;
-        String line = "";
+        BufferedReader br;
+        String line;
         String splitBy = ",";
         FileInputStream fis;
         try {
@@ -172,20 +183,30 @@ public class CSVFragment extends Fragment {
 
             // This second loop grabs an individual row and uses the data at relevant indices
             //     to make a call to writeNewSighting to write a RatSighting to the database
+            // necessary to check whether there exists a next line while getting the line if exists
+            //noinspection NestedAssignment
             while ((line = br.readLine()) != null) {
                 sighting = line.split(splitBy);
                 int sightingLength = sighting.length;
                 String key = (fieldIndex[0] < sightingLength) ? sighting[fieldIndex[0]] : null;
                 String date = (fieldIndex[1] < sightingLength) ?
-                        DateStandardsBuddy.garbageAmericanStringToISO8601ESTString(sighting[fieldIndex[1]]) : null;
-                String locationType = (fieldIndex[2] < sightingLength) ? sighting[fieldIndex[2]] : null;
+                        DateStandardsBuddy
+                                .garbageAmericanStringToISO8601ESTString(sighting[fieldIndex[1]]):
+                                                                                            null;
+                String locationType =
+                        (fieldIndex[2] < sightingLength) ? sighting[fieldIndex[2]] : null;
                 String zip = (fieldIndex[3] < sightingLength) ? sighting[fieldIndex[3]] : null;
                 String address = (fieldIndex[4] < sightingLength) ? sighting[fieldIndex[4]] : null;
                 String city = (fieldIndex[5] < sightingLength) ? sighting[fieldIndex[5]] : null;
                 String borough = (fieldIndex[6] < sightingLength) ? sighting[fieldIndex[6]] : null;
-                double latitude = (fieldIndex[7] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[7]]) : 0;
-                double longitude = (fieldIndex[8] < sightingLength) ? Double.parseDouble(sighting[fieldIndex[8]]) : 0;
-                writeNewSighting(key, date, locationType, zip, address, city, borough, latitude, longitude);
+                double latitude =
+                        (fieldIndex[7] < sightingLength) ?
+                                Double.parseDouble(sighting[fieldIndex[7]]) : 0;
+                double longitude =
+                        (fieldIndex[8] < sightingLength) ?
+                                Double.parseDouble(sighting[fieldIndex[8]]) : 0;
+                writeNewSighting(key, date, locationType, zip,address,
+                        city, borough, latitude, longitude);
             }
             // close the FileInputStream since we're now done with it
             fis.close();
