@@ -40,6 +40,7 @@ public class DefaultBarChart extends AppCompatActivity {
 
         //Getting information from intent, suppressed method
         @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> domain;
+        //noinspection ChainedMethodCall
         domain = getIntent().getIntegerArrayListExtra("X_VALUES");
         String TAG = "DefaultBarChart";
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
@@ -47,6 +48,7 @@ public class DefaultBarChart extends AppCompatActivity {
 
         //Getting information from intent, suppressed method
         @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> range;
+        //noinspection ChainedMethodCall
         range = getIntent().getIntegerArrayListExtra("Y_VALUES");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
         yValues = range.toArray(yValues);
@@ -54,6 +56,7 @@ public class DefaultBarChart extends AppCompatActivity {
         //Getting information from intent, suppressed method
         @SuppressWarnings("ChainedMethodCall")
         String timeFrame;
+        //noinspection ChainedMethodCall
         timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
@@ -77,6 +80,7 @@ public class DefaultBarChart extends AppCompatActivity {
 
         //Getting information from intent, suppressed method
         //STANDARD for the android plot library
+        //noinspection ChainedMethodCall,ChainedMethodCall
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, @NonNull StringBuffer toAppendTo,

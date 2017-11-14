@@ -37,11 +37,13 @@ public class XYDefaultPlot extends AppCompatActivity {
         setContentView(R.layout.activity_xyplot);
 
         @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> domain;
+        //noinspection ChainedMethodCall
         domain = getIntent().getIntegerArrayListExtra("X_VALUES");
         Log.d(TAG, "Domain passed by intent is: " + domain.toString());
         xValues = domain.toArray(xValues);
 
         @SuppressWarnings("ChainedMethodCall") ArrayList<Integer> range;
+        //noinspection ChainedMethodCall
         range = getIntent().getIntegerArrayListExtra("Y_VALUES");
         Log.d(TAG, "Range passed by intent is: " + range.toString());
         yValues = range.toArray(yValues);
@@ -49,6 +51,7 @@ public class XYDefaultPlot extends AppCompatActivity {
 
         //Line too long because of suppressed
         @SuppressWarnings("ChainedMethodCall") String timeFrame;
+        //noinspection ChainedMethodCall
         timeFrame = getIntent().getStringExtra("SERIES_TITLE");
 
         // initialize our XYDefaultPlot reference:
