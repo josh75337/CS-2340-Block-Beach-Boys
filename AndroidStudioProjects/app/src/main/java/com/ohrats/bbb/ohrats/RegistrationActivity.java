@@ -45,6 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
     // UI references.
     private EditText rEmailView;
     private EditText rPasswordView;
+    private EditText rConfirmPasswordView;
 //    private View mProgressView;
 //    private View mLoginFormView;
     private Spinner levelSpinner;
@@ -57,6 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
         //Grab the elements from the UI
         rEmailView = (EditText) findViewById(R.id.remail);
         rPasswordView = (EditText) findViewById(R.id.rpassword);
+        rConfirmPasswordView = (EditText) findViewById(R.id.rconfirmpassword);
         levelSpinner = (Spinner) findViewById(R.id.level_spinner);
 
         //Create an ArrayAdapter using the string array and a default spinner layout
@@ -142,6 +144,7 @@ public class RegistrationActivity extends AppCompatActivity {
         // Reset errors.
         rEmailView.setError(null);
         rPasswordView.setError(null);
+        rConfirmPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         @SuppressWarnings("ChainedMethodCall") String email = rEmailView.getText().toString();
@@ -223,6 +226,16 @@ public class RegistrationActivity extends AppCompatActivity {
             valid = false;
         } else {
             rPasswordView.setError(null);
+            String confirm = rConfirmPasswordView.getText().toString();
+            if (TextUtils.isEmpty(confirm)) {
+                rConfirmPasswordView.setError("Required");
+                valid = false;
+            } else if (!password.equals(confirm)) {
+                rConfirmPasswordView.setError("Passwords don't match");
+                valid = false;
+            } else {
+                rConfirmPasswordView.setError(null);
+            }
         }
         return valid;
     }
