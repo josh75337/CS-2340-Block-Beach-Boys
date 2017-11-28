@@ -128,7 +128,9 @@ public class ViewMapFragment extends Fragment {
      * public method called by combo activity that calls the updateMapMarkers method
      */
     public void update() {
-        updateMapMarkers();
+        if (mMap != null) {
+            updateMapMarkers();
+        }
     }
 
     /**
