@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -247,12 +248,14 @@ public class ListMapComboActivity extends AppCompatActivity {
                 .startAt(DateStandardsBuddy.getISO8601MINStringForDate(new Date(startDateMillis)))
                 .endAt(DateStandardsBuddy.getISO8601MAXStringForDate(new Date(endDateMillis)))
                 .limitToLast(SIGHTINGS_PER_PAGE);
-        query.addChildEventListener(new ChildEventListener() {
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // updates fragments sighting list
-                // inefficient atm which may be causing the slowness of app
-                sightingList.addFirst(dataSnapshot.getValue(RatSighting.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    RatSighting sightingToAdd = data.getValue(RatSighting.class);
+                    sightingList.addFirst(sightingToAdd);
+                }
                 mapFragment.setSightingList(sightingList);
                 mapFragment.update();
                 ratReportListFragment.setSightingList(sightingList);
@@ -260,23 +263,8 @@ public class ListMapComboActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // ...
             }
         });
     }

@@ -141,12 +141,13 @@ public class ViewRatReportListFragment extends Fragment {
 
     }
 
-    /**
-     * fetches RatSighting(s) from database and adds them to sightingList
-     *
-     * also calls updateListView() every time a RatSighting is fetched in order to populate
-     * the list view
-     */
+//    /**
+//     * fetches RatSighting(s) from database and adds them to sightingList
+//     *
+//     * also calls updateListView() every time a RatSighting is fetched in order to populate
+//     * the list view
+//     */
+/*
     @SuppressWarnings("ChainedMethodCall") // chained calls are integral to firebase queries
     private void updateSightingList() {
         Log.v(TAG, "updateSightingList called" );
@@ -202,6 +203,7 @@ public class ViewRatReportListFragment extends Fragment {
             }
         });
     }
+*/
 
 //    public void nextPage() {
 //        pageNum++;
