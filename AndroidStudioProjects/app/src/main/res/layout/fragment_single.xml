@@ -39,21 +39,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/IncidentLongitude"
+    <Switch
+        android:id="@+id/rcurrentlocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        android:hint="@string/sighting_longitude" />
+        android:checked="false"
+        android:paddingLeft="5dp"
+        android:text="Use Current Location"
+        android:textAlignment="textStart"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/IncidentLatitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="numberDecimal"
-        android:hint="@string/sighting_latitude" />
+        android:hint="@string/sighting_latitude"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/IncidentLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/sighting_longitude"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/submitSightingButton"

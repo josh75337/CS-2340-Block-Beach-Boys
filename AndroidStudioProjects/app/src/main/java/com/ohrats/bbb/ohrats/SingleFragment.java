@@ -1,8 +1,13 @@
 package com.ohrats.bbb.ohrats;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,10 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Button;
+import android.widget.Switch;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,14 +59,17 @@ public class SingleFragment extends Fragment {
     private Spinner boroughSpinner;
     private EditText latitude;
     private EditText longitude;
+    private Switch mCurrentLoction;
 
     //RatSighting information
     /*
     * the queens is hardcoded as the default choice to prevent a null pointer exception
     * */
-    private String _borough = "Queens";
+//    private String _borough = "Queens";
     private String _key;
 
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Location mLastKnownLocation;
 
     @Nullable
     @Override
@@ -92,6 +106,42 @@ public class SingleFragment extends Fragment {
         locationTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationType.setAdapter(locationTypeAdapter);
 
+        mFusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(getActivity());
+
+        mCurrentLoction = (Switch) view.findViewById(R.id.rcurrentlocation);
+        mCurrentLoction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    latitude.setVisibility(View.GONE);
+                    longitude.setVisibility(View.GONE);
+                    if ((ActivityCompat.checkSelfPermission(getActivity(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED) &&
+                            (ActivityCompat.checkSelfPermission(getActivity(),
+                                    android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                                    != PackageManager.PERMISSION_GRANTED)) {
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                        android.Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                    }
+
+                    Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                    locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
+                                mLastKnownLocation = (Location) task.getResult();
+                            }
+                        }
+                    });
+                } else {
+                    latitude.setVisibility(View.VISIBLE);
+                    longitude.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         Button submitButton = (Button) view.findViewById(R.id.submitSightingButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +199,11 @@ public class SingleFragment extends Fragment {
     * see internals of method for explanation
     * */
     private void submitRatSighting() {
+        address.setError(null);
+        city.setError(null);
+        zip.setError(null);
+        latitude.setError(null);
+        longitude.setError(null);
         if(isValid()) {
             /*
             * we have already checked that all of these spinners have selected values
@@ -161,14 +216,27 @@ public class SingleFragment extends Fragment {
 
             String incidentCity = city.getText().toString();
 
+            String incidentBorough = boroughSpinner.getSelectedItem().toString();
 
-            double incidentLatitude;
-            double incidentLongitude;
+            final double incidentLatitude;
+            final double incidentLongitude;
             int incidentZip;
             try {
                 //these are try caught
-                incidentLatitude = Double.parseDouble(latitude.getText().toString());
-                incidentLongitude = Double.parseDouble(longitude.getText().toString());
+                if (mCurrentLoction.isChecked()) {
+                    Log.d(TAG, "It is not the switch");
+                    if (mLastKnownLocation == null) {
+                        // lat long of NYC
+                        incidentLatitude = 40.7128;
+                        incidentLongitude = -74.0060;
+                    } else {
+                        incidentLatitude = mLastKnownLocation.getLatitude();
+                        incidentLongitude = mLastKnownLocation.getLongitude();
+                    }
+                } else {
+                    incidentLatitude = Double.parseDouble(latitude.getText().toString());
+                    incidentLongitude = Double.parseDouble(longitude.getText().toString());
+                }
                 incidentZip = Integer.parseInt(zip.getText().toString());
             } catch(Exception e) {
                 return;
@@ -176,7 +244,7 @@ public class SingleFragment extends Fragment {
 
             String isoCurrentDate = DateStandardsBuddy.getISO8601ESTStringForCurrentDate();
 
-            createRatSighting(incidentLocationType, incidentAddress, incidentCity,
+            createRatSighting(incidentLocationType, incidentAddress, incidentCity, incidentBorough,
                     incidentZip, incidentLongitude, incidentLatitude, isoCurrentDate);
         }
 
@@ -198,6 +266,7 @@ public class SingleFragment extends Fragment {
     private void createRatSighting(String incidentLocationType,
                                    String incidentAddress,
                                    String incidentCity,
+                                   String borough,
                                    int incidentZip,
                                    double incidentLongitude,
                                    double incidentLatitude,
@@ -211,11 +280,11 @@ public class SingleFragment extends Fragment {
 
         //validateKey(_key);
 
-        _borough = (String) boroughSpinner.getSelectedItem();
+//        _borough = (String) boroughSpinner.getSelectedItem();
 
         //create new sighting
         RatSighting newSighting = new RatSighting(_key, date, incidentLocationType, zip,
-                incidentAddress, incidentCity, _borough, incidentLatitude, incidentLongitude);
+                incidentAddress, incidentCity, borough, incidentLatitude, incidentLongitude);
 
         //add to the database
         //noinspection ChainedMethodCall
@@ -241,23 +310,22 @@ public class SingleFragment extends Fragment {
          */
     //}
 
-    /**
-     * Gets the selected borough from the spinner
-     * @param parent -parent view of the spinner
-     * @param view - the view of the spinner
-     * @param position - the position of the item selected
-     * @param id- id of the spinner
-     */
-
-    @SuppressWarnings({"unused", "ChainedMethodCall"})
-    /*
-         * this method needs to arguments it has now because that is what
-         * android wants I think --> android convention
-         */
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        _borough = parent.getItemAtPosition(position).toString();
-    }
+//    *
+//     * Gets the selected borough from the spinner
+//     * @param parent -parent view of the spinner
+//     * @param view - the view of the spinner
+//     * @param position - the position of the item selected
+//     * @param id- id of the spinner
+//
+//
+//    @SuppressWarnings({"unused", "ChainedMethodCall"})
+//
+//         * this method needs to arguments it has now because that is what
+//         * android wants I think --> android convention
+//
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        _borough = parent.getItemAtPosition(position).toString();
+//    }
 
     /**
      * validates the rat sighting
@@ -266,34 +334,46 @@ public class SingleFragment extends Fragment {
     @SuppressWarnings("ChainedMethodCall")
     //
     private boolean isValid() {
+        boolean valid = true;
 
-        if (locationType.getSelectedItem() == null) {
-            return false;
-        } else if (TextUtils.isEmpty(address.getText().toString())) {
-            return false;
-        } else if (TextUtils.isEmpty(city.getText().toString())) {
-            return false;
-        } else if(boroughSpinner.getSelectedItem() == null) {
-            return false;
-        } else if (TextUtils.isEmpty(latitude.getText().toString())) {
-            return false;
-        } else
-            // bob said
-        //this way is so much easier to read so just suppress it
-            //noinspection SimplifiableIfStatement
-            if(TextUtils.isEmpty(longitude.getText().toString())) {
-            return false;
+        if (TextUtils.isEmpty(address.getText().toString())) {
+            address.setError("Required");
+            valid = false;
         } else {
-            return !TextUtils.isEmpty(zip.getText().toString());
+            address.setError(null);
         }
 
-            //        } else
-//            if (TextUtils.isEmpty(zip.getText().toString())) {
-//            //this style makes the code way more readable and does not affect performance
-//            //compared to alternative approaches so I think it is fine
-//            return false;
-//        } else {
-//            return true;
-//        }
+        if (TextUtils.isEmpty(city.getText().toString())) {
+            city.setError("Required");
+            valid = false;
+        } else {
+            city.setError(null);
+        }
+
+        if (TextUtils.isEmpty(zip.getText().toString())) {
+            zip.setError("Required");
+            valid = false;
+        } else {
+            zip.setError(null);
+        }
+
+        if (!mCurrentLoction.isChecked()) {
+            if (TextUtils.isEmpty(latitude.getText().toString())) {
+                latitude.setError("Required");
+                valid = false;
+            } else{
+                latitude.setError(null);
+            }
+
+            if (TextUtils.isEmpty(longitude.getText().toString())) {
+                longitude.setError("Required");
+                valid = false;
+            } else {
+                longitude.setError(null);
+            }
+        }
+
+        return valid;
+
     }
 }

@@ -55,9 +55,6 @@ public class ListMapComboActivity extends AppCompatActivity {
     private long searchStart;
     private long searchEnd;
 
-    private long updateStart;
-    private long updateEnd;
-
     private long startDateMillis;
     private long endDateMillis;
 
@@ -79,9 +76,6 @@ public class ListMapComboActivity extends AppCompatActivity {
         startDateMillis = 0;
         //suppressed because has to be done per instance
         endDateMillis = Calendar.getInstance().getTimeInMillis();
-
-        updateStart = startDateMillis;
-        updateEnd = endDateMillis;
 
         searchStart = startDateMillis;
         searchEnd = endDateMillis;
@@ -185,16 +179,6 @@ public class ListMapComboActivity extends AppCompatActivity {
             }
         });
 
-
-        Button mUpdateButton;
-        mUpdateButton = (Button) findViewById(R.id.rupdate);
-        mUpdateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                update();
-            }
-        });
-
         setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -269,24 +253,12 @@ public class ListMapComboActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * update list view with most recent search parameters
-     */
-    private void update() {
-        startDateMillis = updateStart;
-        endDateMillis = updateEnd;
-        updateSightingList();
-    }
-
     /**
      * changes update values to the new search values and updates list with new search
      */
     private void search() {
         startDateMillis = searchStart;
         endDateMillis = searchEnd;
-        updateStart = searchStart;
-        updateEnd = searchEnd;
         updateSightingList();
     }
 
