@@ -125,6 +125,8 @@ public class SingleFragment extends Fragment {
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
                                         android.Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                        mCurrentLoction.setChecked(false);
+                        return;
                     }
 
                     Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
